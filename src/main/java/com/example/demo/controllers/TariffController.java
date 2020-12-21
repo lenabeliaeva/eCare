@@ -21,6 +21,6 @@ public class TariffController {
         modelMap.addAttribute("id", tariff.getId());
         modelMap.addAttribute("name", tariff.getName());
         modelMap.addAttribute("price", tariff.getPrice());
-        return "tariffs";
+        return "saveTariff";
     }
 }
