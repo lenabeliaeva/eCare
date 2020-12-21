@@ -1,26 +1,33 @@
 package com.example.demo.controllers;
 
 import com.example.demo.models.Tariff;
+import com.example.demo.services.TariffService;
+import com.example.demo.services.TariffServiceImpl;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 public class TariffController {
 
+    private final TariffService tariffService = new TariffServiceImpl();
+
     @RequestMapping(value = "/addNewTariff", method = RequestMethod.GET)
-    public ModelAndView addNewTariff() {
-        return new ModelAndView("addNewTariff", "command", new Tariff());
+    public String addNewTariff(Model model) {
+        model.addAttribute("newTariff", new Tariff());
+        return "addNewTariff";
     }
 
     @RequestMapping(value = "/saveTariff", method = RequestMethod.POST)
-    public String saveTariff(@ModelAttribute("addNewTariff") Tariff tariff, ModelMap modelMap) {
-        modelMap.addAttribute("id", tariff.getId());
-        modelMap.addAttribute("name", tariff.getName());
-        modelMap.addAttribute("price", tariff.getPrice());
-        return "saveTariff";
+    public String showTariffs(@ModelAttribute("newTariff") Tariff tariff, Model model) {
+        tariffService.add(tariff);
+        List<Tariff> tariffs = tariffService.getAll();
+        model.addAttribute("tariffs", tariffs);
+        return "tariffs";
     }
 }

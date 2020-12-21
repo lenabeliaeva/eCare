@@ -9,10 +9,10 @@
 <table>
     <tr>
         <td>Название</td>
-        <td>${name}</td>
+        <td>Цена</td>
     </tr>
     <tr>
-        <td>Цена</td>
+        <td>${name}</td>
         <td>${price}</td>
     </tr>
 </table>
