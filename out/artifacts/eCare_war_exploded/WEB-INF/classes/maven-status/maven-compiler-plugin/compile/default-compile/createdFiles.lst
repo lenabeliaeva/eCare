@@ -1,10 +1,13 @@
 com\example\demo\dao\ContractDaoImpl.class
 com\example\demo\models\Client.class
+com\example\demo\services\TariffService.class
 com\example\demo\services\ContractService.class
-com\example\demo\controllers\ContractController.class
 com\example\demo\services\ContractServiceImpl.class
-com\example\demo\dao\ContractDao.class
 com\example\demo\models\Contract.class
 com\example\demo\models\Tariff.class
-com\example\demo\ConnectionManager.class
+com\example\demo\dao\TariffDao.class
+com\example\demo\services\TariffServiceImpl.class
+com\example\demo\controllers\ContractController.class
+com\example\demo\dao\TariffDaoImpl.class
+com\example\demo\dao\ContractDao.class
 com\example\demo\controllers\TariffController.class

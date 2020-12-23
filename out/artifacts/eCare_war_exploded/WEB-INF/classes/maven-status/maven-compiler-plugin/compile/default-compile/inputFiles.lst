@@ -1,10 +1,13 @@
 C:\Users\lenab\IdeaProjects\eCare\src\main\java\com\example\demo\controllers\TariffController.java
 C:\Users\lenab\IdeaProjects\eCare\src\main\java\com\example\demo\dao\ContractDao.java
-C:\Users\lenab\IdeaProjects\eCare\src\main\java\com\example\demo\models\Client.java
+C:\Users\lenab\IdeaProjects\eCare\src\main\java\com\example\demo\dao\TariffDaoImpl.java
 C:\Users\lenab\IdeaProjects\eCare\src\main\java\com\example\demo\services\ContractServiceImpl.java
 C:\Users\lenab\IdeaProjects\eCare\src\main\java\com\example\demo\models\Contract.java
-C:\Users\lenab\IdeaProjects\eCare\src\main\java\com\example\demo\ConnectionManager.java
-C:\Users\lenab\IdeaProjects\eCare\src\main\java\com\example\demo\controllers\ContractController.java
 C:\Users\lenab\IdeaProjects\eCare\src\main\java\com\example\demo\models\Tariff.java
+C:\Users\lenab\IdeaProjects\eCare\src\main\java\com\example\demo\models\Client.java
+C:\Users\lenab\IdeaProjects\eCare\src\main\java\com\example\demo\services\TariffService.java
+C:\Users\lenab\IdeaProjects\eCare\src\main\java\com\example\demo\controllers\ContractController.java
 C:\Users\lenab\IdeaProjects\eCare\src\main\java\com\example\demo\services\ContractService.java
+C:\Users\lenab\IdeaProjects\eCare\src\main\java\com\example\demo\services\TariffServiceImpl.java
 C:\Users\lenab\IdeaProjects\eCare\src\main\java\com\example\demo\dao\ContractDaoImpl.java
+C:\Users\lenab\IdeaProjects\eCare\src\main\java\com\example\demo\dao\TariffDao.java

@@ -44,6 +44,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.4.25.Final</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.16</version>
@@ -61,7 +67,6 @@
             <version>1.18.10</version>
         </dependency>
     </dependencies>
-
 
     <build>
         <plugins>

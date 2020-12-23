@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <html>
 <head>
@@ -6,11 +6,11 @@
 </head>
 <body>
 <h2>Новый тариф</h2>
-<form:form method="post" action="/saveTariff">
-    <h3>Введите название</h3>
-    <input type="text">
-    <h3>Введите цену</h3>
-    <input type="number">
+<form:form method="post" modelAttribute="newTariff" action="/saveTariff">
+    <form:label path="name">Введите название</form:label>
+    <form:input type="text" path="name"/>
+    <form:label path="price">Введите цену</form:label>
+    <form:input type="number" path="price"/>
     <br><br>
     <button type="submit">Сохранить</button>
 </form:form>
