@@ -7,16 +7,17 @@
 </head>
 <body>
 <h2>Доступные тарифы</h2>
-<c:forEach var="tariff" items="${tariffs}">
-    <p>${tariff.name}</p>
-    <p>${tariff.price}</p>
-</c:forEach>
 <table>
     <tr>
         <td>Название</td>
         <td>Цена</td>
     </tr>
-
+    <c:forEach var="tariff" items="${tariffs}">
+        <tr>
+            <td>${tariff.name}</td>
+            <td>${tariff.price}</td>
+        </tr>
+    </c:forEach>
 </table>
 </body>
 </html>
