@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Tariff {
     @Id
     @Column(name = "id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
     @Column(name = "name")

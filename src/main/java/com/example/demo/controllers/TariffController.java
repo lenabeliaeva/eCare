@@ -16,7 +16,7 @@ public class TariffController {
 
     private final TariffService tariffService = new TariffServiceImpl();
 
-    @RequestMapping(value = "/addNewTariff", method = RequestMethod.GET)
+    @RequestMapping(value = "/addNewTariff", method = RequestMethod.POST)
     public String addNewTariff(Model model) {
         model.addAttribute("newTariff", new Tariff());
         return "addNewTariff";

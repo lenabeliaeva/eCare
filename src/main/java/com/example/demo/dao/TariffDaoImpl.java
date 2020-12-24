@@ -9,13 +9,9 @@ import java.util.List;
 @Repository
 public class TariffDaoImpl implements TariffDao {
 
-    private static final EntityManagerFactory emfObj;
+    private final EntityManagerFactory emfObj = Persistence.createEntityManagerFactory("eCare");
 
-    static {
-        emfObj = Persistence.createEntityManagerFactory("eCare");
-    }
-    
-    private final EntityManager entityManager = emfObj.createEntityManager();
+    EntityManager entityManager = emfObj.createEntityManager();
 
     @Override
     public void add(Tariff tariff) {
@@ -26,7 +22,7 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public List<Tariff> getAll() {
-        Query query = entityManager.createQuery("SELECT e FROM Tariff e");
+        Query query = entityManager.createQuery("select e from Tariff e");
         return query.getResultList();
     }
 }
