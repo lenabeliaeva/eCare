@@ -5,9 +5,7 @@ import com.example.demo.services.TariffService;
 import com.example.demo.services.TariffServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,10 +21,21 @@ public class TariffController {
     }
 
     @RequestMapping(value = "/saveTariff", method = RequestMethod.POST)
-    public String showTariffs(@ModelAttribute("newTariff") Tariff tariff, Model model) {
+    public String saveTariff(@ModelAttribute("newTariff") Tariff tariff) {
         tariffService.add(tariff);
+        return "redirect:/tariffs";
+    }
+
+    @RequestMapping(value = "/tariffs", method = RequestMethod.GET)
+    public String showTariffs(Model model) {
         List<Tariff> tariffs = tariffService.getAll();
         model.addAttribute("tariffs", tariffs);
         return "tariffs";
+    }
+
+    @RequestMapping(value = "/deleteTariff/{tariffId}", method = RequestMethod.POST)
+    public String deleteTariff(@PathVariable String tariffId) {
+        tariffService.delete(tariffService.getById(Long.parseLong(tariffId)));
+        return "redirect:/tariffs";
     }
 }

@@ -21,4 +21,14 @@ public class TariffServiceImpl implements TariffService {
     public List<Tariff> getAll() {
         return tariffDao.getAll();
     }
+
+    @Override
+    public void delete(Tariff tariff) {
+        tariffDao.delete(tariff);
+    }
+
+    @Override
+    public Tariff getById(long id) {
+        return tariffDao.getById(id);
+    }
 }

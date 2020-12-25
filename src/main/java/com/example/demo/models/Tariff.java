@@ -11,7 +11,7 @@ public class Tariff {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+    private long id;
 
     @Column(name = "name")
     private String name;
