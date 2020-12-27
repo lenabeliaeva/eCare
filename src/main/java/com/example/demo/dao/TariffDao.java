@@ -9,4 +9,5 @@ public interface TariffDao {
     List<Tariff> getAll();
     void delete(Tariff tariff);
     Tariff getById(long id);
+    void edit(Tariff tariff);
 }

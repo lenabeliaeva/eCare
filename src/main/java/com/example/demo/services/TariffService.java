@@ -9,4 +9,5 @@ public interface TariffService {
     List<Tariff> getAll();
     void delete(Tariff tariff);
     Tariff getById(long id);
+    void edit(Tariff tariff);
 }

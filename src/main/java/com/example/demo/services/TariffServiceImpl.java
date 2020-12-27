@@ -36,4 +36,10 @@ public class TariffServiceImpl implements TariffService {
     public Tariff getById(long id) {
         return tariffDao.getById(id);
     }
+
+    @Override
+    @Transactional
+    public void edit(Tariff tariff) {
+        tariffDao.edit(tariff);
+    }
 }

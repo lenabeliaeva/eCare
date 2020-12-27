@@ -38,4 +38,10 @@ public class TariffController {
         tariffService.delete(tariffService.getById(Long.parseLong(tariffId)));
         return "redirect:/tariffs";
     }
+
+    @RequestMapping(value = "/editTariff/{tariffId}", method = RequestMethod.POST)
+    public String editTariff(@PathVariable String tariffId) {
+        tariffService.edit(tariffService.getById(Long.parseLong(tariffId)));
+        return "editTariff";
+    }
 }

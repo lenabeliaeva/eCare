@@ -44,4 +44,11 @@ public class TariffDaoImpl implements TariffDao {
         entityManager.getTransaction().commit();
         return tariff;
     }
+
+    @Override
+    public void edit(Tariff tariff) {
+        entityManager.getTransaction().begin();
+        entityManager.merge(tariff);
+        entityManager.getTransaction().commit();
+    }
 }
