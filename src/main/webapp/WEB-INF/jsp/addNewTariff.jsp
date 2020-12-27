@@ -10,11 +10,11 @@
 <form:form method="post" modelAttribute="newTariff" action="/saveTariff">
     <div class="form-group">
         <form:label path="name">Введите название</form:label>
-        <form:input type="text" class="form-control" path="name"/>
+        <form:input type="text" required="name" class="form-control" path="name"/>
     </div>
     <div class="form-group">
         <form:label path="price">Введите цену</form:label>
-        <form:input type="number" class="form-control" path="price"/>
+        <form:input type="number" min="1" class="form-control" path="price"/>
     </div>
     <button type="submit" class="btn btn-default">Сохранить</button>
 </form:form>
