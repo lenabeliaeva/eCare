@@ -24,6 +24,9 @@
                     </button>
                 </td>
                 <td>
+                    <button class="btn btn-default" formaction="/editTariff/${tariff.id}" type="submit">Изменить</button>
+                </td>
+                <td>
                     <button class="btn btn-default" formaction="/showOptions/${tariff.id}" type="submit">Опции по
                         данному тарифу
                     </button>
