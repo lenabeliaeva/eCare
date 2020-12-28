@@ -40,8 +40,14 @@ public class TariffController {
     }
 
     @RequestMapping(value = "/editTariff/{tariffId}", method = RequestMethod.POST)
-    public String editTariff(@PathVariable String tariffId) {
-        tariffService.edit(tariffService.getById(Long.parseLong(tariffId)));
+    public String editTariff(@PathVariable String tariffId, Model model) {
+        model.addAttribute("editedTariff", tariffService.getById(Long.parseLong(tariffId)));
         return "editTariff";
+    }
+
+    @RequestMapping(value = "/saveEditedTariff", method = RequestMethod.POST)
+    public String saveEditedTariff(@ModelAttribute("editedTariff") Tariff tariff) {
+        tariffService.edit(tariff);
+        return "redirect:/tariffs";
     }
 }
