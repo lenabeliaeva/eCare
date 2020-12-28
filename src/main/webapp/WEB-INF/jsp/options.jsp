@@ -4,7 +4,9 @@
 <html>
 <head>
     <title>Все опции</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <%@include file="parts/header.jsp"%>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
 <body>
 <h2>Доступные опции</h2>
@@ -21,17 +23,17 @@
                 <td>${option.price}</td>
                 <td>${option.connectionCost}</td>
                 <td>
-                    <button class="btn btn-default" formaction="/deleteOption/${option.id}" type="submit">Удалить
+                    <button class="btn btn-outline-danger" formaction="/deleteOption/${option.id}" type="submit">Удалить
                     </button>
                 </td>
                 <td>
-                    <button class="btn btn-default" formaction="/editOption/${option.id}" type="submit">Изменить
+                    <button class="btn btn-outline-primary" formaction="/editOption/${option.id}" type="submit">Изменить
                     </button>
                 </td>
             </tr>
         </c:forEach>
     </table>
-    <button class="btn btn-default" formaction="/createOption">Добавить новую опцию</button>
+    <button class="btn btn-outline-primary" formaction="/createOption">Добавить новую опцию</button>
 </form:form>
 </body>
 </html>

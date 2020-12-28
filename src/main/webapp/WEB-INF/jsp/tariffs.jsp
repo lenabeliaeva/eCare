@@ -4,7 +4,9 @@
 <html>
 <head>
     <title>Тарифы</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <%@include file="parts/header.jsp" %>
 
 </head>
 <body>
@@ -20,21 +22,26 @@
                 <td>${tariff.name}</td>
                 <td>${tariff.price}</td>
                 <td>
-                    <button class="btn btn-default" formaction="/deleteTariff/${tariff.id}" type="submit">Удалить
+                    <button class="btn btn-outline-danger" formaction="/deleteTariff/${tariff.id}"
+                            type="submit"
+                    >Удалить
                     </button>
                 </td>
                 <td>
-                    <button class="btn btn-default" formaction="/editTariff/${tariff.id}" type="submit">Изменить</button>
+                    <button class="btn btn-outline-primary" formaction="/editTariff/${tariff.id}" type="submit">
+                        Изменить
+                    </button>
                 </td>
                 <td>
-                    <button class="btn btn-default" formaction="/showOptions/${tariff.id}" type="submit">Опции по
+                    <button class="btn btn-outline-primary" formaction="/showOptions/${tariff.id}" type="submit">Опции
+                        по
                         данному тарифу
                     </button>
                 </td>
             </tr>
         </c:forEach>
     </table>
-    <button class="btn btn-default" formaction="/addNewTariff">Добавить новый тариф</button>
+    <button class="btn btn-outline-primary" formaction="/addNewTariff">Добавить новый тариф</button>
 </form:form>
 </body>
 </html>
