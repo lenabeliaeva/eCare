@@ -44,9 +44,15 @@ public class OptionController {
     }
 
     @RequestMapping(value = "/editOption/{optionId}", method = RequestMethod.POST)
-    public String editOption(@PathVariable String optionId) {
-        service.edit(service.getById(Long.parseLong(optionId)));
+    public String editOption(@PathVariable String optionId, Model model) {
+        model.addAttribute("editedOption", service.getById(Long.parseLong(optionId)));
         return "editOption";
+    }
+
+    @RequestMapping(value = "/saveEditedOption", method = RequestMethod.POST)
+    public String saveEditedOption(@ModelAttribute("editedOption") Option option) {
+        service.edit(option);
+        return "redirect:/options";
     }
 
     @RequestMapping("/deleteOption/{optionId}")
