@@ -21,5 +21,10 @@ public class Tariff {
     private double price;
 
     @ManyToMany
+    @JoinTable(
+            name = "options_tariffs",
+            joinColumns = {@JoinColumn(name = "tariff_id")},
+            inverseJoinColumns = {@JoinColumn(name = "option_id")}
+            )
     private Set<Option> options;
 }
