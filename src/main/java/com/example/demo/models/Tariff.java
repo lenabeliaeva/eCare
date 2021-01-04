@@ -27,4 +27,12 @@ public class Tariff {
             inverseJoinColumns = {@JoinColumn(name = "option_id")}
             )
     private Set<Option> options;
+
+    public void add(Option option) {
+        options.add(option);
+    }
+
+    public void delete(Option option) {
+        options.remove(option);
+    }
 }

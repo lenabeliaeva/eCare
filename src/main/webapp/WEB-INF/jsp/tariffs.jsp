@@ -33,7 +33,8 @@
                     </button>
                 </td>
                 <td>
-                    <button class="btn btn-outline-primary" formaction="/showOptions/${tariff.id}" type="submit">Опции
+                    <button class="btn btn-outline-primary" formaction="/showOptions/${tariff.id}" type="submit"
+                            formmethod="get">Опции
                         по
                         данному тарифу
                     </button>

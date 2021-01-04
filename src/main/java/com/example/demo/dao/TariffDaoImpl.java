@@ -1,9 +1,13 @@
 package com.example.demo.dao;
 
+import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -48,6 +52,22 @@ public class TariffDaoImpl implements TariffDao {
     @Override
     public void edit(Tariff tariff) {
         entityManager.getTransaction().begin();
+        entityManager.merge(tariff);
+        entityManager.getTransaction().commit();
+    }
+
+    @Override
+    public void addOption(Tariff tariff, Option option) {
+        entityManager.getTransaction().begin();
+        tariff.add(option);
+        entityManager.merge(tariff);
+        entityManager.getTransaction().commit();
+    }
+
+    @Override
+    public void deleteOption(Tariff tariff, Option option) {
+        entityManager.getTransaction().begin();
+        tariff.delete(option);
         entityManager.merge(tariff);
         entityManager.getTransaction().commit();
     }

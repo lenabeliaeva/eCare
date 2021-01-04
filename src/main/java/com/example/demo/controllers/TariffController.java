@@ -1,6 +1,9 @@
 package com.example.demo.controllers;
 
+import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
+import com.example.demo.services.OptionService;
+import com.example.demo.services.OptionServiceImpl;
 import com.example.demo.services.TariffService;
 import com.example.demo.services.TariffServiceImpl;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,7 @@ import java.util.List;
 public class TariffController {
 
     private final TariffService tariffService = new TariffServiceImpl();
+    private final OptionService optionService = new OptionServiceImpl();
 
     @RequestMapping(value = "/addNewTariff", method = RequestMethod.POST)
     public String addNewTariff(Model model) {
@@ -42,6 +46,7 @@ public class TariffController {
     @RequestMapping(value = "/editTariff/{tariffId}", method = RequestMethod.POST)
     public String editTariff(@PathVariable String tariffId, Model model) {
         model.addAttribute("editedTariff", tariffService.getById(Long.parseLong(tariffId)));
+        model.addAttribute("options", optionService.getAllForCertainTariff(Long.parseLong(tariffId)));
         return "editTariff";
     }
 
@@ -49,5 +54,29 @@ public class TariffController {
     public String saveEditedTariff(@ModelAttribute("editedTariff") Tariff tariff) {
         tariffService.edit(tariff);
         return "redirect:/tariffs";
+    }
+
+    @RequestMapping(value = "/addOption/{tariffId}", method = RequestMethod.POST)
+    public String addOptionForTariff(@PathVariable String tariffId, Model model) {
+        Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
+        model.addAttribute("addOptionTariff", tariff);
+        model.addAttribute("options", optionService.getAll());
+        return "chooseOptions";
+    }
+
+    @RequestMapping(value = "/addOption/{tariffId}/{optionId}", method = RequestMethod.POST)
+    public String saveAddedOption(@PathVariable String optionId, @PathVariable String tariffId) {
+        Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
+        Option option = optionService.getById(Long.parseLong(optionId));
+        tariffService.addOption(tariff, option);
+        return "redirect:/addOption/{tariffId}";
+    }
+
+    @RequestMapping(value = "/deleteOption/{tariffId}/{optionId}", method = RequestMethod.POST)
+    public String deleteAddedOption(@PathVariable String tariffId, @PathVariable String optionId) {
+        Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
+        Option option = optionService.getById(Long.parseLong(optionId));
+        tariffService.deleteOption(tariff, option);
+        return "redirect:/editTariff/{tariffId}";
     }
 }
