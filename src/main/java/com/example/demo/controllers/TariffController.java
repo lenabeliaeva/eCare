@@ -69,7 +69,7 @@ public class TariffController {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         Option option = optionService.getById(Long.parseLong(optionId));
         tariffService.addOption(tariff, option);
-        return "redirect:/addOption/{tariffId}";
+        return "redirect:/showOptions/{tariffId}";
     }
 
     @RequestMapping(value = "/deleteOption/{tariffId}/{optionId}", method = RequestMethod.POST)
