@@ -77,6 +77,6 @@ public class TariffController {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         Option option = optionService.getById(Long.parseLong(optionId));
         tariffService.deleteOption(tariff, option);
-        return "redirect:/editTariff/{tariffId}";
+        return "redirect:/showOptions/{tariffId}";
     }
 }
