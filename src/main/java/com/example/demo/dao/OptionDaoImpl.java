@@ -35,8 +35,8 @@ public class OptionDaoImpl implements OptionDao {
 
     @Override
     public List<Option> getAllByTariffId(long tariffId) {
-        Query query = entityManager.createQuery("select o from Option o left join o.tariffs t where t.id = :i");
-        query.setParameter("i", tariffId);
+        Query query = entityManager.createQuery("select o from Option o join o.tariff t where t.id = :id");
+        query.setParameter("id", tariffId);
         return query.getResultList();
     }
 
