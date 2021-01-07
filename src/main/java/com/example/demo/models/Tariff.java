@@ -1,13 +1,15 @@
 package com.example.demo.models;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "tariffs")
-@Data
+@Getter
+@Setter
 public class Tariff {
     @Id
     @Column(name = "id")
@@ -25,14 +27,14 @@ public class Tariff {
             name = "options_tariffs",
             joinColumns = {@JoinColumn(name = "tariff_id")},
             inverseJoinColumns = {@JoinColumn(name = "option_id")}
-            )
+    )
     private Set<Option> options;
 
-    public void add(Option option) {
-        options.add(option);
+    public void add(Option o) {
+        options.add(o);
     }
 
-    public void delete(Option option) {
-        options.remove(option);
+    public void delete(Option o) {
+        options.remove(o);
     }
 }
