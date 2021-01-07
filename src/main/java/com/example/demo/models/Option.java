@@ -27,5 +27,5 @@ public class Option {
     private double connectionCost;
 
     @ManyToMany
-    private Set<Tariff> tariffs;
+    private Set<Tariff> tariff;
 }
