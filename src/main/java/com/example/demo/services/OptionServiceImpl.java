@@ -28,7 +28,7 @@ public class OptionServiceImpl implements OptionService{
     @Override
     @Transactional
     public List<Option> getAllForCertainTariff(long tariffId) {
-        return null;
+        return dao.getAllByTariffId(tariffId);
     }
 
     @Override
