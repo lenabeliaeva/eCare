@@ -4,12 +4,12 @@ import com.example.demo.dao.OptionDao;
 import com.example.demo.dao.OptionDaoImpl;
 import com.example.demo.models.Option;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-public class OptionServiceImpl implements OptionService{
+public class OptionServiceImpl implements OptionService {
 
     private final OptionDao dao = new OptionDaoImpl();
 
@@ -21,13 +21,13 @@ public class OptionServiceImpl implements OptionService{
 
     @Override
     @Transactional
-    public List<Option> getAll() {
+    public List<?> getAll() {
         return dao.getAll();
     }
 
     @Override
     @Transactional
-    public List<Option> getAllForCertainTariff(long tariffId) {
+    public List<?> getAllForCertainTariff(long tariffId) {
         return dao.getAllByTariffId(tariffId);
     }
 

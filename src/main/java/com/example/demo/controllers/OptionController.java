@@ -18,7 +18,6 @@ import java.util.List;
 public class OptionController {
 
     private final OptionService optionService = new OptionServiceImpl();
-    private final TariffService tariffService = new TariffServiceImpl();
 
     @RequestMapping(value = "/options", method = RequestMethod.GET)
     public String showAllOptions(Model model) {
@@ -28,9 +27,9 @@ public class OptionController {
 
     @RequestMapping(value = "/showOptions/{tariffId}", method = RequestMethod.GET)
     public String showOptionsForTariff(@PathVariable String tariffId, Model model) {
-        List<Option> options = optionService.getAllForCertainTariff(Long.parseLong(tariffId));
-        model.addAttribute("tariffOptions", options);
-        model.addAttribute("tariffId", Long.parseLong(tariffId));
+        List<?> options = optionService.getAllForCertainTariff(Long.parseLong(tariffId));
+        model.addAttribute("options", options);
+        model.addAttribute("tariffId", tariffId);
         return "tariffOptions";
     }
 

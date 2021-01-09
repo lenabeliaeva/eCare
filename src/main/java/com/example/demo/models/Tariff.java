@@ -35,6 +35,6 @@ public class Tariff {
     }
 
     public void delete(Option o) {
-        options.remove(o);
+        options.removeIf(option -> option.getId() == o.getId());
     }
 }

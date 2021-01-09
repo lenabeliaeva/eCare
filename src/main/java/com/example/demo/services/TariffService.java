@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TariffService {
     void add(Tariff tariff);
-    List<Tariff> getAll();
+    List<?> getAll();
     void delete(Tariff tariff);
     Tariff getById(long id);
     void edit(Tariff tariff);

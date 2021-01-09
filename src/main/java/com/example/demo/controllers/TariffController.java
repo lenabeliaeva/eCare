@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Controller
@@ -32,7 +33,7 @@ public class TariffController {
 
     @RequestMapping(value = "/tariffs", method = RequestMethod.GET)
     public String showTariffs(Model model) {
-        List<Tariff> tariffs = tariffService.getAll();
+        List<?> tariffs = tariffService.getAll();
         model.addAttribute("tariffs", tariffs);
         return "tariffs";
     }
@@ -45,8 +46,8 @@ public class TariffController {
 
     @RequestMapping(value = "/editTariff/{tariffId}", method = RequestMethod.POST)
     public String editTariff(@PathVariable String tariffId, Model model) {
-        model.addAttribute("editedTariff", tariffService.getById(Long.parseLong(tariffId)));
-        model.addAttribute("options", optionService.getAllForCertainTariff(Long.parseLong(tariffId)));
+        Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
+        model.addAttribute("editedTariff", tariff);
         return "editTariff";
     }
 
@@ -69,7 +70,7 @@ public class TariffController {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         Option option = optionService.getById(Long.parseLong(optionId));
         tariffService.addOption(tariff, option);
-        return "redirect:/showOptions/{tariffId}";
+        return "redirect:/tariffs";
     }
 
     @RequestMapping(value = "/deleteOption/{tariffId}/{optionId}", method = RequestMethod.POST)
@@ -77,6 +78,6 @@ public class TariffController {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         Option option = optionService.getById(Long.parseLong(optionId));
         tariffService.deleteOption(tariff, option);
-        return "redirect:/showOptions/{tariffId}";
+        return "redirect:/tariffs";
     }
 }

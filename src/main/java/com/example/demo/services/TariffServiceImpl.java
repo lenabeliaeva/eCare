@@ -5,8 +5,8 @@ import com.example.demo.dao.TariffDaoImpl;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -22,7 +22,7 @@ public class TariffServiceImpl implements TariffService {
 
     @Override
     @Transactional
-    public List<Tariff> getAll() {
+    public List<?> getAll() {
         return tariffDao.getAll();
     }
 

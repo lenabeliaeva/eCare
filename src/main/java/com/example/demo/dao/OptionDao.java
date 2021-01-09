@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface OptionDao {
     void add(Option option);
-    List<Option> getAll();
-    List<Option> getAllByTariffId(long tariffId);
+    List<?> getAll();
+    List<?> getAllByTariffId(long tariffId);
     void delete(Option option);
     Option getById(long id);
     void update(Option option);

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -29,9 +28,8 @@ public class TariffDaoImpl implements TariffDao {
     }
 
     @Override
-    public List<Tariff> getAll() {
-        Query query = entityManager.createQuery("select e from Tariff e");
-        return query.getResultList();
+    public List<?> getAll() {
+        return entityManager.createQuery("select e from Tariff e").getResultList();
     }
 
     @Override
@@ -43,10 +41,7 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public Tariff getById(long id) {
-        entityManager.getTransaction().begin();
-        Tariff tariff = entityManager.find(Tariff.class, id);
-        entityManager.getTransaction().commit();
-        return tariff;
+        return entityManager.find(Tariff.class, id);
     }
 
     @Override

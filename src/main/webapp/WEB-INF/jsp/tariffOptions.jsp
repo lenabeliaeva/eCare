@@ -16,7 +16,7 @@
             <td>Цена</td>
             <td>Стоимость подключения</td>
         </tr>
-        <c:forEach var="option" items="${tariffOptions}">
+        <c:forEach var="option" items="${options}">
             <tr>
                 <td>${option.name}</td>
                 <td>${option.price}</td>

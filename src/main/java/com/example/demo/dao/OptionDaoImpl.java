@@ -1,13 +1,11 @@
 package com.example.demo.dao;
 
 import com.example.demo.models.Option;
-import com.example.demo.models.Tariff;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -29,15 +27,13 @@ public class OptionDaoImpl implements OptionDao {
     }
 
     @Override
-    public List<Option> getAll() {
+    public List<?> getAll() {
         return entityManager.createQuery("select o from Option o").getResultList();
     }
 
     @Override
-    public List<Option> getAllByTariffId(long tariffId) {
-        Query query = entityManager.createQuery("select o from Option o join o.tariff t where t.id = :id");
-        query.setParameter("id", tariffId);
-        return query.getResultList();
+    public List<?> getAllByTariffId(long tariffId) {
+        return entityManager.createQuery("select o from Option o join o.tariff t where t.id = :id").setParameter("id", tariffId).getResultList();
     }
 
     @Override
@@ -49,10 +45,7 @@ public class OptionDaoImpl implements OptionDao {
 
     @Override
     public Option getById(long id) {
-        entityManager.getTransaction().begin();
-        Option option = entityManager.find(Option.class, id);
-        entityManager.getTransaction().commit();
-        return option;
+        return entityManager.find(Option.class, id);
     }
 
     @Override

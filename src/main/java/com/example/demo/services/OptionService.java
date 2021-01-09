@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface OptionService {
     void add(Option option);
-    List<Option> getAll();
-    List<Option> getAllForCertainTariff(long tariffId);
+    List<?> getAll();
+    List<?> getAllForCertainTariff(long tariffId);
     Option getById(long optionId);
     void edit(Option option);
     void delete(Option option);
