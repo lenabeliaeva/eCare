@@ -63,7 +63,7 @@ public class TariffController {
     public String addOptionForTariff(@PathVariable String tariffId, Model model) {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         model.addAttribute("addOptionTariff", tariff);
-        model.addAttribute("options", optionService.getAll());
+        model.addAttribute("options", optionService.getAllNotAddedToTariff(Long.parseLong(tariffId)));
         return "chooseOptions";
     }
 
@@ -72,7 +72,7 @@ public class TariffController {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         Option option = optionService.getById(Long.parseLong(optionId));
         tariffService.addOption(tariff, option);
-        return "redirect:/tariffs";
+        return "redirect:/showOptions/{tariffId}";
     }
 
     @PostMapping(value = "/deleteOption/{tariffId}/{optionId}")
