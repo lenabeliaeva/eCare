@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface TariffDao {
     void add(Tariff tariff);
-    List<?> getAll();
+    List<Tariff> getAll();
+    List<Tariff> getAllByOptionId(long optionId);
     void delete(Tariff tariff);
     Tariff getById(long id);
     void edit(Tariff tariff);

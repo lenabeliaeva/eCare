@@ -26,21 +26,7 @@
             <td>Цена</td>
             <td>Стоимость подключения</td>
         </tr>
-        <c:forEach var="option" items="${editedTariff.options}">
-            <tr>
-                <td>${option.name}</td>
-                <td>${option.price}</td>
-                <td>${option.connectionCost}</td>
-                <td>
-                    <button class="btn btn-outline-danger" formaction="/deleteOption/${editedTariff.id}/${option.id}"
-                            type="submit">Удалить
-                    </button>
-                </td>
-            </tr>
-        </c:forEach>
     </table>
-    <button type="submit" formaction="/addOption/${editedTariff.id}" class="btn btn-outline-primary">Добавить опции
-    </button>
     <button type="submit" class="btn btn-outline-primary">Сохранить изменения</button>
 </form:form>
 </body>

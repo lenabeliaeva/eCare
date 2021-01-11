@@ -22,8 +22,14 @@ public class TariffServiceImpl implements TariffService {
 
     @Override
     @Transactional
-    public List<?> getAll() {
+    public List<Tariff> getAll() {
         return tariffDao.getAll();
+    }
+
+    @Override
+    @Transactional
+    public List<Tariff> getTariffsByOptionId(long optionId) {
+        return tariffDao.getAllByOptionId(optionId);
     }
 
     @Override

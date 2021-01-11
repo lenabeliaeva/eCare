@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
 
 @Controller
@@ -19,45 +18,48 @@ public class TariffController {
     private final TariffService tariffService = new TariffServiceImpl();
     private final OptionService optionService = new OptionServiceImpl();
 
-    @RequestMapping(value = "/addNewTariff", method = RequestMethod.POST)
+    @PostMapping(value = "/addNewTariff")
     public String addNewTariff(Model model) {
         model.addAttribute("newTariff", new Tariff());
         return "addNewTariff";
     }
 
-    @RequestMapping(value = "/saveTariff", method = RequestMethod.POST)
+    @PostMapping(value = "/saveTariff")
     public String saveTariff(@ModelAttribute("newTariff") Tariff tariff) {
         tariffService.add(tariff);
         return "redirect:/tariffs";
     }
 
-    @RequestMapping(value = "/tariffs", method = RequestMethod.GET)
+    @GetMapping(value = "/tariffs")
     public String showTariffs(Model model) {
         List<?> tariffs = tariffService.getAll();
         model.addAttribute("tariffs", tariffs);
         return "tariffs";
     }
 
-    @RequestMapping(value = "/deleteTariff/{tariffId}", method = RequestMethod.POST)
+    @PostMapping(value = "/deleteTariff/{tariffId}")
     public String deleteTariff(@PathVariable String tariffId) {
         tariffService.delete(tariffService.getById(Long.parseLong(tariffId)));
         return "redirect:/tariffs";
     }
 
-    @RequestMapping(value = "/editTariff/{tariffId}", method = RequestMethod.POST)
+    @PostMapping(value = "/editTariff/{tariffId}")
     public String editTariff(@PathVariable String tariffId, Model model) {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         model.addAttribute("editedTariff", tariff);
         return "editTariff";
     }
 
-    @RequestMapping(value = "/saveEditedTariff", method = RequestMethod.POST)
-    public String saveEditedTariff(@ModelAttribute("editedTariff") Tariff tariff) {
-        tariffService.edit(tariff);
+    @PostMapping(value = "/saveEditedTariff")
+    public String saveEditedTariff(@ModelAttribute("editedTariff") Tariff edited) {
+        Tariff initial = tariffService.getById(edited.getId());
+        if (edited.getOptions() == null)
+            edited.setOptions(initial.getOptions());
+        tariffService.edit(edited);
         return "redirect:/tariffs";
     }
 
-    @RequestMapping(value = "/addOption/{tariffId}", method = RequestMethod.POST)
+    @PostMapping(value = "/addOption/{tariffId}")
     public String addOptionForTariff(@PathVariable String tariffId, Model model) {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         model.addAttribute("addOptionTariff", tariff);
@@ -65,7 +67,7 @@ public class TariffController {
         return "chooseOptions";
     }
 
-    @RequestMapping(value = "/addOption/{tariffId}/{optionId}", method = RequestMethod.POST)
+    @PostMapping(value = "/addOption/{tariffId}/{optionId}")
     public String saveAddedOption(@PathVariable String optionId, @PathVariable String tariffId) {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         Option option = optionService.getById(Long.parseLong(optionId));
@@ -73,7 +75,7 @@ public class TariffController {
         return "redirect:/tariffs";
     }
 
-    @RequestMapping(value = "/deleteOption/{tariffId}/{optionId}", method = RequestMethod.POST)
+    @PostMapping(value = "/deleteOption/{tariffId}/{optionId}")
     public String deleteAddedOption(@PathVariable String tariffId, @PathVariable String optionId) {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         Option option = optionService.getById(Long.parseLong(optionId));

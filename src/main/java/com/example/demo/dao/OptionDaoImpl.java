@@ -27,12 +27,12 @@ public class OptionDaoImpl implements OptionDao {
     }
 
     @Override
-    public List<?> getAll() {
+    public List<Option> getAll() {
         return entityManager.createQuery("select o from Option o").getResultList();
     }
 
     @Override
-    public List<?> getAllByTariffId(long tariffId) {
+    public List<Option> getAllByTariffId(long tariffId) {
         return entityManager.createQuery("select o from Option o join o.tariff t where t.id = :id").setParameter("id", tariffId).getResultList();
     }
 

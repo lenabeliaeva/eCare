@@ -21,13 +21,13 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     @Transactional
-    public List<?> getAll() {
+    public List<Option> getAll() {
         return dao.getAll();
     }
 
     @Override
     @Transactional
-    public List<?> getAllForCertainTariff(long tariffId) {
+    public List<Option> getAllForCertainTariff(long tariffId) {
         return dao.getAllByTariffId(tariffId);
     }
 
