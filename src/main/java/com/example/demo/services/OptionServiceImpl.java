@@ -33,6 +33,12 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     @Transactional
+    public List<Option> getAllNotAddedToTariff(long tariffId) {
+        return dao.getAllNotAddedToTariff(tariffId);
+    }
+
+    @Override
+    @Transactional
     public Option getById(long optionId) {
         return dao.getById(optionId);
     }

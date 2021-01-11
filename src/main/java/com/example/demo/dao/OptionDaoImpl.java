@@ -37,6 +37,11 @@ public class OptionDaoImpl implements OptionDao {
     }
 
     @Override
+    public List<Option> getAllNotAddedToTariff(long tariffId) {
+        return entityManager.createQuery("select o from Option o left join o.tariff t where t.id <> :id or t.id is null").setParameter("id", tariffId).getResultList();
+    }
+
+    @Override
     public void delete(Option option) {
         entityManager.getTransaction().begin();
         entityManager.remove(option);
