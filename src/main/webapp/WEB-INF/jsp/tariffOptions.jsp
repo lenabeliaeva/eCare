@@ -9,6 +9,7 @@
     <%@include file="parts/header.jsp" %>
 </head>
 <body>
+<h2>Опции тарифа "${tariff.name}"</h2>
 <form:form method="post">
     <table class="table table-hover">
         <tr>
@@ -22,7 +23,7 @@
                 <td>${option.price}</td>
                 <td>${option.connectionCost}</td>
                 <td>
-                    <button class="btn btn-outline-danger" formaction="/deleteOption/${tariffId}/${option.id}"
+                    <button class="btn btn-outline-danger" formaction="/deleteOption/${tariff.id}/${option.id}"
                             type="submit"
                     >Удалить
                     </button>
@@ -30,7 +31,7 @@
             </tr>
         </c:forEach>
     </table>
-    <button class="btn btn-outline-primary" formaction="/addOption/${tariffId}">Добавить новую опцию</button>
+    <button class="btn btn-outline-primary" formaction="/addOption/${tariff.id}">Добавить новую опцию</button>
 </form:form>
 </body>
 </html>

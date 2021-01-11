@@ -9,7 +9,7 @@
     <%@include file="parts/header.jsp" %>
 </head>
 <body>
-<h2>Доступные опции</h2>
+<h2>Доступные для подключения опции для тарифа "${addOptionTariff.name}"</h2>
 <form:form method="post">
     <table class="table table-hover">
         <tr>
