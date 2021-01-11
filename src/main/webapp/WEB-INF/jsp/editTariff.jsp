@@ -20,13 +20,6 @@
         <form:label path="price">Введите цену</form:label>
         <form:input type="number" required="price" min="1" class="form-control" path="price"/>
     </div>
-    <table class="table table-hover">
-        <tr>
-            <td>Название</td>
-            <td>Цена</td>
-            <td>Стоимость подключения</td>
-        </tr>
-    </table>
     <button type="submit" class="btn btn-outline-primary">Сохранить изменения</button>
 </form:form>
 </body>
