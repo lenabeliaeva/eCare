@@ -6,12 +6,16 @@ import com.example.demo.services.OptionService;
 import com.example.demo.services.OptionServiceImpl;
 import com.example.demo.services.TariffService;
 import com.example.demo.services.TariffServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
+@Slf4j
 @Controller
 public class TariffController {
 
@@ -25,8 +29,12 @@ public class TariffController {
     }
 
     @PostMapping(value = "/saveTariff")
-    public String saveTariff(@ModelAttribute("newTariff") Tariff tariff) {
+    public String saveTariff(@Valid @ModelAttribute("newTariff") Tariff tariff, BindingResult result) {
+        if (result.hasErrors()) {
+            return "addNewTariff";
+        }
         tariffService.add(tariff);
+        log.info("New tariff is saved to DB");
         return "redirect:/tariffs";
     }
 
@@ -40,6 +48,7 @@ public class TariffController {
     @PostMapping(value = "/deleteTariff/{tariffId}")
     public String deleteTariff(@PathVariable String tariffId) {
         tariffService.delete(tariffService.getById(Long.parseLong(tariffId)));
+        log.info("Tariff is deleted from DB");
         return "redirect:/tariffs";
     }
 
@@ -56,6 +65,7 @@ public class TariffController {
         if (edited.getOptions() == null)
             edited.setOptions(initial.getOptions());
         tariffService.edit(edited);
+        log.info("Tariff is updated in DB");
         return "redirect:/tariffs";
     }
 
@@ -72,6 +82,7 @@ public class TariffController {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         Option option = optionService.getById(Long.parseLong(optionId));
         tariffService.addOption(tariff, option);
+        log.info("New option is added to tariff");
         return "redirect:/showOptions/{tariffId}";
     }
 
@@ -80,6 +91,7 @@ public class TariffController {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         Option option = optionService.getById(Long.parseLong(optionId));
         tariffService.deleteOption(tariff, option);
+        log.info("Option is deleted from tariff");
         return "redirect:/tariffs";
     }
 }

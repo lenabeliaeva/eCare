@@ -18,10 +18,12 @@
     <div class="form-group">
         <form:label path="price">Введите цену</form:label>
         <form:input type="number" required="price" min="1" class="form-control" path="price"/>
+        <form:errors path="price" cssClass="error"/>
     </div>
     <div class="form-group">
         <form:label path="connectionCost">Введите цену за подключение</form:label>
         <form:input type="number" required="cost" min="1" class="form-control" path="connectionCost"/>
+        <form:errors path="connectionCost" cssClass="error"/>
     </div>
     <button type="submit" class="btn btn-outline-primary">Сохранить изменения</button>
 </form:form>

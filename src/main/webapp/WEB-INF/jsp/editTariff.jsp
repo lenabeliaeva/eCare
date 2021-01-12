@@ -15,6 +15,7 @@
     <div class="form-group">
         <form:label path="name">Введите название</form:label>
         <form:input type="text" required="name" class="form-control" path="name"/>
+        <form:errors path="name" cssClass="error"/>
     </div>
     <div class="form-group">
         <form:label path="price">Введите цену</form:label>

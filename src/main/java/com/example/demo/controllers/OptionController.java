@@ -5,12 +5,16 @@ import com.example.demo.services.OptionService;
 import com.example.demo.services.OptionServiceImpl;
 import com.example.demo.services.TariffService;
 import com.example.demo.services.TariffServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
+@Slf4j
 @Controller
 public class OptionController {
 
@@ -38,8 +42,12 @@ public class OptionController {
     }
 
     @PostMapping(value = "/saveOption")
-    public String saveOption(@ModelAttribute("newOption") Option option) {
+    public String saveOption(@Valid @ModelAttribute("newOption") Option option, BindingResult result) {
+        if (result.hasErrors()) {
+            return "addNewOption";
+        }
         optionService.add(option);
+        log.info("New option is saved to DB");
         return "redirect:/options";
     }
 

@@ -13,14 +13,17 @@
     <div class="form-group">
         <form:label path="name">Введите название</form:label>
         <form:input type="text" required="name" class="form-control" path="name"/>
+        <form:errors cssClass="error"/>
     </div>
     <div class="form-group">
         <form:label path="price">Введите цену</form:label>
         <form:input type="number" required="price" min="1" class="form-control" path="price"/>
+        <form:errors cssClass="error"/>
     </div>
     <div class="form-group">
         <form:label path="connectionCost">Введите цену за подключение</form:label>
         <form:input type="number" required="cost" min="1" class="form-control" path="connectionCost"/>
+        <form:errors cssClass="error"/>
     </div>
     <button type="submit" class="btn btn-outline-primary">Сохранить</button>
 </form:form>

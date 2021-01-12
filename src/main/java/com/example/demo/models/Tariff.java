@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.Set;
 
 @Entity
@@ -17,9 +19,12 @@ public class Tariff {
     private long id;
 
     @Column(name = "name")
+    @NotBlank(message = "Название тариффа не может быть пустым")
     private String name;
 
     @Column(name = "price")
+    @Pattern(regexp = "[0-9]+([,.][0-9]{1,2})?")
+    @NotBlank(message = "Необходимо ввести цену опции")
     private double price;
 
     @ManyToMany
