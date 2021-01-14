@@ -45,5 +45,4 @@
     <bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="myEmf"/>
     </bean>
-<!--    <tx:annotation-driven />-->
 </beans>
