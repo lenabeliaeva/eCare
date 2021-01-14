@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.util.Set;
 
 @Entity
@@ -23,8 +23,7 @@ public class Tariff {
     private String name;
 
     @Column(name = "price")
-    @Pattern(regexp = "[0-9]+([,.][0-9]{1,2})?")
-    @NotBlank(message = "Необходимо ввести цену опции")
+    @Min(1)
     private double price;
 
     @ManyToMany
@@ -42,4 +41,7 @@ public class Tariff {
     public void delete(Option o) {
         options.removeIf(option -> option.getId() == o.getId());
     }
+
+    @OneToMany(mappedBy = "tariff")
+    private Set<Contract> contracts;
 }
