@@ -17,6 +17,13 @@ public class TariffServiceImpl implements TariffService {
     @Override
     @Transactional
     public void add(Tariff tariff) {
+//        Set<Option> options = tariff.getOptions();
+//        double tariffPrice = 0;
+//        for (Option option:
+//             options) {
+//            tariffPrice += option.getPrice();
+//        }
+//        tariff.setPrice(tariffPrice);
         tariffDao.add(tariff);
     }
 
@@ -24,12 +31,6 @@ public class TariffServiceImpl implements TariffService {
     @Transactional
     public List<Tariff> getAll() {
         return tariffDao.getAll();
-    }
-
-    @Override
-    @Transactional
-    public List<Tariff> getTariffsByOptionId(long optionId) {
-        return tariffDao.getAllByOptionId(optionId);
     }
 
     @Override
@@ -42,6 +43,12 @@ public class TariffServiceImpl implements TariffService {
     @Transactional
     public Tariff getById(long id) {
         return tariffDao.getById(id);
+    }
+
+    @Override
+    @Transactional
+    public Tariff getLastAddedTariff() {
+        return tariffDao.getLastAddedTariff();
     }
 
     @Override

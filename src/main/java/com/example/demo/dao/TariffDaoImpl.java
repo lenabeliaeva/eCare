@@ -29,12 +29,7 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public List<Tariff> getAll() {
-        return entityManager.createQuery("select t from Tariff t").getResultList();
-    }
-
-    @Override
-    public List<Tariff> getAllByOptionId(long optionId) {
-        return entityManager.createQuery("select t from Tariff t join t.options o where o.id = :id").setParameter("id", optionId).getResultList();
+        return entityManager.createQuery("select t from Tariff t order by t.name").getResultList();
     }
 
     @Override
@@ -47,6 +42,11 @@ public class TariffDaoImpl implements TariffDao {
     @Override
     public Tariff getById(long id) {
         return entityManager.find(Tariff.class, id);
+    }
+
+    @Override
+    public Tariff getLastAddedTariff() {
+        return (Tariff) entityManager.createQuery("select t from Tariff t order by t.id desc ").setMaxResults(1).getSingleResult();
     }
 
     @Override

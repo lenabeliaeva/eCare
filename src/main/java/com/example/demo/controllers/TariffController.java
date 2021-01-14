@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -29,13 +30,16 @@ public class TariffController {
     }
 
     @PostMapping(value = "/saveTariff")
-    public String saveTariff(@Valid @ModelAttribute("newTariff") Tariff tariff, BindingResult result) {
+    public String saveTariff(@Valid @ModelAttribute("newTariff") Tariff tariff, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "addNewTariff";
         }
         tariffService.add(tariff);
         log.info("New tariff is saved to DB");
-        return "redirect:/tariffs";
+        Tariff saved = tariffService.getLastAddedTariff();
+        long id = saved.getId();
+        redirectAttributes.addAttribute("id", id);
+        return "redirect:/addOption/{id}";
     }
 
     @GetMapping(value = "/tariffs")
@@ -69,7 +73,7 @@ public class TariffController {
         return "redirect:/tariffs";
     }
 
-    @PostMapping(value = "/addOption/{tariffId}")
+    @RequestMapping(value = "/addOption/{tariffId}")
     public String addOptionForTariff(@PathVariable String tariffId, Model model) {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         model.addAttribute("addOptionTariff", tariff);
