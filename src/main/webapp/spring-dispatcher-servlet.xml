@@ -14,12 +14,13 @@
     <mvc:default-servlet-handler/>
     <context:component-scan base-package="com.example.demo.controllers"/>
     <mvc:annotation-driven/>
+    <import resource="configSecurity.xml"/>
     <bean id="myEmf"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="packagesToScan" value="com.example.demo.models" />
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="com.example.demo.models"/>
         <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
         </property>
         <property name="jpaProperties">
             <props>
@@ -30,10 +31,10 @@
     </bean>
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver" />
-        <property name="url" value="jdbc:postgresql://localhost:5432/eCare" />
-        <property name="username" value="postgres" />
-        <property name="password" value="vogula" />
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/eCare"/>
+        <property name="username" value="postgres"/>
+        <property name="password" value="vogula"/>
     </bean>
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.UrlBasedViewResolver">
