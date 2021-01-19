@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.dao.ClientDao;
+import com.example.demo.dao.ClientDaoImpl;
 import com.example.demo.exceptions.UserAlreadyExistsException;
 import com.example.demo.models.Client;
 import com.example.demo.models.Role;
@@ -9,18 +10,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import java.util.Collections;
 
 @Service
 @Transactional
 public class ClientServiceImpl implements ClientService {
 
-    private ClientDao dao;
-
-    @Autowired
-    public void setDao(ClientDao dao) {
-        this.dao = dao;
-    }
+    private ClientDao dao = new ClientDaoImpl();
 
     private BCryptPasswordEncoder encoder;
 

@@ -3,14 +3,18 @@ package com.example.demo.dao;
 import com.example.demo.models.Client;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 
 @Repository
-public class ClientDaoImpl implements ClientDao{
+public class ClientDaoImpl implements ClientDao {
 
-    @PersistenceContext
-    EntityManager em;
+    private static final EntityManagerFactory emf;
+
+    static {
+        emf = Persistence.createEntityManagerFactory("eCare");
+    }
+
+    private final EntityManager em = emf.createEntityManager();
 
     @Override
     public void register(Client client) {
@@ -21,6 +25,12 @@ public class ClientDaoImpl implements ClientDao{
 
     @Override
     public Client findByEmail(String email) {
-        return em.find(Client.class, email);
+        Client client;
+        try {
+            client = (Client) em.createQuery("select c from Client c where c.email = :e").setParameter("e", email).setMaxResults(1).getSingleResult();
+            return client;
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }

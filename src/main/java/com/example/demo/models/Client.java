@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Set;
 
 @Getter
@@ -32,7 +32,6 @@ public class Client implements UserDetails {
     private String lastName;
 
     @Column(name = "birth_date")
-    @NotBlank(message = "Дата рождения не может быть пустой")
     private Date birthDate;
 
     @Column(name = "passport")

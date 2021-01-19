@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import com.example.demo.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -20,10 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf()
-                .disable()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/registration").anonymous()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
@@ -46,8 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Autowired
-    private UserDetailsService userDetailService;
+    private UserDetailsService userDetailService = new UserDetailsServiceImpl();
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {

@@ -8,7 +8,7 @@
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
 <body>
-<form:form method="post" modelAttribute="client" action="/">
+<form:form method="post" modelAttribute="client" action="/registration">
     <div class="form-group">
         <form:label path="name">Введите имя</form:label>
         <form:input type="text" required="name" class="form-control" path="name"/>

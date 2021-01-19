@@ -7,7 +7,6 @@ import com.example.demo.services.ClientServiceImpl;
 import com.example.demo.services.SecurityService;
 import com.example.demo.services.SecurityServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,7 +38,7 @@ public class ClientController {
             securityService.autologin(client.getEmail(), client.getPassword());
         }
         catch (UserAlreadyExistsException e) {
-            //TODO:
+            //TODO:add message about it in view
             return "registration";
         }
         return "redirect:/";
