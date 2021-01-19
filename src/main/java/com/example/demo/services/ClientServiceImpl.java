@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 @Transactional
@@ -49,5 +50,10 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client findByNumber(String number) {
         return dao.findByNumber(number);
+    }
+
+    @Override
+    public List<Client> getAll() {
+        return dao.getAll();
     }
 }

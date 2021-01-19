@@ -4,6 +4,7 @@ import com.example.demo.models.Client;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Repository
 public class ClientDaoImpl implements ClientDao {
@@ -54,5 +55,10 @@ public class ClientDaoImpl implements ClientDao {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    @Override
+    public List<Client> getAll() {
+        return (List<Client>) em.createQuery("select c from Client c");
     }
 }

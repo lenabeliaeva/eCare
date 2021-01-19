@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 public class AdminController {
     private ClientService service = new ClientServiceImpl();
@@ -29,5 +31,12 @@ public class AdminController {
     @PostMapping(value = "/admin/clientProfile")
     public String showClientProfile(@ModelAttribute("client") Client client) {
         return "clientProfile";
+    }
+
+    @GetMapping(value = "/admin/clients")
+    public String showAllClients(Model model) {
+        List<Client> clients = service.getAll();
+        model.addAttribute("clients", clients);
+        return "clients";
     }
 }
