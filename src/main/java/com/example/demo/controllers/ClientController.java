@@ -19,8 +19,8 @@ import javax.validation.Valid;
 @Slf4j
 @Controller
 public class ClientController {
-    private final ClientService clientService = new ClientServiceImpl();
-    private final SecurityService securityService = new SecurityServiceImpl();
+    private ClientService clientService = new ClientServiceImpl();
+    private  SecurityService securityService = new SecurityServiceImpl();
 
     @GetMapping("/registration")
     public String showRegistrationForm(Model model) {
@@ -59,5 +59,11 @@ public class ClientController {
     public String showWelcomePage() {
 
         return "welcome";
+    }
+
+    @GetMapping("/client")
+    public String openProfile() {
+
+        return "profile";
     }
 }
