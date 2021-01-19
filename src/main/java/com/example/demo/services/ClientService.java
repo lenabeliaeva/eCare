@@ -6,4 +6,6 @@ import com.example.demo.models.Client;
 public interface ClientService {
     void registerNewClient(Client client) throws UserAlreadyExistsException;
     Client findByEmail(String email);
+    Client findById(long id);
+    Client findByNumber(String number);
 }

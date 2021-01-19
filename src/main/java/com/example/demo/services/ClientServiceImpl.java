@@ -40,4 +40,14 @@ public class ClientServiceImpl implements ClientService {
     public Client findByEmail(String email) {
         return dao.findByEmail(email);
     }
+
+    @Override
+    public Client findById(long id) {
+        return dao.findById(id);
+    }
+
+    @Override
+    public Client findByNumber(String number) {
+        return dao.findByNumber(number);
+    }
 }

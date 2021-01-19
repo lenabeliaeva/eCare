@@ -9,13 +9,9 @@
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
 <body>
-<c:if test="${pageContext.request.userPrincipal.name != null}"><jsp:useBean id="_csrf" scope="request" type="org.springframework.web.bind.MissingServletRequestParameterException"/>
-
-    <form id="logoutForm" method="POST" action="${pageContext.request.contextPath}/logout">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-    </form>
-    <h2>Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
-</c:if>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<form>
+    <button type="submit" class="btn btn-outline-primary" formmethod="get" formaction="/admin">Сотрудник</button>
+    <button type="submit" class="btn btn-outline-primary" formmethod="get" formaction="/client">Клиент</button>
+</form>
 </body>
 </html>

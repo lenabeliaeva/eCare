@@ -27,7 +27,29 @@ public class ClientDaoImpl implements ClientDao {
     public Client findByEmail(String email) {
         Client client;
         try {
-            client = (Client) em.createQuery("select c from Client c where c.email = :e").setParameter("e", email).setMaxResults(1).getSingleResult();
+            client = (Client) em
+                    .createQuery("select c from Client c where c.email = :e")
+                    .setParameter("e", email).setMaxResults(1)
+                    .getSingleResult();
+            return client;
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Client findById(long id) {
+        return em.find(Client.class, id);
+    }
+
+    @Override
+    public Client findByNumber(String number) {
+        Client client;
+        try {
+            client = (Client) em
+                    .createQuery("select c from Client c join Contract contract where contract.number = :n")
+                    .setParameter("n", number)
+                    .getSingleResult();
             return client;
         } catch (NoResultException e) {
             return null;
