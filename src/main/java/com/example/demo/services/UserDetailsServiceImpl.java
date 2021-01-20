@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.dao.ClientDao;
+import com.example.demo.dao.ClientDaoImpl;
 import com.example.demo.models.Client;
 import com.example.demo.models.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import java.util.Set;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private ClientDao dao;
+    private ClientDao dao = new ClientDaoImpl();
 
     @Autowired
     public void setDao(ClientDao dao) {
