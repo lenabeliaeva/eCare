@@ -3,6 +3,7 @@ package com.example.demo.models;
 import com.example.demo.validators.PasswordMatches;
 import com.example.demo.validators.ValidEmail;
 import com.example.demo.validators.ValidPassport;
+import com.example.demo.validators.ValidPassword;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -49,6 +50,7 @@ public class Client implements UserDetails {
     @NotBlank(message = "Email не может быть пустым")
     private String email;
 
+    @ValidPassword
     @Column(name = "password")
     @NotBlank(message = "Пароль не может быть пустым")
     private String password;

@@ -41,7 +41,9 @@
     </div>
     <div class="form-group">
         <form:label path="name">Введите пароль</form:label>
-        <form:input type="password" required="password" class="form-control" path="password"/>
+        <form:input type="password" required="password" class="form-control" path="password"
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                    title="Пароль должен содержать хотя бы одну цифру, одну строчную букву, одну заглавную и длина должна быть не менее 8 символов"/>
         <form:errors path="password" cssClass="error"/>
     </div>
     <div class="form-group">
