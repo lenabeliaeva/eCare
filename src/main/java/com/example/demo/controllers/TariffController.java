@@ -36,10 +36,7 @@ public class TariffController {
         }
         tariffService.add(tariff);
         log.info("New tariff is saved to DB");
-        Tariff saved = tariffService.getLastAddedTariff();
-        long id = saved.getId();
-        redirectAttributes.addAttribute("id", id);
-        return "redirect:/addOption/{id}";
+        return "redirect:/tariffs";
     }
 
     @GetMapping(value = "/tariffs")
