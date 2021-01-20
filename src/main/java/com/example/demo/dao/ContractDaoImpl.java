@@ -2,12 +2,11 @@ package com.example.demo.dao;
 
 import com.example.demo.models.Client;
 import com.example.demo.models.Contract;
+import com.example.demo.models.Option;
+import com.example.demo.models.Tariff;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.util.List;
 
 @Repository
@@ -53,6 +52,30 @@ public class ContractDaoImpl implements ContractDao {
     public void delete(Contract contract) {
         em.getTransaction().begin();
         em.remove(contract);
+        em.getTransaction().commit();
+    }
+
+    @Override
+    public void updateTariff(Contract contract, Tariff tariff) {
+        em.getTransaction().begin();
+        contract.setTariff(tariff);
+        em.merge(contract);
+        em.getTransaction().commit();
+    }
+
+    @Override
+    public void addOption(Contract contract, Option option) {
+        em.getTransaction().begin();
+        contract.add(option);
+        em.merge(contract);
+        em.getTransaction().commit();
+    }
+
+    @Override
+    public void deleteOption(Contract contract, Option option) {
+        em.getTransaction().begin();
+        contract.delete(option);
+        em.merge(contract);
         em.getTransaction().commit();
     }
 }

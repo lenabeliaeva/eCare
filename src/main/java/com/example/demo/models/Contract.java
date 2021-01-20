@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -26,4 +27,15 @@ public class Contract {
     @ManyToOne
     @JoinColumn(name = "tariff_id")
     private Tariff tariff;
+
+    @ManyToMany
+    private Set<Option> option;
+
+    public void add(Option option) {
+        this.option.add(option);
+    }
+
+    public void delete(Option o) {
+        this.option.removeIf(option -> option.getId() == o.getId());
+    }
 }

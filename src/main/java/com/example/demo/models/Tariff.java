@@ -22,8 +22,8 @@ public class Tariff {
     @NotBlank(message = "Название тариффа не может быть пустым")
     private String name;
 
-    @Column(name = "price")
     @Min(1)
+    @Column(name = "price")
     private double price;
 
     @ManyToMany

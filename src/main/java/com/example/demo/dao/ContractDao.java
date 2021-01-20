@@ -1,6 +1,8 @@
 package com.example.demo.dao;
 
 import com.example.demo.models.Contract;
+import com.example.demo.models.Option;
+import com.example.demo.models.Tariff;
 
 import java.util.List;
 
@@ -10,4 +12,7 @@ public interface ContractDao {
     void save(Contract contract);
     void update(Contract contract);
     void delete (Contract contract);
+    void updateTariff(Contract contract, Tariff tariff);
+    void addOption(Contract contract, Option option);
+    void deleteOption(Contract contract, Option option);
 }

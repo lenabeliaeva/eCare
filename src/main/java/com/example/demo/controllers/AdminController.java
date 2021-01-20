@@ -1,20 +1,20 @@
 package com.example.demo.controllers;
 
 import com.example.demo.models.Client;
-import com.example.demo.services.ClientService;
-import com.example.demo.services.ClientServiceImpl;
+import com.example.demo.models.Contract;
+import com.example.demo.models.Tariff;
+import com.example.demo.services.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
 public class AdminController {
-    private ClientService service = new ClientServiceImpl();
+    private ClientService clientService = new ClientServiceImpl();
+    private ContractService contractService = new ContractServiceImpl();
+    private TariffService tariffService = new TariffServiceImpl();
 
     @GetMapping(value = "/admin")
     public String showAdminPage() {
@@ -23,20 +23,30 @@ public class AdminController {
 
     @GetMapping(value = "/admin/searchClient")
     public String searchForClientByNumber(@RequestParam String number, Model model) {
-        Client client = service.findByNumber(number);
+        Client client = clientService.findByNumber(number);
         model.addAttribute("client", client);
-        return "/admin/clientProfile";
+        return "redirect:/admin/clientProfile";
     }
 
     @PostMapping(value = "/admin/clientProfile")
-    public String showClientProfile(@ModelAttribute("client") Client client) {
-        return "clientProfile";
+    public String showClientProfile(@ModelAttribute("client") Client client, Model model) {
+        List<Contract> clientContracts = contractService.getClientsContracts(client.getId());
+        model.addAttribute("clientContracts", clientContracts);
+        return "/admin/clientProfile";
     }
 
     @GetMapping(value = "/admin/clients")
     public String showAllClients(Model model) {
-        List<Client> clients = service.getAll();
+        List<Client> clients = clientService.getAll();
         model.addAttribute("clients", clients);
         return "clients";
+    }
+
+    @PostMapping(value = "/admin/clientProfile/{contractId}/{tariffId}")
+    public String changeClientTariff(@PathVariable long contractId, @PathVariable long tariffId) {
+        Contract contract = contractService.getContractById(contractId);
+        Tariff tariff = tariffService.getById(tariffId);
+        contractService.changeTariff(contract, tariff);
+        return "/admin/clientProfile";
     }
 }
