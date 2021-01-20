@@ -9,7 +9,7 @@
 
 </head>
 <body>
-<h2>Новый тарифф</h2>
+<h2>Новый тариф</h2>
 <form:form method="post" modelAttribute="newTariff" action="/saveTariff">
     <div class="form-group">
         <form:label path="name">Введите название</form:label>
