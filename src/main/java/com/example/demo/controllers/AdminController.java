@@ -13,8 +13,8 @@ import java.util.List;
 @Controller
 public class AdminController {
     private ClientService clientService = new ClientServiceImpl();
-    private ContractService contractService = new ContractServiceImpl();
     private TariffService tariffService = new TariffServiceImpl();
+    private ContractService contractService = new ContractServiceImpl();
 
     @GetMapping(value = "/admin")
     public String showAdminPage() {

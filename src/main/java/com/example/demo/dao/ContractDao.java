@@ -10,7 +10,6 @@ public interface ContractDao {
     Contract getById(long id);
     List<Contract> getByClientId(long clientId);
     void save(Contract contract);
-    void update(Contract contract);
     void delete (Contract contract);
     void updateTariff(Contract contract, Tariff tariff);
     void addOption(Contract contract, Option option);

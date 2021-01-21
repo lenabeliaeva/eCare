@@ -41,14 +41,6 @@ public class ContractDaoImpl implements ContractDao {
     }
 
     @Override
-    public void update(Contract contract) {
-        em.getTransaction().begin();
-        em.merge(contract);
-        em.getTransaction().commit();
-
-    }
-
-    @Override
     public void delete(Contract contract) {
         em.getTransaction().begin();
         em.remove(contract);

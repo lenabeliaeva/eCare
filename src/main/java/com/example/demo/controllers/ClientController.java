@@ -2,25 +2,22 @@ package com.example.demo.controllers;
 
 import com.example.demo.exceptions.UserAlreadyExistsException;
 import com.example.demo.models.Client;
-import com.example.demo.services.ClientService;
-import com.example.demo.services.ClientServiceImpl;
-import com.example.demo.services.SecurityService;
-import com.example.demo.services.SecurityServiceImpl;
+import com.example.demo.models.Contract;
+import com.example.demo.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @Controller
 public class ClientController {
     private ClientService clientService = new ClientServiceImpl();
+    private ContractService contractService = new ContractServiceImpl();
     private  SecurityService securityService = new SecurityServiceImpl();
 
     @GetMapping("/registration")
@@ -42,7 +39,7 @@ public class ClientController {
             //TODO:add message about it in view
             return "registration";
         }
-        return "redirect:/";
+        return "redirect:/client";
     }
 
     @GetMapping("/login")
@@ -63,8 +60,9 @@ public class ClientController {
     }
 
     @GetMapping("/client")
-    public String openProfile() {
-
-        return "profile";
+    public String openProfile(@ModelAttribute("client") @Valid Client client, Model model) {
+        List<Contract> contracts = contractService.getClientsContracts(client.getId());
+        model.addAttribute("contracts", contracts);
+        return "client/profile";
     }
 }
