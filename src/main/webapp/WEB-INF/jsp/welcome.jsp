@@ -12,6 +12,7 @@
 <form>
     <button type="submit" class="btn btn-outline-primary" formmethod="get" formaction="/admin">Сотрудник</button>
     <button type="submit" class="btn btn-outline-primary" formmethod="get" formaction="/client">Клиент</button>
+    <button type="submit" class="btn btn-outline-primary" formmethod="get" formaction="/registration">Регистрация</button>
 </form>
 </body>
 </html>

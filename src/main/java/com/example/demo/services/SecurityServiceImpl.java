@@ -12,18 +12,11 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class SecurityServiceImpl implements SecurityService{
-    private UserDetailsService userDetailsService;
-    private AuthenticationManager authenticationManager;
+    @Autowired
+    UserDetailsService userDetailsService;
 
     @Autowired
-    public void setUserDetailsService(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
-
-    @Autowired
-    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
+    AuthenticationManager authenticationManager;
 
     @Override
     public String findLoggedInEmail() {

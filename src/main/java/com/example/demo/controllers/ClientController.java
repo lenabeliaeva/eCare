@@ -16,9 +16,16 @@ import java.util.List;
 @Slf4j
 @Controller
 public class ClientController {
-    private ClientService clientService = new ClientServiceImpl();
-    private ContractService contractService = new ContractServiceImpl();
-    private  SecurityService securityService = new SecurityServiceImpl();
+
+    ClientService clientService;
+    ContractService contractService;
+    SecurityService securityService;
+
+    public ClientController (ClientService clientService, ContractService contractService, SecurityService securityService) {
+        this.clientService = clientService;
+        this.securityService = securityService;
+        this.contractService = contractService;
+    }
 
     @GetMapping("/registration")
     public String showRegistrationForm(Model model) {
@@ -39,7 +46,8 @@ public class ClientController {
             //TODO:add message about it in view
             return "registration";
         }
-        return "redirect:/client";
+        //TODO:fix path
+        return "redirect:/";
     }
 
     @GetMapping("/login")

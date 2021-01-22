@@ -19,8 +19,13 @@ import java.util.List;
 @Controller
 public class OptionController {
 
-    private final OptionService optionService = new OptionServiceImpl();
-    private final TariffService tariffService = new TariffServiceImpl();
+    TariffService tariffService;
+    OptionService optionService;
+
+    public OptionController(TariffService tariffService, OptionService optionService) {
+        this.tariffService = tariffService;
+        this.optionService = optionService;
+    }
 
     @GetMapping(value = "/options")
     public String showAllOptions(Model model) {

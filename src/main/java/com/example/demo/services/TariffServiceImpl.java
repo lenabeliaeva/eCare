@@ -1,9 +1,9 @@
 package com.example.demo.services;
 
 import com.example.demo.dao.TariffDao;
-import com.example.demo.dao.TariffDaoImpl;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +12,8 @@ import java.util.List;
 @Service
 public class TariffServiceImpl implements TariffService {
 
-    private final TariffDao tariffDao = new TariffDaoImpl();
+    @Autowired
+    TariffDao tariffDao;
 
     @Override
     @Transactional

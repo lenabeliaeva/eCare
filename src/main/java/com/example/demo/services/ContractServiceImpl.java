@@ -1,10 +1,10 @@
 package com.example.demo.services;
 
 import com.example.demo.dao.ContractDao;
-import com.example.demo.dao.ContractDaoImpl;
 import com.example.demo.models.Contract;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +14,8 @@ import java.util.List;
 @Transactional
 public class ContractServiceImpl implements ContractService {
 
-    private ContractDao dao = new ContractDaoImpl();
+    @Autowired
+    ContractDao dao;
 
     @Override
     public void signContract(Contract contract) {

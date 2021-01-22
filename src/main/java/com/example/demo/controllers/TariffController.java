@@ -7,11 +7,11 @@ import com.example.demo.services.OptionServiceImpl;
 import com.example.demo.services.TariffService;
 import com.example.demo.services.TariffServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -20,8 +20,13 @@ import java.util.List;
 @Controller
 public class TariffController {
 
-    private final TariffService tariffService = new TariffServiceImpl();
-    private final OptionService optionService = new OptionServiceImpl();
+    TariffService tariffService;
+    OptionService optionService;
+
+    public TariffController(TariffService tariffService, OptionService optionService) {
+        this.tariffService = tariffService;
+        this.optionService = optionService;
+    }
 
     @PostMapping(value = "/addNewTariff")
     public String addNewTariff(Model model) {
@@ -30,7 +35,7 @@ public class TariffController {
     }
 
     @PostMapping(value = "/saveTariff")
-    public String saveTariff(@Valid @ModelAttribute("newTariff") Tariff tariff, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String saveTariff(@Valid @ModelAttribute("newTariff") Tariff tariff, BindingResult result) {
         if (result.hasErrors()) {
             return "addNewTariff";
         }
@@ -73,8 +78,9 @@ public class TariffController {
     @RequestMapping(value = "/addOption/{tariffId}")
     public String addOptionForTariff(@PathVariable String tariffId, Model model) {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
+        List<Option> options = optionService.getAllNotAddedToTariff(Long.parseLong(tariffId));
         model.addAttribute("addOptionTariff", tariff);
-        model.addAttribute("options", optionService.getAllNotAddedToTariff(Long.parseLong(tariffId)));
+        model.addAttribute("options", options);
         return "chooseOptions";
     }
 

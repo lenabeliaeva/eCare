@@ -4,7 +4,6 @@ import com.example.demo.dao.ClientDao;
 import com.example.demo.dao.ClientDaoImpl;
 import com.example.demo.models.Client;
 import com.example.demo.models.Role;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -19,15 +18,11 @@ import java.util.Set;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private ClientDao dao = new ClientDaoImpl();
 
-    @Autowired
-    public void setDao(ClientDao dao) {
-        this.dao = dao;
-    }
+    ClientDao dao = new ClientDaoImpl();
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Client client = dao.findByEmail(email);
         if (client == null) {

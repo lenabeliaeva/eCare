@@ -12,9 +12,15 @@ import java.util.List;
 
 @Controller
 public class AdminController {
-    private ClientService clientService = new ClientServiceImpl();
-    private TariffService tariffService = new TariffServiceImpl();
-    private ContractService contractService = new ContractServiceImpl();
+    ClientService clientService;
+    TariffService tariffService;
+    ContractService contractService;
+
+    public AdminController(ClientService clientService, TariffService tariffService, ContractService contractService) {
+        this.clientService = clientService;
+        this.tariffService = tariffService;
+        this.contractService = contractService;
+    }
 
     @GetMapping(value = "/admin")
     public String showAdminPage() {
