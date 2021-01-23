@@ -59,6 +59,6 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public List<Client> getAll() {
-        return (List<Client>) em.createQuery("select c from Client c");
+        return (List<Client>) em.createQuery("select c from Client c").getResultList();
     }
 }

@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     ClientDao dao = new ClientDaoImpl();
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Client client = dao.findByEmail(email);
         if (client == null) {

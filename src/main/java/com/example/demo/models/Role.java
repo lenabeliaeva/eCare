@@ -18,16 +18,11 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
+    @Column(name = "name")
     private String name;
 
-    @Transient
     @ManyToMany(mappedBy = "roles")
-    private Set<Client> clients;
-
-    public Role(long id, String userRole) {
-        this.id = id;
-        this.name = userRole;
-    }
+    private Set<Client> client;
 
     @Override
     public String getAuthority() {

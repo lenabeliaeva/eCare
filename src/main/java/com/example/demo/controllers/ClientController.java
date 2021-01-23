@@ -4,13 +4,18 @@ import com.example.demo.exceptions.UserAlreadyExistsException;
 import com.example.demo.models.Client;
 import com.example.demo.models.Contract;
 import com.example.demo.services.*;
+import com.sun.xml.bind.v2.TODO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -21,7 +26,7 @@ public class ClientController {
     ContractService contractService;
     SecurityService securityService;
 
-    public ClientController (ClientService clientService, ContractService contractService, SecurityService securityService) {
+    public ClientController(ClientService clientService, ContractService contractService, SecurityService securityService) {
         this.clientService = clientService;
         this.securityService = securityService;
         this.contractService = contractService;
@@ -41,8 +46,7 @@ public class ClientController {
         try {
             clientService.registerNewClient(client);
             securityService.autologin(client.getEmail(), client.getPassword());
-        }
-        catch (UserAlreadyExistsException e) {
+        } catch (UserAlreadyExistsException e) {
             //TODO:add message about it in view
             return "registration";
         }
@@ -60,16 +64,33 @@ public class ClientController {
         return "login";
     }
 
+    @GetMapping("/profile")
+    public String openProfile(Model model) {
+        String role = null;
+        Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities();
+        for (GrantedAuthority authority :
+                authorities) {
+            role = authority.getAuthority();
+        }
+        if (role.equals("ROLE_USER")) {
+            UserDetails userDetails = (UserDetails) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+            Client client = clientService.findByEmail(userDetails.getUsername());
+            model.addAttribute("client", client);
+            return "client/profile";
+        } else {
+            return "login";
+        }
+    }
+
     @GetMapping("/")
     public String showWelcomePage() {
 
         return "welcome";
-    }
-
-    @GetMapping("/profile")
-    public String openProfile(@ModelAttribute("client") @Valid Client client, Model model) {
-        List<Contract> contracts = contractService.getClientsContracts(client.getId());
-        model.addAttribute("contracts", contracts);
-        return "client/profile";
     }
 }

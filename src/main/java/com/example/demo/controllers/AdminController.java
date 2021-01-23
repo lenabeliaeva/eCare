@@ -34,7 +34,7 @@ public class AdminController {
         return "redirect:/admin/clientProfile";
     }
 
-    @PostMapping(value = "/admin/clientProfile")
+    @GetMapping(value = "/admin/clientProfile")
     public String showClientProfile(@ModelAttribute("client") Client client, Model model) {
         List<Contract> clientContracts = contractService.getClientsContracts(client.getId());
         model.addAttribute("clientContracts", clientContracts);
@@ -45,7 +45,7 @@ public class AdminController {
     public String showAllClients(Model model) {
         List<Client> clients = clientService.getAll();
         model.addAttribute("clients", clients);
-        return "clients";
+        return "/admin/clients";
     }
 
     @PostMapping(value = "/admin/clientProfile/{contractId}/{tariffId}")
