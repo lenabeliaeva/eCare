@@ -19,7 +19,9 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public void register(Client client) {
+        em.getTransaction().begin();
         em.persist(client);
+        em.getTransaction().commit();
     }
 
     @Override

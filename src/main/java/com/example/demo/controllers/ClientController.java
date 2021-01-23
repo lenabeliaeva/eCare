@@ -46,8 +46,7 @@ public class ClientController {
             //TODO:add message about it in view
             return "registration";
         }
-        //TODO:fix path
-        return "redirect:/";
+        return "redirect:/profile";
     }
 
     @GetMapping("/login")
@@ -67,7 +66,7 @@ public class ClientController {
         return "welcome";
     }
 
-    @GetMapping("/client")
+    @GetMapping("/profile")
     public String openProfile(@ModelAttribute("client") @Valid Client client, Model model) {
         List<Contract> contracts = contractService.getClientsContracts(client.getId());
         model.addAttribute("contracts", contracts);

@@ -18,7 +18,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@PasswordMatches
+//@PasswordMatches
 @Table(name = "clients")
 public class Client implements UserDetails {
     @Id
@@ -36,7 +36,7 @@ public class Client implements UserDetails {
     @Column(name = "birth_date")
     private Date birthDate;
 
-    @ValidPassport
+//    @ValidPassport
     @Column(name = "passport")
     @NotBlank(message = "Пасспорт не может быть пустым")
     private String passport;
@@ -45,12 +45,12 @@ public class Client implements UserDetails {
     @NotBlank(message = "Адрес не может быть пустым")
     private String address;
 
-    @ValidEmail
+//    @ValidEmail
     @Column(name = "e_mail")
     @NotBlank(message = "Email не может быть пустым")
     private String email;
 
-    @ValidPassword
+//    @ValidPassword
     @Column(name = "password")
     @NotBlank(message = "Пароль не может быть пустым")
     private String password;
