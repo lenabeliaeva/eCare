@@ -4,6 +4,7 @@ import com.example.demo.dao.ClientDao;
 import com.example.demo.dao.ClientDaoImpl;
 import com.example.demo.models.Client;
 import com.example.demo.models.Role;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -19,7 +20,8 @@ import java.util.Set;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    ClientDao dao = new ClientDaoImpl();
+    @Autowired
+    ClientDao dao;
 
     @Override
     @Transactional(readOnly = true)

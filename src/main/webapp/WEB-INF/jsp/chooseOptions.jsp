@@ -23,13 +23,17 @@
                 <td>${option.price}</td>
                 <td>${option.connectionCost}</td>
                 <td>
-                    <button id="addBtn" class="btn btn-outline-primary"
+                    <button class="btn btn-outline-primary"
                             formaction="/addOption/${addOptionTariff.id}/${option.id}" type="submit">Добавить
                     </button>
                 </td>
             </tr>
         </c:forEach>
     </table>
+    <h3>Цена тарифа: ${addOptionTariff.price}</h3>
+    <button class="btn btn-outline-primary" type="submit" formmethod="get" formaction="/tariffs">Завершить и перейти к
+        списку тарифов
+    </button>
 </form:form>
 </body>
 </html>

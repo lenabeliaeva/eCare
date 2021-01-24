@@ -21,10 +21,11 @@ public class TariffDaoImpl implements TariffDao {
     private final EntityManager entityManager = emfObj.createEntityManager();
 
     @Override
-    public void add(Tariff tariff) {
+    public Tariff add(Tariff tariff) {
         entityManager.getTransaction().begin();
         entityManager.persist(tariff);
         entityManager.getTransaction().commit();
+        return tariff;
     }
 
     @Override

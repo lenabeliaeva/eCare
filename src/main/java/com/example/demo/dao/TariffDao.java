@@ -6,7 +6,7 @@ import com.example.demo.models.Tariff;
 import java.util.List;
 
 public interface TariffDao {
-    void add(Tariff tariff);
+    Tariff add(Tariff tariff);
     List<Tariff> getAll();
     void delete(Tariff tariff);
     Tariff getById(long id);

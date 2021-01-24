@@ -17,15 +17,8 @@ public class TariffServiceImpl implements TariffService {
 
     @Override
     @Transactional
-    public void add(Tariff tariff) {
-//        Set<Option> options = tariff.getOptions();
-//        double tariffPrice = 0;
-//        for (Option option:
-//             options) {
-//            tariffPrice += option.getPrice();
-//        }
-//        tariff.setPrice(tariffPrice);
-        tariffDao.add(tariff);
+    public Tariff add(Tariff tariff) {
+        return tariffDao.add(tariff);
     }
 
     @Override
@@ -61,6 +54,7 @@ public class TariffServiceImpl implements TariffService {
     @Override
     @Transactional
     public void addOption(Tariff tariff, Option option) {
+        tariff.setPrice(tariff.getPrice() + option.getPrice());
         tariffDao.addOption(tariff, option);
     }
 

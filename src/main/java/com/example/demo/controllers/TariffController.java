@@ -30,13 +30,14 @@ public class TariffController {
     }
 
     @PostMapping(value = "/saveTariff")
-    public String saveTariff(@Valid @ModelAttribute("newTariff") Tariff tariff, BindingResult result) {
+    public String saveTariff(@Valid @ModelAttribute("newTariff") Tariff tariff, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "addNewTariff";
         }
-        tariffService.add(tariff);
+        Tariff saved = tariffService.add(tariff);
+        model.addAttribute("tariffId", saved.getId());
         log.info("New tariff is saved to DB");
-        return "redirect:/tariffs";
+        return "redirect:/addOption/{tariffId}";
     }
 
     @GetMapping(value = "/tariffs")
@@ -85,7 +86,7 @@ public class TariffController {
         Option option = optionService.getById(Long.parseLong(optionId));
         tariffService.addOption(tariff, option);
         log.info("New option is added to tariff");
-        return "redirect:/showOptions/{tariffId}";
+        return "redirect:/addOption/{tariffId}";
     }
 
     @PostMapping(value = "/deleteOption/{tariffId}/{optionId}")
@@ -94,6 +95,6 @@ public class TariffController {
         Option option = optionService.getById(Long.parseLong(optionId));
         tariffService.deleteOption(tariff, option);
         log.info("Option is deleted from tariff");
-        return "redirect:/tariffs";
+        return "redirect:/showOptions/{tariffId}";
     }
 }

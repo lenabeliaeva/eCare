@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -22,7 +23,6 @@ public class Tariff {
     @NotBlank(message = "Название тариффа не может быть пустым")
     private String name;
 
-    @Min(1)
     @Column(name = "price")
     private double price;
 
@@ -35,6 +35,9 @@ public class Tariff {
     private Set<Option> options;
 
     public void add(Option o) {
+        if (options == null) {
+            options = new HashSet<>();
+        }
         options.add(o);
     }
 
