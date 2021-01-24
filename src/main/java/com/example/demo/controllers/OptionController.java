@@ -2,9 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.models.Option;
 import com.example.demo.services.OptionService;
-import com.example.demo.services.OptionServiceImpl;
 import com.example.demo.services.TariffService;
-import com.example.demo.services.TariffServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,13 +17,10 @@ import java.util.List;
 @Controller
 public class OptionController {
 
+    @Autowired
     TariffService tariffService;
+    @Autowired
     OptionService optionService;
-
-    public OptionController(TariffService tariffService, OptionService optionService) {
-        this.tariffService = tariffService;
-        this.optionService = optionService;
-    }
 
     @GetMapping(value = "/options")
     public String showAllOptions(Model model) {

@@ -3,9 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
 import com.example.demo.services.OptionService;
-import com.example.demo.services.OptionServiceImpl;
 import com.example.demo.services.TariffService;
-import com.example.demo.services.TariffServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,13 +18,10 @@ import java.util.List;
 @Controller
 public class TariffController {
 
+    @Autowired
     TariffService tariffService;
+    @Autowired
     OptionService optionService;
-
-    public TariffController(TariffService tariffService, OptionService optionService) {
-        this.tariffService = tariffService;
-        this.optionService = optionService;
-    }
 
     @PostMapping(value = "/addNewTariff")
     public String addNewTariff(Model model) {

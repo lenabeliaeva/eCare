@@ -2,10 +2,9 @@ package com.example.demo.controllers;
 
 import com.example.demo.exceptions.UserAlreadyExistsException;
 import com.example.demo.models.Client;
-import com.example.demo.models.Contract;
 import com.example.demo.services.*;
-import com.sun.xml.bind.v2.TODO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,21 +15,17 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.List;
 
 @Slf4j
 @Controller
 public class ClientController {
 
+    @Autowired
     ClientService clientService;
+    @Autowired
     ContractService contractService;
+    @Autowired
     SecurityService securityService;
-
-    public ClientController(ClientService clientService, ContractService contractService, SecurityService securityService) {
-        this.clientService = clientService;
-        this.securityService = securityService;
-        this.contractService = contractService;
-    }
 
     @GetMapping("/registration")
     public String showRegistrationForm(Model model) {
