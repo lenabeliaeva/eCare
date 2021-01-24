@@ -4,6 +4,7 @@ import com.example.demo.models.Client;
 import com.example.demo.models.Contract;
 import com.example.demo.models.Tariff;
 import com.example.demo.services.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +13,12 @@ import java.util.List;
 
 @Controller
 public class AdminController {
+    @Autowired
     ClientService clientService;
+    @Autowired
     TariffService tariffService;
+    @Autowired
     ContractService contractService;
-
-    public AdminController(ClientService clientService, TariffService tariffService, ContractService contractService) {
-        this.clientService = clientService;
-        this.tariffService = tariffService;
-        this.contractService = contractService;
-    }
 
     @GetMapping(value = "/admin")
     public String showAdminPage() {
