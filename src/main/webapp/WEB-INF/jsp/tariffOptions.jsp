@@ -23,7 +23,7 @@
                 <td>${option.price}</td>
                 <td>${option.connectionCost}</td>
                 <td>
-                    <button class="btn btn-outline-danger" formaction="/deleteOption/${tariff.id}/${option.id}"
+                    <button class="btn btn-outline-danger" onclick="return confirm('Вы уверены, что хотите удалить опцию?')" formaction="/deleteOption/${tariff.id}/${option.id}"
                             type="submit"
                     >Удалить
                     </button>

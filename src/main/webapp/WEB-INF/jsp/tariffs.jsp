@@ -22,7 +22,7 @@
                 <td>${tariff.name}</td>
                 <td>${tariff.price}</td>
                 <td>
-                    <button class="btn btn-outline-danger" formaction="/deleteTariff/${tariff.id}"
+                    <button class="btn btn-outline-danger" onclick="return confirm('Вы уверены, что хотите удалить тариф?')" formaction="/deleteTariff/${tariff.id}"
                             type="submit"
                     >Удалить
                     </button>
