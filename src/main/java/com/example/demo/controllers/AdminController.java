@@ -20,23 +20,11 @@ public class AdminController {
     @Autowired
     ContractService contractService;
 
-    @GetMapping(value = "/admin")
-    public String showAdminPage() {
-        return "admin";
-    }
-
     @GetMapping(value = "/admin/searchClient")
     public String searchForClientByNumber(@RequestParam String number, Model model) {
         Client client = clientService.findByNumber(number);
         model.addAttribute("client", client);
         return "redirect:/admin/clientProfile";
-    }
-
-    @GetMapping(value = "/admin/clientProfile")
-    public String showClientProfile(@ModelAttribute("client") Client client, Model model) {
-        List<Contract> clientContracts = contractService.getClientsContracts(client.getId());
-        model.addAttribute("clientContracts", clientContracts);
-        return "/admin/clientProfile";
     }
 
     @GetMapping(value = "/admin/clients")
@@ -46,11 +34,12 @@ public class AdminController {
         return "/admin/clients";
     }
 
-    @PostMapping(value = "/admin/clientProfile/{contractId}/{tariffId}")
-    public String changeClientTariff(@PathVariable long contractId, @PathVariable long tariffId) {
-        Contract contract = contractService.getContractById(contractId);
-        Tariff tariff = tariffService.getById(tariffId);
-        contractService.changeTariff(contract, tariff);
+    @GetMapping(value = "/admin/clientProfile/{clientId}")
+    public String showClientProfile(@PathVariable long clientId, Model model) {
+        List<Contract> clientContracts = contractService.getClientsContracts(clientId);
+        Client client = clientService.findById(clientId);
+        model.addAttribute("clientContracts", clientContracts);
+        model.addAttribute("client", client);
         return "/admin/clientProfile";
     }
 }

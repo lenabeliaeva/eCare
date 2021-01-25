@@ -39,8 +39,8 @@ public class Option {
     @ManyToMany
     @JoinTable(
             name = "contracts_options",
-            joinColumns = {@JoinColumn(name = "id_option")},
-            inverseJoinColumns = {@JoinColumn(name = "id_contract")}
+            joinColumns = {@JoinColumn(name = "option_id")},
+            inverseJoinColumns = {@JoinColumn(name = "contract_id")}
     )
     private Set<Contract> contracts;
 }

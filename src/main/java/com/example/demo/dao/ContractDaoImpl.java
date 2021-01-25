@@ -34,10 +34,11 @@ public class ContractDaoImpl implements ContractDao {
     }
 
     @Override
-    public void save(Contract contract) {
+    public Contract save(Contract contract) {
         em.getTransaction().begin();
         em.persist(contract);
         em.getTransaction().commit();
+        return contract;
     }
 
     @Override
@@ -45,6 +46,26 @@ public class ContractDaoImpl implements ContractDao {
         em.getTransaction().begin();
         em.remove(contract);
         em.getTransaction().commit();
+    }
+
+    @Override
+    public void update(Contract contract) {
+        em.getTransaction().begin();
+        em.merge(contract);
+        em.getTransaction().commit();
+    }
+
+    @Override
+    public boolean isNumberUnique(String number) {
+        try {
+            em
+                    .createQuery("select c from Contract c where c.number = :n")
+                    .setParameter("n", number)
+                    .getSingleResult();
+            return false;
+        } catch (NoResultException e) {
+            return true;
+        }
     }
 
     @Override

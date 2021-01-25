@@ -25,7 +25,7 @@
                 <td>${client.birthDate}</td>
                 <td>${client.passport}</td>
                 <td>${client.address}</td>
-                <td><button class="btn btn-outline-primary" formaction="/admin/clientProfile" type="submit">
+                <td><button class="btn btn-outline-primary" formaction="/admin/clientProfile/${client.id}" type="submit">
                     Контракты
                 </button></td>
             </tr>

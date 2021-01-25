@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -31,8 +32,11 @@ public class Contract {
     @ManyToMany
     private Set<Option> option;
 
-    public void add(Option option) {
-        this.option.add(option);
+    public void add(Option o) {
+        if(option == null){
+            option = new HashSet<>();
+        }
+        this.option.add(o);
     }
 
     public void delete(Option o) {
