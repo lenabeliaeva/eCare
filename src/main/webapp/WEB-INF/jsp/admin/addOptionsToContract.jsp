@@ -9,6 +9,21 @@
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
 <body>
+<h3>Опции подключённого тарифа</h3>
+<table class="table table-hover">
+    <tr>
+        <td>Название</td>
+        <td>Цена</td>
+        <td>Стоимость подключения</td>
+    </tr>
+    <c:forEach var="option" items="${tariffOptions}">
+        <tr>
+            <td>${option.name}</td>
+            <td>${option.price}</td>
+            <td>${option.connectionCost}</td>
+        </tr>
+    </c:forEach>
+</table>
 <h3>Подключённые опции</h3>
 <table class="table table-hover">
     <tr>

@@ -42,6 +42,18 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     @Transactional
+    public List<Option> getAllForCertainContract(long contractId) {
+        return dao.getAllForCertainContract(contractId);
+    }
+
+    @Override
+    @Transactional
+    public List<Option> getAllNotAddedToContract(long contractId, long tariffId) {
+        return dao.getAllNotAddedToContract(contractId, tariffId);
+    }
+
+    @Override
+    @Transactional
     public Option getById(long optionId) {
         return dao.getById(optionId);
     }

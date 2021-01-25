@@ -23,8 +23,8 @@ public class AdminController {
     @GetMapping(value = "/admin/searchClient")
     public String searchForClientByNumber(@RequestParam String number, Model model) {
         Client client = clientService.findByNumber(number);
-        model.addAttribute("client", client);
-        return "redirect:/admin/clientProfile";
+        model.addAttribute("clientId", client.getId());
+        return "redirect:/admin/clientProfile/{clientId}";
     }
 
     @GetMapping(value = "/admin/clients")
@@ -36,8 +36,8 @@ public class AdminController {
 
     @GetMapping(value = "/admin/clientProfile/{clientId}")
     public String showClientProfile(@PathVariable long clientId, Model model) {
-        List<Contract> clientContracts = contractService.getClientsContracts(clientId);
         Client client = clientService.findById(clientId);
+        List<Contract> clientContracts = contractService.getClientsContracts(clientId);
         model.addAttribute("clientContracts", clientContracts);
         model.addAttribute("client", client);
         return "/admin/clientProfile";

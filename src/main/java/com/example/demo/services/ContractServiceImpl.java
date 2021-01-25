@@ -30,6 +30,11 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
+    public void connectTariff(Contract contract, Tariff tariff) {
+        dao.updateTariff(contract, tariff);
+    }
+
+    @Override
     public Contract getContractById(long id) {
         return dao.getById(id);
     }

@@ -1,5 +1,6 @@
 package com.example.demo.dao;
 
+import com.example.demo.models.Contract;
 import com.example.demo.models.Option;
 import org.springframework.stereotype.Repository;
 
@@ -29,17 +30,41 @@ public class OptionDaoImpl implements OptionDao {
 
     @Override
     public List<Option> getAll() {
-        return entityManager.createQuery("select o from Option o").getResultList();
+        return entityManager
+                .createQuery("select o from Option o")
+                .getResultList();
     }
 
     @Override
     public List<Option> getAllByTariffId(long tariffId) {
-        return entityManager.createQuery("select o from Option o join o.tariff t where t.id = :id").setParameter("id", tariffId).getResultList();
+        return entityManager
+                .createQuery("select o from Option o join o.tariff t where t.id = :id")
+                .setParameter("id", tariffId)
+                .getResultList();
     }
 
     @Override
     public List<Option> getAllNotAddedToTariff(long tariffId) {
-        return entityManager.createQuery("select o from Option o left join o.tariff t where t.id <> :id or t.id is null").setParameter("id", tariffId).getResultList();
+        return entityManager
+                .createQuery("select o from Option o left join o.tariff t where t.id <> :id or t.id is null")
+                .setParameter("id", tariffId)
+                .getResultList();
+    }
+
+    public List<Option> getAllForCertainContract(long contractId) {
+        return entityManager
+                .createQuery("select o from Option o join o.contracts c where c.id = :id")
+                .setParameter("id", contractId)
+                .getResultList();
+    }
+
+    @Override
+    public List<Option> getAllNotAddedToContract(long contractId, long tariffId) {
+        return entityManager
+                .createQuery("select o from Option o left join o.contracts c left join o.tariff t where (c.id <> :cId or c.id is null) and (t.id <> :tId or t.id is null)")
+                .setParameter("cId", contractId)
+                .setParameter("tId", tariffId)
+                .getResultList();
     }
 
     @Override

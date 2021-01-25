@@ -21,7 +21,7 @@
                     <td>${contract.number}</td>
                     <td>${contract.tariff.name}</td>
                     <td>
-                        <button class="btn btn-outline-primary" formaction="/admin/showContractOptions/${contract.id}"
+                        <button class="btn btn-outline-primary" formaction="/admin/showContractOptions/${client.id}"
                                 type="submit"
                                 formmethod="get">Подключенные опции
                         </button>

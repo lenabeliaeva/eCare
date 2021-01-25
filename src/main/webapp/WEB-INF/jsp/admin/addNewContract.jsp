@@ -38,7 +38,7 @@
 </head>
 <body>
 <h3>Номер телефона ${newContract.number}</h3>
-<form:form id="myForm" action="/admin/signContract/save">
+<form:form id="myForm" modelAttribute="newContract" action="/admin/signContract/save">
     <table class="table table-hover">
         <c:forEach var="tariff" items="${tariffs}">
             <tr>

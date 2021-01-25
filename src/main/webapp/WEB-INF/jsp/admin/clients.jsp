@@ -9,7 +9,12 @@
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
 <body>
-<form:form method="get">
+<div class="container">
+    <form class="form-inline" method="post" action="/admin/searchClient">
+        <input type="text" name="search" class="form-control" placeholder="Введите номер телефона клиента">
+        <button type="submit" name="save" class="btn btn-primary">Search</button>
+    </form>
+    <form:form method="get">
     <table class="table table-hover">
         <tr>
             <td>Имя</td>
@@ -25,12 +30,15 @@
                 <td>${client.birthDate}</td>
                 <td>${client.passport}</td>
                 <td>${client.address}</td>
-                <td><button class="btn btn-outline-primary" formaction="/admin/clientProfile/${client.id}" type="submit">
-                    Контракты
-                </button></td>
+                <td>
+                    <button class="btn btn-outline-primary" formaction="/admin/clientProfile/${client.id}"
+                            type="submit">
+                        Контракты
+                    </button>
+                </td>
             </tr>
         </c:forEach>
     </table>
-</form:form>
+    </form:form>
 </body>
 </html>

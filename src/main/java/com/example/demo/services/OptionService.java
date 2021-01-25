@@ -9,6 +9,8 @@ public interface OptionService {
     List<Option> getAll();
     List<Option> getAllForCertainTariff(long tariffId);
     List<Option> getAllNotAddedToTariff(long tariffId);
+    List<Option> getAllForCertainContract(long contractId);
+    List<Option> getAllNotAddedToContract(long contractId, long tariffId);
     Option getById(long optionId);
     void edit(Option option);
     void delete(Option option);
