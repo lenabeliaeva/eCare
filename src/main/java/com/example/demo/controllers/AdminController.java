@@ -5,10 +5,13 @@ import com.example.demo.models.Contract;
 import com.example.demo.models.Tariff;
 import com.example.demo.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -22,9 +25,9 @@ public class AdminController {
 
     @GetMapping(value = "/admin/searchClient")
     public String searchForClientByNumber(@RequestParam String number, Model model) {
-        Client client = clientService.findByNumber(number);
-        model.addAttribute("clientId", client.getId());
-        return "redirect:/admin/clientProfile/{clientId}";
+        List<Client> clients = clientService.findByNumber(number);
+        model.addAttribute("clients", clients);
+        return "/admin/clients";
     }
 
     @GetMapping(value = "/admin/clients")
@@ -38,8 +41,8 @@ public class AdminController {
     public String showClientProfile(@PathVariable long clientId, Model model) {
         Client client = clientService.findById(clientId);
         List<Contract> clientContracts = contractService.getClientsContracts(clientId);
-        model.addAttribute("clientContracts", clientContracts);
         model.addAttribute("client", client);
+        model.addAttribute("clientContracts", clientContracts);
         return "/admin/clientProfile";
     }
 }

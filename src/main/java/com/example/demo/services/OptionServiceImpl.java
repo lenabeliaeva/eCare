@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -42,8 +43,10 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     @Transactional
-    public List<Option> getAllForCertainContract(long contractId) {
-        return dao.getAllForCertainContract(contractId);
+    public List<Option> getAllForCertainContract(long contractId, long tariffId) {
+        List<Option> contractsAndTariffsOptions = new LinkedList<>(dao.getAllByTariffId(tariffId));
+        contractsAndTariffsOptions.addAll(dao.getAllByContractId(contractId));
+        return contractsAndTariffsOptions;
     }
 
     @Override

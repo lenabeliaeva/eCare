@@ -21,6 +21,12 @@ public class Contract {
     @NotBlank(message = "Номер телефона не может быть пустым")
     private String number;
 
+    @Column(name = "blocked_by_client")
+    private boolean blockedByClient = false;
+
+    @Column(name = "blocked_by_admin")
+    private boolean blockedByAdmin = false;
+
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;

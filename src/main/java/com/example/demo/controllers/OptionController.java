@@ -28,12 +28,20 @@ public class OptionController {
         return "options";
     }
 
-    @GetMapping(value = "/showOptions/{tariffId}")
+    @GetMapping(value = "/admin/showOptions/{tariffId}")
     public String showOptionsForTariff(@PathVariable String tariffId, Model model) {
         List<?> options = optionService.getAllForCertainTariff(Long.parseLong(tariffId));
         model.addAttribute("options", options);
         model.addAttribute("tariff", tariffService.getById(Long.parseLong(tariffId)));
-        return "tariffOptions";
+        return "/admin/tariffOptions";
+    }
+
+    @GetMapping(value = "/profile/showOptions/{tariffId}")
+    public String showOptionsForTariffForClient(@PathVariable String tariffId, Model model) {
+        List<?> options = optionService.getAllForCertainTariff(Long.parseLong(tariffId));
+        model.addAttribute("options", options);
+        model.addAttribute("tariff", tariffService.getById(Long.parseLong(tariffId)));
+        return "client/tariffOptions";
     }
 
     @PostMapping(value = "/createOption")

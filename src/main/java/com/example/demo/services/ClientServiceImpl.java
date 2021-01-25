@@ -6,10 +6,15 @@ import com.example.demo.exceptions.UserAlreadyExistsException;
 import com.example.demo.models.Client;
 import com.example.demo.models.Role;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,7 +58,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     @Transactional
-    public Client findByNumber(String number) {
+    public List<Client> findByNumber(String number) {
         return dao.findByNumber(number);
     }
 
@@ -61,5 +66,28 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public List<Client> getAll() {
         return dao.getAll();
+    }
+
+//    FIXME
+    @Override
+    public Client getAuthorizedClient() {
+        String role = null;
+        Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities();
+        for (GrantedAuthority authority :
+                authorities) {
+            role = authority.getAuthority();
+        }
+        if (role.equals("ROLE_USER")) {
+            UserDetails userDetails = (UserDetails) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+            return findByEmail(userDetails.getUsername());
+        } else {
+            return null;
+        }
     }
 }

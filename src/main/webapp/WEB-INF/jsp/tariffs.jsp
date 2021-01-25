@@ -22,18 +22,20 @@
                 <td>${tariff.name}</td>
                 <td>${tariff.price}</td>
                 <td>
-                    <button class="btn btn-outline-danger" onclick="return confirm('Вы уверены, что хотите удалить тариф?')" formaction="/deleteTariff/${tariff.id}"
+                    <button class="btn btn-outline-danger"
+                            onclick="return confirm('Вы уверены, что хотите удалить тариф?')"
+                            formaction="/admin/deleteTariff/${tariff.id}"
                             type="submit"
                     >Удалить
                     </button>
                 </td>
                 <td>
-                    <button class="btn btn-outline-primary" formaction="/editTariff/${tariff.id}" type="submit">
+                    <button class="btn btn-outline-primary" formaction="/admin/editTariff/${tariff.id}" type="submit">
                         Изменить
                     </button>
                 </td>
                 <td>
-                    <button class="btn btn-outline-primary" formaction="/showOptions/${tariff.id}" type="submit"
+                    <button class="btn btn-outline-primary" formaction="/admin/showOptions/${tariff.id}" type="submit"
                             formmethod="get">Опции
                         по
                         данному тарифу
@@ -42,7 +44,7 @@
             </tr>
         </c:forEach>
     </table>
-    <button class="btn btn-outline-primary" formaction="/addNewTariff">Добавить новый тариф</button>
+    <button class="btn btn-outline-primary" formaction="/admin/addNewTariff">Добавить новый тариф</button>
 </form:form>
 </body>
 </html>

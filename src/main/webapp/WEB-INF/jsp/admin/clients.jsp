@@ -10,35 +10,44 @@
 </head>
 <body>
 <div class="container">
-    <form class="form-inline" method="post" action="/admin/searchClient">
-        <input type="text" name="search" class="form-control" placeholder="Введите номер телефона клиента">
-        <button type="submit" name="save" class="btn btn-primary">Search</button>
+    <form class="form-inline" method="get" action="/admin/searchClient">
+        <input type="text" name="number" class="form-control" placeholder="Введите номер телефона клиента">
+        <button type="submit" class="btn btn-primary">Найти</button>
     </form>
+</div>
+<c:if test="${clients.size() == 0}">
+    <h3>Клиенты не найдены</h3>
+    <form action="/admin">
+        <button type="submit" class="btn btn-outline-primary">Вернуться на главную</button>
+    </form>
+</c:if>
+<c:if test="${clients.size() > 0}">
     <form:form method="get">
-    <table class="table table-hover">
-        <tr>
-            <td>Имя</td>
-            <td>Фамилия</td>
-            <td>Дата рождения</td>
-            <td>Паспорт</td>
-            <td>Адрес</td>
-        </tr>
-        <c:forEach var="client" items="${clients}">
+        <table class="table table-hover">
             <tr>
-                <td>${client.name}</td>
-                <td>${client.lastName}</td>
-                <td>${client.birthDate}</td>
-                <td>${client.passport}</td>
-                <td>${client.address}</td>
-                <td>
-                    <button class="btn btn-outline-primary" formaction="/admin/clientProfile/${client.id}"
-                            type="submit">
-                        Контракты
-                    </button>
-                </td>
+                <td>Имя</td>
+                <td>Фамилия</td>
+                <td>Дата рождения</td>
+                <td>Паспорт</td>
+                <td>Адрес</td>
             </tr>
-        </c:forEach>
-    </table>
+            <c:forEach var="client" items="${clients}">
+                <tr>
+                    <td>${client.name}</td>
+                    <td>${client.lastName}</td>
+                    <td>${client.birthDate}</td>
+                    <td>${client.passport}</td>
+                    <td>${client.address}</td>
+                    <td>
+                        <button class="btn btn-outline-primary" formaction="/admin/clientProfile/${client.id}"
+                                type="submit">
+                            Контракты
+                        </button>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
     </form:form>
+</c:if>
 </body>
 </html>

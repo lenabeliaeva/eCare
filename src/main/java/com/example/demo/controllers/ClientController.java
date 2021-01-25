@@ -61,26 +61,14 @@ public class ClientController {
 
     @GetMapping("/profile")
     public String openProfile(Model model) {
-        String role = null;
-        Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getAuthorities();
-        for (GrantedAuthority authority :
-                authorities) {
-            role = authority.getAuthority();
-        }
-        if (role.equals("ROLE_USER")) {
-            UserDetails userDetails = (UserDetails) SecurityContextHolder
-                    .getContext()
-                    .getAuthentication()
-                    .getPrincipal();
-            Client client = clientService.findByEmail(userDetails.getUsername());
-            model.addAttribute("client", client);
-            return "client/profile";
-        } else {
+        Client client = clientService.getAuthorizedClient();
+        if (client == null) {
             return "login";
         }
+        model.addAttribute("client", client);
+        model.addAttribute("contracts", contractService.getClientsContracts(client.getId()));
+        model.addAttribute("notConnectedTariffs", contractService.getAvailableTariffs(client));
+        return "client/profile";
     }
 
     @GetMapping("/")

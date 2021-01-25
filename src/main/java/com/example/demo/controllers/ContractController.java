@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.models.Client;
 import com.example.demo.models.Contract;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
@@ -46,8 +47,8 @@ public class ContractController {
 
     @GetMapping(value = "/admin/showOptions/{tariffId}/{contractId}")
     public String showOptions(@PathVariable long tariffId, @PathVariable long contractId, Model model) {
-        model.addAttribute("tariffOptions", optionService.getAllForCertainTariff(tariffId));
-        model.addAttribute("connectedOptions", optionService.getAllForCertainContract(contractId));
+//        model.addAttribute("tariffOptions", optionService.getAllForCertainTariff(tariffId));
+        model.addAttribute("connectedOptions", optionService.getAllForCertainContract(contractId, tariffId));
         model.addAttribute("availableOptions", optionService.getAllNotAddedToContract(contractId, tariffId));
         model.addAttribute("contract", contractService.getContractById(contractId));
         return "/admin/addOptionsToContract";
@@ -62,17 +63,44 @@ public class ContractController {
         return "redirect:/admin/showOptions/{tariffId}/{contractId}";
     }
 
-    @PostMapping(value = "/admin/clientProfile/{contractId}/{tariffId}")
-    public String changeClientTariff(@PathVariable long contractId, @PathVariable long tariffId) {
+    @PostMapping(value = "/admin/disconnectOption/{contractId}/{optionId}")
+    public String disconnectOptions(@PathVariable long contractId, @PathVariable long optionId) {
         Contract contract = contractService.getContractById(contractId);
-        Tariff tariff = tariffService.getById(tariffId);
+        Option option = optionService.getById(optionId);
+        contractService.disconnectOption(contract, option);
+        return "redirect:/admin/showContractOptions/{contractId}";
+    }
+
+    @PostMapping(value = "/admin/clientProfile/{contractId}")
+    public String changeClientTariff(@PathVariable long contractId) {
+        Contract contract = contractService.getContractById(contractId);
+        Tariff tariff = contractService.getContractById(contractId).getTariff();
         contractService.changeTariff(contract, tariff);
         return "/admin/clientProfile";
     }
 
-    @GetMapping(value = "/admin/showContractOptions/{clientId}")
-    public String showContractOptions(@PathVariable long clientId, Model model) {
-        model.addAttribute(contractService.getClientsContracts(clientId));
+    @PostMapping(value = "/profile/{contractId}")
+    public String changeTariffByClient(@PathVariable long contractId) {
+        Contract contract = contractService.getContractById(contractId);
+        Tariff tariff = contractService.getContractById(contractId).getTariff();
+        contractService.changeTariff(contract, tariff);
+        return "/client/profile";
+    }
+
+//    TODO:add contract to model
+    @GetMapping(value = "/admin/showContractOptions/{contractId}")
+    public String showContractOptions(@PathVariable long contractId, Model model) {
+        Tariff tariff = contractService.getContractById(contractId).getTariff();
+        model.addAttribute("options", optionService.getAllForCertainContract(contractId, tariff.getId()));
         return "/admin/contractOptions";
     }
+
+    @GetMapping(value = "/profile/contractOptions/{contractId}")
+    public String showContractOptionsForClient(@PathVariable long contractId, Model model) {
+        Tariff tariff = contractService.getContractById(contractId).getTariff();
+        model.addAttribute("options", optionService.getAllForCertainContract(contractId, tariff.getId()));
+        return "/client/contractOptions";
+    }
+
+
 }

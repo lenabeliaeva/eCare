@@ -77,6 +77,13 @@ public class ContractDaoImpl implements ContractDao {
     }
 
     @Override
+    public List<Tariff> getNotAddedToContractTariffs(long clientId) {
+        return em.createQuery("select t from Tariff t left join t.contracts c where c.client.id <> :id or c.tariff.id is null")
+                .setParameter("id", clientId)
+                .getResultList();
+    }
+
+    @Override
     public void addOption(Contract contract, Option option) {
         em.getTransaction().begin();
         contract.add(option);

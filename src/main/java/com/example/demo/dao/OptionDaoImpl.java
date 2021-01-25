@@ -51,7 +51,7 @@ public class OptionDaoImpl implements OptionDao {
                 .getResultList();
     }
 
-    public List<Option> getAllForCertainContract(long contractId) {
+    public List<Option> getAllByContractId(long contractId) {
         return entityManager
                 .createQuery("select o from Option o join o.contracts c where c.id = :id")
                 .setParameter("id", contractId)

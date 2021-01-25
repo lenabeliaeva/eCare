@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.dao.ContractDao;
+import com.example.demo.models.Client;
 import com.example.demo.models.Contract;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
@@ -40,8 +41,8 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public List<Contract> getClientsContracts(long id) {
-        return dao.getByClientId(id);
+    public List<Contract> getClientsContracts(long clientId) {
+        return dao.getByClientId(clientId);
     }
 
     private String generateNumber() {
@@ -80,5 +81,10 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public void disconnectOption(Contract contract, Option option) {
         dao.deleteOption(contract, option);
+    }
+
+    @Override
+    public List<Tariff> getAvailableTariffs(Client client) {
+        return dao.getNotAddedToContractTariffs(client.getId());
     }
 }

@@ -23,7 +23,7 @@ public class TariffController {
     @Autowired
     OptionService optionService;
 
-    @PostMapping(value = "/addNewTariff")
+    @PostMapping(value = "/admin/addNewTariff")
     public String addNewTariff(Model model) {
         model.addAttribute("newTariff", new Tariff());
         return "addNewTariff";

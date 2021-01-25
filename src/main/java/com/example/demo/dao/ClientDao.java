@@ -11,7 +11,7 @@ public interface ClientDao {
 
     Client findById(long id);
 
-    Client findByNumber(String number);
+    List<Client> findByNumber(String number);
 
     List<Client> getAll();
 }

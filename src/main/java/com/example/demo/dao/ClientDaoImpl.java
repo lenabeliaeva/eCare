@@ -44,14 +44,14 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public Client findByNumber(String number) {
-        Client client;
+    public List<Client> findByNumber(String number) {
+        List<Client> clients;
         try {
-            client = (Client) em
-                    .createQuery("select c from Client c join Contract contract where contract.number = :n")
+            clients = em
+                    .createQuery("select c.client from Contract c where c.number = :n")
                     .setParameter("n", number)
-                    .getSingleResult();
-            return client;
+                    .getResultList();
+            return clients;
         } catch (NoResultException e) {
             return null;
         }
