@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.Collection;
 import java.sql.Date;
 import java.util.Set;
@@ -36,23 +37,25 @@ public class Client implements UserDetails {
     @Column(name = "birth_date")
     private Date birthDate;
 
-//    @ValidPassport
     @Column(name = "passport")
     @NotBlank(message = "Пасспорт не может быть пустым")
+    @Pattern(regexp = "\\d{4}\\s\\d{6}", message = "Введите серию и номер в формате 0123 456789")
     private String passport;
 
     @Column(name = "address")
     @NotBlank(message = "Адрес не может быть пустым")
     private String address;
 
-//    @ValidEmail
     @Column(name = "e_mail")
     @NotBlank(message = "Email не может быть пустым")
+    @Pattern(regexp = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$",
+            message = "Не похоже на email")
     private String email;
 
-//    @ValidPassword
     @Column(name = "password")
     @NotBlank(message = "Пароль не может быть пустым")
+    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}",
+            message = "Пароль должен содержать хотя бы одну цифру, одну строчную букву, одну заглавную и длина должна быть не менее 8 символов")
     private String password;
 
     @Transient
