@@ -39,7 +39,7 @@
                 <td>${option.price}</td>
                 <td>${option.connectionCost}</td>
                 <td>
-                    <button class="btn btn-outline-primary" formaction="/admin/connectOption/${option.id}/${contract.id}"
+                    <button class="btn btn-outline-primary" formaction="/admin/connectOption/${contract.id}/${option.id}"
                             type="submit"
                     >Подключить
                     </button>

@@ -1,5 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: lenab
@@ -8,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <title>Подключенные опции</title>
@@ -16,33 +16,36 @@
     <%@include file="../parts/header.jsp" %>
 </head>
 <body>
-<form:form method="post">
+<form:form>
     <c:if test="${options.size() > 0}">
-    <table class="table table-hover">
-        <tr>
-            <td>Название</td>
-            <td>Цена</td>
-            <td>Стоимость подключения</td>
-        </tr>
-        <c:forEach var="option" items="${options}">
+        <table class="table table-hover">
             <tr>
-                <td>${option.name}</td>
-                <td>${option.price}</td>
-                <td>${option.connectionCost}</td>
-                <td>
-                    <button class="btn btn-outline-danger"
-                            onclick="return confirm('Вы уверены, что хотите отключить опцию?')"
-                            formaction="/disconnectOption/${contract.id}/${option.id}"
-                            type="submit"
-                    >Отключить
-                    </button>
-                </td>
+                <td>Название</td>
+                <td>Цена</td>
+                <td>Стоимость подключения</td>
             </tr>
-        </c:forEach>
-    </table>
+            <c:forEach var="option" items="${options}">
+                <tr>
+                    <td>${option.name}</td>
+                    <td>${option.price}</td>
+                    <td>${option.connectionCost}</td>
+                    <td>
+                        <button class="btn btn-outline-danger"
+                                onclick="return confirm('Вы уверены, что хотите отключить опцию?')"
+                                formaction="/admin/disconnectOption/${contract.id}/${option.id}"
+                                type="submit"
+                        >Отключить
+                        </button>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
     </c:if>
-    <button class="btn btn-outline-primary" formaction="/admin/connectOption/${contract.id}/${option.id}">Подключить
+    <button class="btn btn-outline-primary" formaction="/admin/connectOptions/${contract.id}">Подключить
         новую опцию
+    </button>
+    <button class="btn btn-outline-primary" formaction="/admin/connectTariff/${contract.id}">
+        Сменить тариф пользователю
     </button>
 </form:form>
 </body>

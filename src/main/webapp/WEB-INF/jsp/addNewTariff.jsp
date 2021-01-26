@@ -11,7 +11,7 @@
 </head>
 <body>
 <h2>Новый тариф</h2>
-<form:form method="post" modelAttribute="newTariff" action="/saveTariff">
+<form:form method="post" modelAttribute="newTariff" action="/admin/saveTariff">
     <div class="form-group">
         <form:label path="name">Введите название</form:label>
         <form:input type="text" required="name" class="form-control" path="name"/>

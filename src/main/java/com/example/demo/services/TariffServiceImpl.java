@@ -29,20 +29,14 @@ public class TariffServiceImpl implements TariffService {
 
     @Override
     @Transactional
-    public void delete(Tariff tariff) {
-        tariffDao.delete(tariff);
+    public boolean delete(Tariff tariff) {
+        return tariffDao.delete(tariff);
     }
 
     @Override
     @Transactional
     public Tariff getById(long id) {
         return tariffDao.getById(id);
-    }
-
-    @Override
-    @Transactional
-    public Tariff getLastAddedTariff() {
-        return tariffDao.getLastAddedTariff();
     }
 
     @Override
@@ -60,7 +54,20 @@ public class TariffServiceImpl implements TariffService {
 
     @Override
     @Transactional
-    public void deleteOption(Tariff tariff, Option option) {
-        tariffDao.deleteOption(tariff, option);
+    public boolean deleteOption(Tariff tariff, Option option) {
+        if (tariff.getOptions().size() > 1){
+            tariff.delete(option);
+            tariff.setPrice(tariff.getPrice() - option.getPrice());
+            tariffDao.edit(tariff);
+            return true;
+        } else {
+             return false;
+        }
+    }
+
+    @Override
+    @Transactional
+    public List<Tariff> getNotAddedToContractTariffs(Tariff tariff) {
+        return tariffDao.getNotAddedToContractTariffs(tariff.getId());
     }
 }

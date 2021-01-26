@@ -2,11 +2,14 @@ package com.example.demo.dao;
 
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
+import org.postgresql.util.PSQLException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.RollbackException;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -34,20 +37,20 @@ public class TariffDaoImpl implements TariffDao {
     }
 
     @Override
-    public void delete(Tariff tariff) {
-        entityManager.getTransaction().begin();
-        entityManager.remove(tariff);
-        entityManager.getTransaction().commit();
+    public boolean delete(Tariff tariff) {
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.remove(tariff);
+            entityManager.getTransaction().commit();
+            return true;
+        } catch (RollbackException e) {
+            return false;
+        }
     }
 
     @Override
     public Tariff getById(long id) {
         return entityManager.find(Tariff.class, id);
-    }
-
-    @Override
-    public Tariff getLastAddedTariff() {
-        return (Tariff) entityManager.createQuery("select t from Tariff t order by t.id desc ").setMaxResults(1).getSingleResult();
     }
 
     @Override
@@ -71,5 +74,13 @@ public class TariffDaoImpl implements TariffDao {
         tariff.delete(option);
         entityManager.merge(tariff);
         entityManager.getTransaction().commit();
+    }
+
+    @Override
+    public List<Tariff> getNotAddedToContractTariffs(long tariffId) {
+        return entityManager
+                .createQuery("select t from Tariff t where t.id <> :id")
+                .setParameter("id", tariffId)
+                .getResultList();
     }
 }

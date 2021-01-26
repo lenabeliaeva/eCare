@@ -7,34 +7,6 @@
     <%@include file="../parts/header.jsp" %>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $('#myForm').submit(function () {
-                var form = $(this),
-                    url = form.attr('action'),
-                    tariffId = form.find('input[name="userId"]').val(),
-                    tariff = JSON.stringify({"userId": userId});
-
-                $.ajax({
-                    url: url,
-                    type: "POST",
-                    traditional: true,
-                    contentType: "application/json",
-                    dataType: "json",
-                    data: dat,
-                    success: function (response) {
-                        alert('success ' + response);
-                    },
-                    error: function (response) {
-                        alert('error ' + response);
-                    },
-                });
-
-                return false;
-            });
-        });
-    </script>
 </head>
 <body>
 <h3>Номер телефона ${newContract.number}</h3>
@@ -46,7 +18,7 @@
                 <td>${tariff.price}</td>
                 <td>
                     <button class="btn btn-outline-primary"
-                            formaction="/admin/connectTariff/${tariff.id}/${newContract.id}"
+                            formaction="/admin/connectTariff/${newContract.id}/${tariff.id}"
                             type="submit"
                     >Выбрать
                     </button>

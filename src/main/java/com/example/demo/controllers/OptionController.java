@@ -22,10 +22,10 @@ public class OptionController {
     @Autowired
     OptionService optionService;
 
-    @GetMapping(value = "/options")
+    @GetMapping(value = "/admin/options")
     public String showAllOptions(Model model) {
         model.addAttribute("options", optionService.getAll());
-        return "options";
+        return "admin/options";
     }
 
     @GetMapping(value = "/admin/showOptions/{tariffId}")
@@ -47,23 +47,23 @@ public class OptionController {
     @PostMapping(value = "/createOption")
     public String createOption(Model model) {
         model.addAttribute("newOption", new Option());
-        return "addNewOption";
+        return "/admin/addNewOption";
     }
 
     @PostMapping(value = "/saveOption")
     public String saveOption(@Valid @ModelAttribute("newOption") Option option, BindingResult result) {
         if (result.hasErrors()) {
-            return "addNewOption";
+            return "/admin/addNewOption";
         }
         optionService.add(option);
         log.info("New option is saved to DB");
-        return "redirect:/options";
+        return "redirect:/admin/options";
     }
 
     @PostMapping(value = "/editOption/{optionId}")
     public String editOption(@PathVariable String optionId, Model model) {
         model.addAttribute("editedOption", optionService.getById(Long.parseLong(optionId)));
-        return "editOption";
+        return "/admin/editOption";
     }
 
     @PostMapping(value = "/saveEditedOption")
@@ -72,12 +72,12 @@ public class OptionController {
         if (edited.getTariff() == null)
             edited.setTariff(initial.getTariff());
         optionService.edit(edited);
-        return "redirect:/options";
+        return "redirect:/admin/options";
     }
 
     @PostMapping("/deleteOption/{optionId}")
     public String deleteOption(@PathVariable String optionId) {
         optionService.delete(optionService.getById(Long.parseLong(optionId)));
-        return "redirect:/options";
+        return "redirect:/admin/options";
     }
 }

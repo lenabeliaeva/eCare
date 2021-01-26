@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Controller
@@ -29,7 +30,7 @@ public class TariffController {
         return "addNewTariff";
     }
 
-    @PostMapping(value = "/saveTariff")
+    @PostMapping(value = "/admin/saveTariff")
     public String saveTariff(@Valid @ModelAttribute("newTariff") Tariff tariff, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "addNewTariff";
@@ -37,47 +38,50 @@ public class TariffController {
         Tariff saved = tariffService.add(tariff);
         model.addAttribute("tariffId", saved.getId());
         log.info("New tariff is saved to DB");
-        return "redirect:/addOption/{tariffId}";
+        return "redirect:/admin/addOption/{tariffId}";
     }
 
-    @GetMapping(value = "/tariffs")
+    @GetMapping(value = "/admin/tariffs")
     public String showTariffs(Model model) {
         List<?> tariffs = tariffService.getAll();
         model.addAttribute("tariffs", tariffs);
-        return "tariffs";
+        return "/admin/tariffs";
     }
 
-    @PostMapping(value = "/deleteTariff/{tariffId}")
+    @PostMapping(value = "/admin/deleteTariff/{tariffId}")
     public String deleteTariff(@PathVariable String tariffId) {
-        tariffService.delete(tariffService.getById(Long.parseLong(tariffId)));
-        log.info("Tariff is deleted from DB");
-        return "redirect:/tariffs";
+        if (tariffService.delete(tariffService.getById(Long.parseLong(tariffId)))) {
+            log.info("Tariff is deleted from DB");
+        } else {
+            log.info("Tariff couldn't be deleted as it is contained in contract(s)");
+        }
+        return "redirect:/admin/tariffs";
     }
 
-    @PostMapping(value = "/editTariff/{tariffId}")
+    @PostMapping(value = "/admin/editTariff/{tariffId}")
     public String editTariff(@PathVariable String tariffId, Model model) {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         model.addAttribute("editedTariff", tariff);
-        return "editTariff";
+        return "/admin/editTariff";
     }
 
-    @PostMapping(value = "/saveEditedTariff")
+    @PostMapping(value = "/admin/saveEditedTariff")
     public String saveEditedTariff(@ModelAttribute("editedTariff") Tariff edited) {
         Tariff initial = tariffService.getById(edited.getId());
         if (edited.getOptions() == null)
             edited.setOptions(initial.getOptions());
         tariffService.edit(edited);
         log.info("Tariff is updated in DB");
-        return "redirect:/tariffs";
+        return "redirect:/admin/tariffs";
     }
 
-    @RequestMapping(value = "/addOption/{tariffId}")
-    public String addOptionForTariff(@PathVariable String tariffId, Model model) {
-        Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
-        List<Option> options = optionService.getAllNotAddedToTariff(Long.parseLong(tariffId));
+    @RequestMapping(value = "/admin/addOption/{tariffId}")
+    public String addOptionForTariff(@PathVariable long tariffId, Model model) {
+        Tariff tariff = tariffService.getById(tariffId);
+        Set<Option> options = optionService.getAllNotAddedToTariff(tariffId);
         model.addAttribute("addOptionTariff", tariff);
         model.addAttribute("options", options);
-        return "chooseOptions";
+        return "/admin/chooseOptions";
     }
 
     @PostMapping(value = "/addOption/{tariffId}/{optionId}")
@@ -86,15 +90,17 @@ public class TariffController {
         Option option = optionService.getById(Long.parseLong(optionId));
         tariffService.addOption(tariff, option);
         log.info("New option is added to tariff");
-        return "redirect:/addOption/{tariffId}";
+        return "redirect:/admin/addOption/{tariffId}";
     }
 
     @PostMapping(value = "/deleteOption/{tariffId}/{optionId}")
     public String deleteAddedOption(@PathVariable String tariffId, @PathVariable String optionId) {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         Option option = optionService.getById(Long.parseLong(optionId));
-        tariffService.deleteOption(tariff, option);
+        if (!tariffService.deleteOption(tariff, option)) {
+            return "redirect:/admin/showOptions/{tariffId}";
+        }
         log.info("Option is deleted from tariff");
-        return "redirect:/showOptions/{tariffId}";
+        return "redirect:/admin/tariffs";
     }
 }

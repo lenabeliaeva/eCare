@@ -9,9 +9,9 @@
 </head>
 <body>
 <form:form>
-    <button class="btn btn-outline-primary" formmethod="get" formaction="/tariffs">Просмотр тарифов</button>
+    <button class="btn btn-outline-primary" formmethod="get" formaction="/admin/tariffs">Просмотр тарифов</button>
     <button class="btn btn-outline-primary" formmethod="get" formaction="/admin/clients">Просмотр пользователей</button>
-    <button class="btn btn-outline-primary" formmethod="get" formaction="/options">Просмотр опций</button>
+    <button class="btn btn-outline-primary" formmethod="get" formaction="/admin/options">Просмотр опций</button>
 </form:form>
 </body>
 </html>

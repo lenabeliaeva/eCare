@@ -68,7 +68,6 @@ public class ClientController {
         }
         model.addAttribute("client", client);
         model.addAttribute("contracts", contractService.getClientsContracts(client.getId()));
-        model.addAttribute("notConnectedTariffs", contractService.getAvailableTariffs(client));
         return "client/profile";
     }
 

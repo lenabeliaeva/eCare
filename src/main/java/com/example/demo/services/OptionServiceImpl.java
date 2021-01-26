@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class OptionServiceImpl implements OptionService {
@@ -37,8 +39,9 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     @Transactional
-    public List<Option> getAllNotAddedToTariff(long tariffId) {
-        return dao.getAllNotAddedToTariff(tariffId);
+    public Set<Option> getAllNotAddedToTariff(long tariffId) {
+        List<Option> options = dao.getAllNotAddedToTariff(tariffId);
+        return new HashSet<>(options);
     }
 
     @Override
@@ -51,8 +54,10 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     @Transactional
-    public List<Option> getAllNotAddedToContract(long contractId, long tariffId) {
-        return dao.getAllNotAddedToContract(contractId, tariffId);
+    public Set<Option> getAllNotAddedToContract(long contractId, long tariffId) {
+        List<Option> options = dao.getAllNotAddedToContract(contractId, tariffId);
+        options.addAll(dao.getAllNotAddedToTariff(tariffId));
+        return new HashSet<>(options);
     }
 
     @Override

@@ -57,27 +57,5 @@
 <c:if test="${contracts.size() == 0}">
     <p>У Вас пока нет контрактов</p>
 </c:if>
-<h2>Доступные тарифы</h2>
-<form:form method="post">
-    <table class="table table-hover">
-        <tr>
-            <td>Название</td>
-            <td>Цена</td>
-        </tr>
-        <c:forEach var="tariff" items="${notConnectedTariffs}">
-            <tr>
-                <td>${tariff.name}</td>
-                <td>${tariff.price}</td>
-                <td>
-                    <button class="btn btn-outline-primary" formaction="/profile/showOptions/${tariff.id}" type="submit"
-                            formmethod="get">Опции
-                        по
-                        данному тарифу
-                    </button>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
-</form:form>
 </body>
 </html>

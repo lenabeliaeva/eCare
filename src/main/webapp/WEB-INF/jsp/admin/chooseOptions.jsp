@@ -6,7 +6,7 @@
     <title>Опции</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <%@include file="parts/header.jsp" %>
+    <%@include file="../parts/header.jsp" %>
 </head>
 <body>
 <h2>Доступные для подключения опции для тарифа "${addOptionTariff.name}"</h2>
@@ -31,7 +31,7 @@
         </c:forEach>
     </table>
     <h3>Цена тарифа: ${addOptionTariff.price}</h3>
-    <button class="btn btn-outline-primary" type="submit" formmethod="get" formaction="/tariffs">Завершить и перейти к
+    <button class="btn btn-outline-primary" type="submit" formmethod="get" formaction="/admin/tariffs">Завершить и перейти к
         списку тарифов
     </button>
 </form:form>

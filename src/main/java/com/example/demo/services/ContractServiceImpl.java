@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -28,6 +27,7 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public void connectTariff(Contract contract, Tariff tariff) {
         contract.setTariff(tariff);
+        contract.getOption().clear();
         dao.update(contract);
     }
 
@@ -78,7 +78,7 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public List<Tariff> getAvailableTariffs(Client client) {
-        return dao.getNotAddedToContractTariffs(client.getId());
+        return dao.getNotAddedToContractTariffsByClient(client.getId());
     }
 
     @Override

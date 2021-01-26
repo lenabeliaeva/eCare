@@ -31,7 +31,7 @@
             </tr>
         </c:forEach>
     </table>
-    <button class="btn btn-outline-primary" formaction="/addOption/${tariff.id}">Добавить новую опцию</button>
+    <button class="btn btn-outline-primary" formaction="/admin/addOption/${tariff.id}">Добавить новую опцию</button>
 </form:form>
 </body>
 </html>

@@ -10,9 +10,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "tariffs")
 @Getter
 @Setter
+@Table(name = "tariffs")
 public class Tariff {
     @Id
     @Column(name = "id")

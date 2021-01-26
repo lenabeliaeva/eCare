@@ -1,14 +1,13 @@
 package com.example.demo.dao;
 
-import com.example.demo.models.Contract;
 import com.example.demo.models.Option;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class OptionDaoImpl implements OptionDao {
@@ -46,7 +45,7 @@ public class OptionDaoImpl implements OptionDao {
     @Override
     public List<Option> getAllNotAddedToTariff(long tariffId) {
         return entityManager
-                .createQuery("select o from Option o left join o.tariff t where t.id <> :id or t.id is null")
+                .createQuery("select o from Option o left join o.tariff t where o not in (select o from Option o join o.tariff t where t.id = :id)")
                 .setParameter("id", tariffId)
                 .getResultList();
     }
@@ -61,9 +60,8 @@ public class OptionDaoImpl implements OptionDao {
     @Override
     public List<Option> getAllNotAddedToContract(long contractId, long tariffId) {
         return entityManager
-                .createQuery("select o from Option o left join o.contracts c left join o.tariff t where (c.id <> :cId or c.id is null) and (t.id <> :tId or t.id is null)")
-                .setParameter("cId", contractId)
-                .setParameter("tId", tariffId)
+                .createQuery("select o from Option o left join o.contracts c left join o.tariff t where o not in (select o from Option o join o.contracts c where c.id = :id)")
+                .setParameter("id", contractId)
                 .getResultList();
     }
 

@@ -20,6 +20,7 @@
                 <tr>
                     <td>${contract.number}</td>
                     <td>${contract.tariff.name}</td>
+                    <td>${contract.tariff.price}</td>
                     <td>
                         <button class="btn btn-outline-primary"
                                 formaction="/admin/showContractOptions/${contract.id}"

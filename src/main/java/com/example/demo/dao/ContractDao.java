@@ -19,5 +19,5 @@ public interface ContractDao {
 
     boolean isNumberUnique(String number);
 
-    List<Tariff> getNotAddedToContractTariffs(long clientId);
+    List<Tariff> getNotAddedToContractTariffsByClient(long clientId);
 }
