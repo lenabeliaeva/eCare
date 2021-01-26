@@ -20,7 +20,6 @@ import java.util.Collection;
 
 @Slf4j
 @Controller
-@SessionAttributes("role")
 public class ClientController {
 
     @Autowired
@@ -37,14 +36,13 @@ public class ClientController {
     }
 
     @PostMapping("/registration")
-    public String registerClient(@ModelAttribute("client") @Valid Client client, BindingResult br, HttpSession httpSession) {
+    public String registerClient(@ModelAttribute("client") @Valid Client client, BindingResult br) {
         if (br.hasErrors()) {
             return "registration";
         }
         try {
             clientService.registerNewClient(client);
             securityService.autologin(client.getEmail(), client.getPassword());
-            httpSession.setAttribute("role", clientService.getRole());
         } catch (UserAlreadyExistsException e) {
             //TODO:add message about it in view
             return "registration";
@@ -63,23 +61,18 @@ public class ClientController {
         return "login";
     }
 
-    @GetMapping("/profile")
-    public String openProfile(Model model, HttpSession httpSession) {
+    @GetMapping({"/", "/profile"})
+    public String showWelcomePage(Model model) {
         Client client = clientService.getAuthorizedClient();
-        if (client == null) {
-            return "login";
+        if (client != null) {
+            model.addAttribute("client", client);
+            model.addAttribute("contracts", contractService.getClientsContracts(client.getId()));
+            return "client/profile";
+        } else if (clientService.getAuthorizedAdmin() != null) {
+            return "redirect:/admin";
+        } else {
+            return "welcome";
         }
-        httpSession.setAttribute("role", clientService.getRole());
-        model.addAttribute("client", client);
-        model.addAttribute("contracts", contractService.getClientsContracts(client.getId()));
-        return "client/profile";
-    }
-
-//    TODO
-    @GetMapping("/")
-    public String showWelcomePage() {
-
-        return "welcome";
     }
 
     @GetMapping("/profile/blockContract/{contractId}")

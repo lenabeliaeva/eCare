@@ -9,9 +9,8 @@
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
 <body>
-<form>
-    <button type="submit" class="btn btn-outline-primary" formmethod="get" formaction="/admin">Сотрудник</button>
-    <button type="submit" class="btn btn-outline-primary" formmethod="get" formaction="/profile">Клиент</button>
+<form action="/profile">
+    <button class="btn btn-outline-primary">Войти</button>
     <button type="submit" class="btn btn-outline-primary" formmethod="get" formaction="/registration">Регистрация</button>
 </form>
 </body>

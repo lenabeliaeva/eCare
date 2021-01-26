@@ -18,5 +18,5 @@ public interface ClientService {
 
     Client getAuthorizedClient();
 
-    String getRole();
+    Client getAuthorizedAdmin();
 }
