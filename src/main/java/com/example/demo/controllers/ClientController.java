@@ -14,11 +14,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Collection;
 
 @Slf4j
 @Controller
+@SessionAttributes("role")
 public class ClientController {
 
     @Autowired
@@ -35,13 +37,14 @@ public class ClientController {
     }
 
     @PostMapping("/registration")
-    public String registerClient(@ModelAttribute("client") @Valid Client client, BindingResult br) {
+    public String registerClient(@ModelAttribute("client") @Valid Client client, BindingResult br, HttpSession httpSession) {
         if (br.hasErrors()) {
             return "registration";
         }
         try {
             clientService.registerNewClient(client);
             securityService.autologin(client.getEmail(), client.getPassword());
+            httpSession.setAttribute("role", clientService.getRole());
         } catch (UserAlreadyExistsException e) {
             //TODO:add message about it in view
             return "registration";
@@ -61,11 +64,12 @@ public class ClientController {
     }
 
     @GetMapping("/profile")
-    public String openProfile(Model model) {
+    public String openProfile(Model model, HttpSession httpSession) {
         Client client = clientService.getAuthorizedClient();
         if (client == null) {
             return "login";
         }
+        httpSession.setAttribute("role", clientService.getRole());
         model.addAttribute("client", client);
         model.addAttribute("contracts", contractService.getClientsContracts(client.getId()));
         return "client/profile";

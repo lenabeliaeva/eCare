@@ -27,13 +27,13 @@ public class TariffController {
     @PostMapping(value = "/admin/addNewTariff")
     public String addNewTariff(Model model) {
         model.addAttribute("newTariff", new Tariff());
-        return "addNewTariff";
+        return "/admin/addNewTariff";
     }
 
     @PostMapping(value = "/admin/saveTariff")
     public String saveTariff(@Valid @ModelAttribute("newTariff") Tariff tariff, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "addNewTariff";
+            return "/admin/addNewTariff";
         }
         Tariff saved = tariffService.add(tariff);
         model.addAttribute("tariffId", saved.getId());

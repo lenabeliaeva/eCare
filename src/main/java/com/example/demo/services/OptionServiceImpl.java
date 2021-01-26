@@ -56,7 +56,7 @@ public class OptionServiceImpl implements OptionService {
     @Transactional
     public Set<Option> getAllNotAddedToContract(long contractId, long tariffId) {
         List<Option> options = dao.getAllNotAddedToContract(contractId, tariffId);
-        options.addAll(dao.getAllNotAddedToTariff(tariffId));
+        options.removeAll(dao.getAllByTariffId(tariffId));
         return new HashSet<>(options);
     }
 

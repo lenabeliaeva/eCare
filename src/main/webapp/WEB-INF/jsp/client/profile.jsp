@@ -9,7 +9,7 @@
     <%@include file="../parts/header.jsp" %>
 </head>
 <body>
-<h2>Ваши контракты</h2>
+<h2>Здравствуйте, ${client.name}! Это Ваши контракты</h2>
 <c:if test="${contracts.size() > 0}">
     <form method="get">
         <table class="table table-hover">

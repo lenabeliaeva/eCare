@@ -68,9 +68,8 @@ public class ClientServiceImpl implements ClientService {
         return dao.getAll();
     }
 
-//    FIXME
     @Override
-    public Client getAuthorizedClient() {
+    public String getRole() {
         String role = null;
         Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) SecurityContextHolder
                 .getContext()
@@ -80,6 +79,12 @@ public class ClientServiceImpl implements ClientService {
                 authorities) {
             role = authority.getAuthority();
         }
+        return role;
+    }
+
+    @Override
+    public Client getAuthorizedClient() {
+        String role = getRole();
         if (role.equals("ROLE_USER")) {
             UserDetails userDetails = (UserDetails) SecurityContextHolder
                     .getContext()

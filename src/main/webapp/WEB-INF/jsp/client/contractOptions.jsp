@@ -33,7 +33,7 @@
                         <c:if test="${contract.blockedByClient == false && contract.blockedByAdmin == false}">
                             <button class="btn btn-outline-danger"
                                     onclick="return confirm('Вы уверены, что хотите отключить опцию?')"
-                                    formaction="/admin/disconnectOption/${contract.id}/${option.id}"
+                                    formaction="/profile/disconnectOption/${contract.id}/${option.id}"
                                     type="submit"
                             >Отключить
                             </button>
@@ -43,7 +43,7 @@
             </c:forEach>
         </table>
     </c:if>
-    <button class="btn btn-outline-primary" formaction="/profile/connectOption/${contract.id}">Подключить
+    <button class="btn btn-outline-primary" formmethod="get" formaction="/profile/connectOptions/${contract.id}">Подключить
         новые опции
     </button>
     <button class="btn btn-outline-primary" formaction="/profile/connectTariff/${contract.id}">Сменить тариф</button>

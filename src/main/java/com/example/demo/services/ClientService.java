@@ -17,4 +17,6 @@ public interface ClientService {
     List<Client> getAll();
 
     Client getAuthorizedClient();
+
+    String getRole();
 }
