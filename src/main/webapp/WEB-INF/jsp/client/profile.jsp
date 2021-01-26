@@ -27,12 +27,28 @@
                                 type="submit">Подключенные опции
                         </button>
                     </td>
-                    <td>
-                        <button class="btn btn-outline-danger"
-                                formaction="/profile/blockContract/${contract.id}"
-                                type="submit">Заблокировать контракт
-                        </button>
-                    </td>
+                    <c:if test="${contract.blockedByAdmin == false}">
+                        <td>
+                            <c:if test="${contract.blockedByClient == false}">
+                                <button class="btn btn-outline-danger"
+                                        onclick="return confirm('Вы уверены, что хотите заблокировать контракт?')"
+                                        formaction="/profile/blockContract/${contract.id}"
+                                        type="submit">Заблокировать контракт
+                                </button>
+                            </c:if>
+                            <c:if test="${contract.blockedByClient == true}">
+                                <button class="btn btn-outline-primary"
+                                        formaction="/profile/unblockContract/${contract.id}"
+                                        type="submit">Разблокировать контракт
+                                </button>
+                            </c:if>
+                        </td>
+                    </c:if>
+                    <c:if test="${contract.blockedByAdmin == true}">
+                        <td>
+                            <h5>Номер заблокирован сотрудником</h5>
+                        </td>
+                    </c:if>
                 </tr>
             </c:forEach>
         </table>

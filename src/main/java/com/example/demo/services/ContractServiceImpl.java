@@ -26,13 +26,9 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public void updateContract(Contract contract) {
-        dao.update(contract);
-    }
-
-    @Override
     public void connectTariff(Contract contract, Tariff tariff) {
-        dao.updateTariff(contract, tariff);
+        contract.setTariff(tariff);
+        dao.update(contract);
     }
 
     @Override
@@ -69,22 +65,43 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public void changeTariff(Contract contract, Tariff tariff) {
-        dao.updateTariff(contract, tariff);
-    }
-
-    @Override
     public void connectOption(Contract contract, Option option) {
-        dao.addOption(contract, option);
+        contract.add(option);
+        dao.update(contract);
     }
 
     @Override
     public void disconnectOption(Contract contract, Option option) {
-        dao.deleteOption(contract, option);
+        contract.delete(option);
+        dao.update(contract);
     }
 
     @Override
     public List<Tariff> getAvailableTariffs(Client client) {
         return dao.getNotAddedToContractTariffs(client.getId());
+    }
+
+    @Override
+    public void blockByAdmin(Contract contract) {
+        contract.setBlockedByAdmin(true);
+        dao.update(contract);
+    }
+
+    @Override
+    public void unblockByAdmin(Contract contract) {
+        contract.setBlockedByAdmin(false);
+        dao.update(contract);
+    }
+
+    @Override
+    public void blockByClient(Contract contract) {
+        contract.setBlockedByClient(true);
+        dao.update(contract);
+    }
+
+    @Override
+    public void unblockByClient(Contract contract) {
+        contract.setBlockedByClient(false);
+        dao.update(contract);
     }
 }

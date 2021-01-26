@@ -1,6 +1,5 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.Client;
 import com.example.demo.models.Contract;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
@@ -26,6 +25,7 @@ public class ContractController {
     @Autowired
     ContractService contractService;
 
+//    FIXME
     @GetMapping(value = "/admin/signContract/{clientId}")
     public String createContract(@PathVariable long clientId, Model model) {
         Contract contract = new Contract();
@@ -47,7 +47,6 @@ public class ContractController {
 
     @GetMapping(value = "/admin/showOptions/{tariffId}/{contractId}")
     public String showOptions(@PathVariable long tariffId, @PathVariable long contractId, Model model) {
-//        model.addAttribute("tariffOptions", optionService.getAllForCertainTariff(tariffId));
         model.addAttribute("connectedOptions", optionService.getAllForCertainContract(contractId, tariffId));
         model.addAttribute("availableOptions", optionService.getAllNotAddedToContract(contractId, tariffId));
         model.addAttribute("contract", contractService.getContractById(contractId));
@@ -75,7 +74,7 @@ public class ContractController {
     public String changeClientTariff(@PathVariable long contractId) {
         Contract contract = contractService.getContractById(contractId);
         Tariff tariff = contractService.getContractById(contractId).getTariff();
-        contractService.changeTariff(contract, tariff);
+        contractService.connectTariff(contract, tariff);
         return "/admin/clientProfile";
     }
 
@@ -83,7 +82,7 @@ public class ContractController {
     public String changeTariffByClient(@PathVariable long contractId) {
         Contract contract = contractService.getContractById(contractId);
         Tariff tariff = contractService.getContractById(contractId).getTariff();
-        contractService.changeTariff(contract, tariff);
+        contractService.connectTariff(contract, tariff);
         return "/client/profile";
     }
 
@@ -101,6 +100,4 @@ public class ContractController {
         model.addAttribute("options", optionService.getAllForCertainContract(contractId, tariff.getId()));
         return "/client/contractOptions";
     }
-
-
 }

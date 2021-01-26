@@ -10,8 +10,6 @@ import java.util.List;
 public interface ContractService {
     Contract saveContract(Contract contract);
 
-    void updateContract(Contract contract);
-
     void connectTariff(Contract contract, Tariff tariff);
 
     Contract getContractById(long id);
@@ -20,11 +18,17 @@ public interface ContractService {
 
     String getGeneratedNumber();
 
-    void changeTariff(Contract contract, Tariff tariff);
-
     void connectOption(Contract contract, Option option);
 
     void disconnectOption(Contract contract, Option option);
 
     List<Tariff> getAvailableTariffs(Client client);
+
+    void blockByClient(Contract contract);
+
+    void unblockByClient(Contract contract);
+
+    void blockByAdmin(Contract contract);
+
+    void unblockByAdmin(Contract contract);
 }

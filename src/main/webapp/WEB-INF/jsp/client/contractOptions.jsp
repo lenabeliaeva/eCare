@@ -1,5 +1,3 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: lenab
@@ -7,6 +5,8 @@
   Time: 19:39
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -18,32 +18,35 @@
 <body>
 <form:form method="post">
     <c:if test="${options.size() > 0}">
-    <table class="table table-hover">
-        <tr>
-            <td>Название</td>
-            <td>Цена</td>
-            <td>Стоимость подключения</td>
-        </tr>
-        <c:forEach var="option" items="${options}">
+        <table class="table table-hover">
             <tr>
-                <td>${option.name}</td>
-                <td>${option.price}</td>
-                <td>${option.connectionCost}</td>
-                <td>
-                    <c:if test="${contract.blockedByClient == false && contract.blockedByAdmin == false}">
-                    <button class="btn btn-outline-danger"
-                            onclick="return confirm('Вы уверены, что хотите отключить опцию?')"
-                            formaction="/disconnectOption/${contract.id}/${option.id}"
-                            type="submit"
-                    >Отключить
-                    </button>
-                    </c:if>
-                </td>
+                <td>Название</td>
+                <td>Цена</td>
+                <td>Стоимость подключения</td>
             </tr>
-        </c:forEach>
-    </table>
+            <c:forEach var="option" items="${options}">
+                <tr>
+                    <td>${option.name}</td>
+                    <td>${option.price}</td>
+                    <td>${option.connectionCost}</td>
+                    <td>
+                        <c:if test="${contract.blockedByClient == false && contract.blockedByAdmin == false}">
+                            <button class="btn btn-outline-danger"
+                                    onclick="return confirm('Вы уверены, что хотите отключить опцию?')"
+                                    formaction="/disconnectOption/${contract.id}/${option.id}"
+                                    type="submit"
+                            >Отключить
+                            </button>
+                        </c:if>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
     </c:if>
-    <button class="btn btn-outline-primary" formaction="/profile/connectOption/${contract.id}/${option.id}">Подключить новыю опции</button>
+    <button class="btn btn-outline-primary" formaction="/profile/connectOption/${contract.id}/${option.id}">Подключить
+        новые опции
+    </button>
+    <button class="btn btn-outline-primary" formaction="/profile/changeTariff">Сменить тариф</button>
 </form:form>
 </body>
 </html>

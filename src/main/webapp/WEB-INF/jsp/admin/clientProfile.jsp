@@ -21,10 +21,26 @@
                     <td>${contract.number}</td>
                     <td>${contract.tariff.name}</td>
                     <td>
-                        <button class="btn btn-outline-primary" formaction="/admin/showContractOptions/${contract.id}"
+                        <button class="btn btn-outline-primary"
+                                formaction="/admin/showContractOptions/${contract.id}"
                                 type="submit"
                                 formmethod="get">Подключенные опции
                         </button>
+                    </td>
+                    <td>
+                        <c:if test="${contract.blockedByClient == false && contract.blockedByAdmin == false}">
+                            <button class="btn btn-outline-danger"
+                                    onclick="return confirm('Вы уверены, что хотите заблокировать контракт?')"
+                                    formaction="/admin/blockContract/${contract.id}"
+                                    type="submit">Заблокировать контракт
+                            </button>
+                        </c:if>
+                        <c:if test="${contract.blockedByClient == true || contract.blockedByAdmin == true}">
+                            <button class="btn btn-outline-primary"
+                                    formaction="/admin/unblockContract/${contract.id}"
+                                    type="submit">Разблокировать контракт
+                            </button>
+                        </c:if>
                     </td>
                 </tr>
             </c:forEach>

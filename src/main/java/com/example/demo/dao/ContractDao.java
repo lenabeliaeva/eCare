@@ -19,11 +19,5 @@ public interface ContractDao {
 
     boolean isNumberUnique(String number);
 
-    void updateTariff(Contract contract, Tariff tariff);
-
-    void addOption(Contract contract, Option option);
-
-    void deleteOption(Contract contract, Option option);
-
     List<Tariff> getNotAddedToContractTariffs(long clientId);
 }

@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.exceptions.UserAlreadyExistsException;
 import com.example.demo.models.Client;
+import com.example.demo.models.Contract;
 import com.example.demo.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,9 +72,24 @@ public class ClientController {
         return "client/profile";
     }
 
+//    TODO
     @GetMapping("/")
     public String showWelcomePage() {
 
         return "welcome";
+    }
+
+    @GetMapping("/profile/blockContract/{contractId}")
+    public String blockContractByClient(@PathVariable long contractId) {
+        Contract contract = contractService.getContractById(contractId);
+        contractService.blockByClient(contract);
+        return "redirect:/profile";
+    }
+
+    @GetMapping("/profile/unblockContract/{contractId}")
+    public String unblockContractByClient(@PathVariable long contractId) {
+        Contract contract = contractService.getContractById(contractId);
+        contractService.unblockByClient(contract);
+        return "redirect:/profile";
     }
 }

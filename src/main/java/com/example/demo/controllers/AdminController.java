@@ -45,4 +45,22 @@ public class AdminController {
         model.addAttribute("clientContracts", clientContracts);
         return "/admin/clientProfile";
     }
+
+    @GetMapping("/admin/blockContract/{contractId}")
+    public String blockContractByClient(@PathVariable long contractId, Model model) {
+        Contract contract = contractService.getContractById(contractId);
+        contractService.blockByAdmin(contract);
+        long clientId = contract.getClient().getId();
+        model.addAttribute("clientId", clientId);
+        return "redirect:/admin/clientProfile/{clientId}";
+    }
+
+    @GetMapping("/admin/unblockContract/{contractId}")
+    public String unblockContractByClient(@PathVariable long contractId, Model model) {
+        Contract contract = contractService.getContractById(contractId);
+        contractService.unblockByAdmin(contract);
+        long clientId = contract.getClient().getId();
+        model.addAttribute("clientId", clientId);
+        return "redirect:/admin/clientProfile/{clientId}";
+    }
 }
