@@ -10,7 +10,8 @@
 </head>
 <body>
 <h3>Номер телефона ${newContract.number}</h3>
-<form:form id="myForm" modelAttribute="newContract" action="/admin/signContract/save">
+<form:form id="myForm" modelAttribute="newContract">
+    <form:input path="number" type="hidden"/>
     <table class="table table-hover">
         <c:forEach var="tariff" items="${tariffs}">
             <tr>
@@ -18,7 +19,7 @@
                 <td>${tariff.price}</td>
                 <td>
                     <button class="btn btn-outline-primary"
-                            formaction="/admin/connectTariff/${newContract.id}/${tariff.id}"
+                            formaction="/admin/signContract/${client.id}/${tariff.id}"
                             type="submit"
                     >Выбрать
                     </button>
