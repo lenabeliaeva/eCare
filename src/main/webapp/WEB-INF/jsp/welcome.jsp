@@ -11,7 +11,9 @@
 <body>
 <form action="/profile">
     <button class="btn btn-outline-primary">Войти</button>
-    <button type="submit" class="btn btn-outline-primary" formmethod="get" formaction="/registration">Регистрация</button>
+    <button type="submit" class="btn btn-outline-primary" formmethod="get" formaction="/registration">
+        Регистрация
+    </button>
 </form>
 </body>
 </html>

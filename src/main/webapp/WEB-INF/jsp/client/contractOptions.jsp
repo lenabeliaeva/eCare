@@ -43,10 +43,18 @@
             </c:forEach>
         </table>
     </c:if>
-    <button class="btn btn-outline-primary" formmethod="get" formaction="/profile/connectOptions/${contract.id}">Подключить
-        новые опции
+    <c:if test="${contract.blockedByAdmin == false && contract.blockedByClient == false}">
+        <button class="btn btn-outline-primary" formmethod="get" formaction="/profile/connectOptions/${contract.id}">
+            Подключить
+            новые опции
+        </button>
+        <button class="btn btn-outline-primary" formaction="/profile/connectTariff/${contract.id}">Сменить тариф
+        </button>
+    </c:if>
+    <button class="btn btn-outline-primary" formmethod="get" formaction="/profile">
+        Вернуться к списку
+        контрактов
     </button>
-    <button class="btn btn-outline-primary" formaction="/profile/connectTariff/${contract.id}">Сменить тариф</button>
 </form:form>
 </body>
 </html>

@@ -30,6 +30,7 @@
                 <td>Дата рождения</td>
                 <td>Паспорт</td>
                 <td>Адрес</td>
+                <td>Email</td>
             </tr>
             <c:forEach var="client" items="${clients}">
                 <tr>
@@ -38,6 +39,7 @@
                     <td>${client.birthDate}</td>
                     <td>${client.passport}</td>
                     <td>${client.address}</td>
+                    <td>${client.email}</td>
                     <td>
                         <button class="btn btn-outline-primary" formaction="/admin/clientProfile/${client.id}"
                                 type="submit">

@@ -13,6 +13,14 @@
 <form:form id="myForm" modelAttribute="newContract">
     <form:input path="number" type="hidden"/>
     <table class="table table-hover">
+        <tr>
+            <td>
+                Тариф
+            </td>
+            <td>
+                Цена
+            </td>
+        </tr>
         <c:forEach var="tariff" items="${tariffs}">
             <tr>
                 <td>${tariff.name}</td>

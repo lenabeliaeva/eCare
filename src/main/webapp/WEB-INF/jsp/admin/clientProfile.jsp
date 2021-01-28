@@ -15,6 +15,7 @@
             <tr>
                 <td>Номер</td>
                 <td>Тариф</td>
+                <td>Цена тарифа</td>
             </tr>
             <c:forEach var="contract" items="${clientContracts}">
                 <tr>

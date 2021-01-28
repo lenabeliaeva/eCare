@@ -9,8 +9,9 @@
     <%@include file="../parts/header.jsp" %>
 </head>
 <body>
-<h2>Здравствуйте, ${client.name}! Это Ваши контракты</h2>
+<h2>Здравствуйте, ${client.name}!</h2>
 <c:if test="${contracts.size() > 0}">
+    <h3>Ваши контракты</h3>
     <form method="get">
         <table class="table table-hover">
             <tr>
@@ -55,7 +56,7 @@
     </form>
 </c:if>
 <c:if test="${contracts.size() == 0}">
-    <p>У Вас пока нет контрактов</p>
+    <h3>У Вас пока нет контрактов</h3>
 </c:if>
 </body>
 </html>
