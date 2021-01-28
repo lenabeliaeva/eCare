@@ -16,6 +16,9 @@
     <%@include file="../parts/header.jsp" %>
 </head>
 <body>
+<h3>Тариф: ${contract.tariff.name}</h3>
+<h3>Цена: ${contract.tariffPrice}</h3>
+<h3>Стоимость подключения: ${contract.connectionCost}</h3>
 <form:form method="post">
     <c:if test="${options.size() > 0}">
         <table class="table table-hover">
