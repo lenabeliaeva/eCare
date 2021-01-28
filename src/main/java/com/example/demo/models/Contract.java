@@ -27,6 +27,12 @@ public class Contract {
     @Column(name = "blocked_by_admin")
     private boolean blockedByAdmin = false;
 
+    @Column(name = "tariff_price")
+    private double tariffPrice;
+
+    @Column(name = "connection_cost")
+    private double connectionCost;
+
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
@@ -45,7 +51,7 @@ public class Contract {
         this.option.add(o);
     }
 
-    public void delete(Option o) {
-        this.option.removeIf(option -> option.getId() == o.getId());
+    public boolean delete(Option o) {
+        return this.option.removeIf(option -> option.getId() == o.getId());
     }
 }

@@ -9,7 +9,7 @@
     <%@include file="../parts/header.jsp" %>
 </head>
 <body>
-<h2>Доступные для подключения опции для тарифа "${addOptionTariff.name}"</h2>
+<h3>Доступные для подключения опции для тарифа "${addOptionTariff.name}"</h3>
 <form:form method="post">
     <table class="table table-hover">
         <tr>
@@ -31,7 +31,30 @@
         </c:forEach>
     </table>
     <h3>Цена тарифа: ${addOptionTariff.price}</h3>
-    <button class="btn btn-outline-primary" type="submit" formmethod="get" formaction="/admin/tariffs">Завершить и перейти к
+    <c:if test="${selectedOptions.size > 0}">
+        <h3>Выбранные опции</h3>
+        <table class="table table-hover">
+            <tr>
+                <td>Название</td>
+                <td>Цена</td>
+                <td>Стоимость подключения</td>
+            </tr>
+            <c:forEach var="option" items="${selectedOptions}">
+                <tr>
+                    <td>${option.name}</td>
+                    <td>${option.price}</td>
+                    <td>${option.connectionCost}</td>
+                    <td>
+                        <button class="btn btn-outline-danger"
+                                formaction="/deleteOption/${addOptionTariff.id}/${option.id}" type="submit">Удалить
+                        </button>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:if>
+    <button class="btn btn-outline-primary" type="submit" formmethod="get" formaction="/admin/tariffs">Завершить и
+        перейти к
         списку тарифов
     </button>
 </form:form>

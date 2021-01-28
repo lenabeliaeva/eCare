@@ -52,5 +52,7 @@
             formaction="/admin/showContractOptions/${contract.id}">Завершить
     </button>
 </form:form>
+<h3>Цена тарифа: ${contract.tariffPrice}</h3>
+<h3>Стоимость подключения: ${contract.connectionCost}</h3>
 </body>
 </html>

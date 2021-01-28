@@ -49,5 +49,7 @@
     </table>
     <button class="btn btn-outline-primary" type="submit" formmethod="get" formaction="/profile/contractOptions/${contract.id}">Завершить</button>
 </form:form>
+<h3>Цена тарифа: ${contract.tariffPrice}</h3>
+<h3>Стоимость подключения: ${contract.connectionCost}</h3>
 </body>
 </html>

@@ -17,11 +17,13 @@
             <tr>
                 <td>Номер</td>
                 <td>Тариф</td>
+                <td>Цена</td>
             </tr>
             <c:forEach var="contract" items="${contracts}">
                 <tr>
                     <td>${contract.number}</td>
                     <td>${contract.tariff.name}</td>
+                    <td>${contract.tariffPrice}</td>
                     <td>
                         <button class="btn btn-outline-primary"
                                 formaction="/profile/contractOptions/${contract.id}"

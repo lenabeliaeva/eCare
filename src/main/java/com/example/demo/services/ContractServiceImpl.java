@@ -27,7 +27,14 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public void connectTariff(Contract contract, Tariff tariff) {
         contract.setTariff(tariff);
+        contract.setTariffPrice(tariff.getPrice());
         contract.getOption().clear();
+        double contractConnectionCost = 0;
+        for (Option o:
+             tariff.getOptions()) {
+            contractConnectionCost += o.getConnectionCost();
+        }
+        contract.setConnectionCost(contractConnectionCost);
         dao.update(contract);
     }
 
@@ -67,13 +74,22 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public void connectOption(Contract contract, Option option) {
         contract.add(option);
+        double newPrice = contract.getTariffPrice() + option.getPrice();
+        contract.setTariffPrice(newPrice);
+        double newConnectionCost = contract.getConnectionCost() + option.getConnectionCost();
+        contract.setConnectionCost(newConnectionCost);
         dao.update(contract);
     }
 
     @Override
     public void disconnectOption(Contract contract, Option option) {
-        contract.delete(option);
-        dao.update(contract);
+        if (contract.delete(option)) {
+            double newPrice = contract.getTariffPrice() - option.getPrice();
+            contract.setTariffPrice(newPrice);
+            double newConnectionCost = contract.getConnectionCost() - option.getConnectionCost();
+            contract.setConnectionCost(newConnectionCost);
+            dao.update(contract);
+        }
     }
 
     @Override

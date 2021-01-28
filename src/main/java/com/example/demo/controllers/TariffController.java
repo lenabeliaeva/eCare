@@ -79,8 +79,10 @@ public class TariffController {
     public String addOptionForTariff(@PathVariable long tariffId, Model model) {
         Tariff tariff = tariffService.getById(tariffId);
         Set<Option> options = optionService.getAllNotAddedToTariff(tariffId);
+        List<Option> selectedOptions = optionService.getAllForCertainTariff(tariffId);
         model.addAttribute("addOptionTariff", tariff);
         model.addAttribute("options", options);
+        model.addAttribute("selectedOptions", selectedOptions);
         return "/admin/chooseOptions";
     }
 
