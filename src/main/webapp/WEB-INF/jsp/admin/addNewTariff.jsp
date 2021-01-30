@@ -3,22 +3,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Добавление нового тарифа</title>
+    <title>Create new tariff</title>
     <%@include file="../parts/header.jsp" %>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
 </head>
 <body>
-<h2>Новый тариф</h2>
+<h2>New tariff</h2>
 <form:form method="post" modelAttribute="newTariff" action="/admin/saveTariff">
     <div class="form-group">
-        <form:label path="name">Введите название</form:label>
-        <form:input type="text" required="name" class="form-control" path="name"/>
+        <form:input type="text" required="name" class="form-control" path="name" placeholder="Name"/>
         <form:errors path="name" cssClass="error"/>
     </div>
     <br>
-    <button type="submit" class="btn btn-outline-primary">Перейти к выбору опций</button>
+    <button type="submit" class="btn btn-outline-primary">Go to options</button>
 </form:form>
 </body>
 </html>

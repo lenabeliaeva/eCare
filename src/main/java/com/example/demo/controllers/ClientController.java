@@ -37,14 +37,14 @@ public class ClientController {
 
     @PostMapping("/registration")
     public String registerClient(@ModelAttribute("client") @Valid Client client, BindingResult br) {
-        if (br.hasErrors()) {
+        if (br.hasErrors() || !client.getPassword().equals(client.getPasswordConfirm())) {
             return "registration";
         }
         try {
             clientService.registerNewClient(client);
             securityService.autologin(client.getEmail(), client.getPassword());
         } catch (UserAlreadyExistsException e) {
-            //TODO:add message about it in view
+            //TODO:add message about it in the view
             return "registration";
         }
         return "redirect:/profile";

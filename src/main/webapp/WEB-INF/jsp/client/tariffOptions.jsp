@@ -10,19 +10,19 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
-    <title>Опции тарифа</title>
+    <title>Tariff options</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <%@include file="../parts/header.jsp" %>
 </head>
 <body>
-<h2>Опции тарифа "${tariff.name}"</h2>
+<h2>"${tariff.name}" options</h2>
 <form:form method="post">
     <table class="table table-hover">
         <tr>
-            <td>Название</td>
-            <td>Цена</td>
-            <td>Стоимость подключения</td>
+            <td>Name</td>
+            <td>Price</td>
+            <td>Connection cost</td>
         </tr>
         <c:forEach var="option" items="${options}">
             <tr>
@@ -32,9 +32,6 @@
             </tr>
         </c:forEach>
     </table>
-<%--    <c:if test="${contract.blockedByClient == false && contract.blockedByAdmin == false}">--%>
-<%--        <button class="btn btn-outline-primary" formaction="/profile/{contractId}">Сменить тариф</button>--%>
-<%--    </c:if>--%>
 </form:form>
 </body>
 </html>

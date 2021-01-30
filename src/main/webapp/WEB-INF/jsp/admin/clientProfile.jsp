@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Контракты клиента</title>
+    <title>Client contract</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <%@include file="../parts/header.jsp" %>
@@ -13,9 +13,9 @@
     <form method="get">
         <table class="table table-hover">
             <tr>
-                <td>Номер</td>
-                <td>Тариф</td>
-                <td>Цена тарифа</td>
+                <td>Number</td>
+                <td>Tariff</td>
+                <td>Tariff Price</td>
             </tr>
             <c:forEach var="contract" items="${clientContracts}">
                 <tr>
@@ -26,7 +26,7 @@
                         <button class="btn btn-outline-primary"
                                 formaction="/admin/showContractOptions/${contract.id}"
                                 type="submit"
-                                formmethod="get">Подключенные опции
+                                formmethod="get">Connected options
                         </button>
                     </td>
                     <td>
@@ -34,13 +34,13 @@
                             <button class="btn btn-outline-danger"
                                     onclick="return confirm('Вы уверены, что хотите заблокировать контракт?')"
                                     formaction="/admin/blockContract/${contract.id}"
-                                    type="submit">Заблокировать контракт
+                                    type="submit">Block contract
                             </button>
                         </c:if>
                         <c:if test="${contract.blockedByClient == true || contract.blockedByAdmin == true}">
                             <button class="btn btn-outline-primary"
                                     formaction="/admin/unblockContract/${contract.id}"
-                                    type="submit">Разблокировать контракт
+                                    type="submit">Unblock contract
                             </button>
                         </c:if>
                     </td>
@@ -50,10 +50,10 @@
     </form>
 </c:if>
 <c:if test="${clientContracts.size() == 0}">
-    <p>У данного клиента нет контрактов</p>
+    <p>The client hasn't got any contracts</p>
 </c:if>
 <form action="/admin/signContract/${client.id}">
-    <button type="submit" class="btn btn-outline-primary">Заключить новый контракт</button>
+    <button type="submit" class="btn btn-outline-primary">Sign new contract</button>
 </form>
 </body>
 </html>

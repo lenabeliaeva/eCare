@@ -10,9 +10,9 @@
 </head>
 <body>
 <form action="/profile">
-    <button class="btn btn-outline-primary">Войти</button>
+    <button class="btn btn-outline-primary">Sign In</button>
     <button type="submit" class="btn btn-outline-primary" formmethod="get" formaction="/registration">
-        Регистрация
+        Sign Up
     </button>
 </form>
 </body>

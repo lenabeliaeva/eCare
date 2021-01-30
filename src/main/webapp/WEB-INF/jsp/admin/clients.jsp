@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Все клиенты</title>
+    <title>Clients</title>
     <%@include file="../parts/header.jsp" %>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
@@ -11,25 +11,25 @@
 <body>
 <div class="container">
     <form class="form-inline" method="get" action="/admin/searchClient">
-        <input type="text" name="number" class="form-control" placeholder="Введите номер телефона клиента">
-        <button type="submit" class="btn btn-primary">Найти</button>
+        <input type="text" name="number" class="form-control" placeholder="Enter client's number">
+        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 </div>
 <c:if test="${clients.size() == 0}">
-    <h3>Клиенты не найдены</h3>
+    <h3>Clients are not found</h3>
     <form action="/admin">
-        <button type="submit" class="btn btn-outline-primary">Вернуться на главную</button>
+        <button type="submit" class="btn btn-outline-primary">Back to the main page</button>
     </form>
 </c:if>
 <c:if test="${clients.size() > 0}">
     <form:form method="get">
         <table class="table table-hover">
             <tr>
-                <td>Имя</td>
-                <td>Фамилия</td>
-                <td>Дата рождения</td>
-                <td>Паспорт</td>
-                <td>Адрес</td>
+                <td>Name</td>
+                <td>Last Name</td>
+                <td>Birth Date</td>
+                <td>Passport</td>
+                <td>Address</td>
                 <td>Email</td>
             </tr>
             <c:forEach var="client" items="${clients}">
@@ -43,7 +43,7 @@
                     <td>
                         <button class="btn btn-outline-primary" formaction="/admin/clientProfile/${client.id}"
                                 type="submit">
-                            Контракты
+                            Contracts
                         </button>
                     </td>
                 </tr>
