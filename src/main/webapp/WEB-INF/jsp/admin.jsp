@@ -12,6 +12,7 @@
     <button class="btn btn-outline-primary" formmethod="get" formaction="/admin/tariffs">Tariffs</button>
     <button class="btn btn-outline-primary" formmethod="get" formaction="/admin/clients">Clients</button>
     <button class="btn btn-outline-primary" formmethod="get" formaction="/admin/options">Options</button>
+    <button class="btn btn-outline-primary" formaction="/admin/send">Send</button>
 </form:form>
 </body>
 </html>

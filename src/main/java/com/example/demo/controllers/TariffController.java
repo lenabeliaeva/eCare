@@ -5,6 +5,7 @@ import com.example.demo.models.Tariff;
 import com.example.demo.services.OptionService;
 import com.example.demo.services.TariffService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,14 @@ public class TariffController {
     TariffService tariffService;
     @Autowired
     OptionService optionService;
+    @Autowired
+    AmqpTemplate template;
+
+    @PostMapping("/admin/send")
+    public String sendMessage() {
+        template.convertAndSend("HELLO!");
+        return "/admin";
+    }
 
     @PostMapping(value = "/admin/addNewTariff")
     public String addNewTariff(Model model) {
