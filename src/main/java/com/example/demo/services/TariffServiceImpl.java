@@ -3,22 +3,35 @@ package com.example.demo.services;
 import com.example.demo.dao.TariffDao;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
+@Slf4j
 @Service
 public class TariffServiceImpl implements TariffService {
 
     @Autowired
     TariffDao tariffDao;
 
+    @Autowired
+    MessageQueueService mqService;
+
     @Override
     @Transactional
     public Tariff add(Tariff tariff) {
-        return tariffDao.add(tariff);
+        Tariff savedTariff = tariffDao.add(tariff);
+        try {
+            mqService.sendMessage("Tariff " + tariff.getName() + " is created");
+        } catch (IOException | TimeoutException e) {
+            log.warn("Couldn't send message. " + e.getMessage());
+        }
+        return savedTariff;
     }
 
     @Override
@@ -30,7 +43,15 @@ public class TariffServiceImpl implements TariffService {
     @Override
     @Transactional
     public boolean delete(Tariff tariff) {
-        return tariffDao.delete(tariff);
+        boolean isSuccessful = tariffDao.delete(tariff);
+        if (isSuccessful) {
+            try {
+                mqService.sendMessage("Tariff " + tariff.getName() + " is deleted");
+            } catch (IOException | TimeoutException e) {
+                log.warn("Couldn't send message. " + e.getMessage());
+            }
+        }
+        return isSuccessful;
     }
 
     @Override
@@ -43,6 +64,11 @@ public class TariffServiceImpl implements TariffService {
     @Transactional
     public void edit(Tariff tariff) {
         tariffDao.edit(tariff);
+        try {
+            mqService.sendMessage("Tariff " + tariff.getName() + " is updated");
+        } catch (IOException | TimeoutException e) {
+            log.warn("Couldn't send message. " + e.getMessage());
+        }
     }
 
     @Override

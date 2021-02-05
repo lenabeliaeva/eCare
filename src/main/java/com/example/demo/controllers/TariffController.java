@@ -1,25 +1,23 @@
 package com.example.demo.controllers;
 
-import com.example.demo.config.RabbitMQConfig;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
 import com.example.demo.services.OptionService;
 import com.example.demo.services.TariffService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeoutException;
 
 @Slf4j
-@Controller
+@RestController
 public class TariffController {
 
     @Autowired
@@ -27,25 +25,15 @@ public class TariffController {
     @Autowired
     OptionService optionService;
 
-    private final RabbitMQConfig sender = new RabbitMQConfig();
-
-    @PostMapping("/admin/send")
-    public String sendMessage() {
-        try {
-            sender.sendMessage("HELLO, WORLD!");
-        } catch (IOException | TimeoutException e) {
-            e.printStackTrace();
-        }
-        return "/admin";
-    }
-
-    @PostMapping(value = "/admin/addNewTariff")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping(value = "/addNewTariff")
     public String addNewTariff(Model model) {
         model.addAttribute("newTariff", new Tariff());
         return "/admin/addNewTariff";
     }
 
-    @PostMapping(value = "/admin/saveTariff")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping(value = "/saveTariff")
     public String saveTariff(@Valid @ModelAttribute("newTariff") Tariff tariff, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "/admin/addNewTariff";
@@ -56,24 +44,27 @@ public class TariffController {
         return "redirect:/admin/addOption/{tariffId}";
     }
 
-    @GetMapping(value = "/admin/tariffs")
-    public String showTariffs(Model model) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "/tariffs")
+    public ResponseEntity<?> showTariffs(Model model) {
         List<?> tariffs = tariffService.getAll();
         model.addAttribute("tariffs", tariffs);
-        return "/admin/tariffs";
+        return ResponseEntity.ok(tariffs);
     }
 
-    @PostMapping(value = "/admin/deleteTariff/{tariffId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping(value = "tariffs/{tariffId}")
     public String deleteTariff(@PathVariable String tariffId) {
         if (tariffService.delete(tariffService.getById(Long.parseLong(tariffId)))) {
             log.info("Tariff is deleted from DB");
         } else {
             log.info("Tariff couldn't be deleted as it is contained in contract(s)");
         }
-        return "redirect:/admin/tariffs";
+        return "redirect:/tariffs";
     }
 
-    @PostMapping(value = "/admin/editTariff/{tariffId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping(value = "tariffs/{tariffId}")
     public String editTariff(@PathVariable String tariffId, Model model) {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         model.addAttribute("editedTariff", tariff);

@@ -1,19 +1,20 @@
-package com.example.demo.config;
+package com.example.demo.services;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 
-@Configuration
-public class RabbitMQConfig {
+@Service
+public class MQServiceImpl implements MessageQueueService{
 
     private static final String QUEUE_NAME = "tariffQueue";
 
+    @Override
     public void sendMessage(String message) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");

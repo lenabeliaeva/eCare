@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,14 +14,14 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "tariffs")
-public class Tariff {
+public class Tariff implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
     @Column(name = "name")
-    @NotBlank(message = "Название тариффа не может быть пустым")
+    @NotBlank(message = "Tariff name can't be empty")
     private String name;
 
     @Column(name = "price")

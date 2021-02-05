@@ -20,8 +20,8 @@ public class ContractServiceImpl implements ContractService {
     ContractDao dao;
 
     @Override
-    public Contract saveContract(Contract contract) {
-        return dao.save(contract);
+    public void saveContract(Contract contract) {
+        dao.save(contract);
     }
 
     @Override
