@@ -1,11 +1,11 @@
 package com.example.demo.controllers;
 
+import com.example.demo.config.RabbitMQConfig;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
 import com.example.demo.services.OptionService;
 import com.example.demo.services.TariffService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,8 +13,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 
 @Slf4j
 @Controller
@@ -24,12 +26,16 @@ public class TariffController {
     TariffService tariffService;
     @Autowired
     OptionService optionService;
-    @Autowired
-    AmqpTemplate template;
+
+    private final RabbitMQConfig sender = new RabbitMQConfig();
 
     @PostMapping("/admin/send")
     public String sendMessage() {
-        template.convertAndSend("HELLO!");
+        try {
+            sender.sendMessage("HELLO, WORLD!");
+        } catch (IOException | TimeoutException e) {
+            e.printStackTrace();
+        }
         return "/admin";
     }
 
