@@ -60,37 +60,6 @@ public class OptionServiceImpl implements OptionService {
         return new HashSet<>(options);
     }
 
-    public void addIncompatibleOption(Option option, Option incompatible) {
-        option.addIncompatible(incompatible);
-        incompatible.addIncompatible(option);
-        dao.update(option);
-        dao.update(incompatible);
-    }
-
-    public void deleteIncompatibleOption(Option option, Option incompatible) {
-        option.deleteIncompatible(incompatible);
-        incompatible.deleteIncompatible(option);
-        dao.update(option);
-        dao.update(incompatible);
-    }
-
-    public List<Option> getIncompatibleOptions(Option option) {
-        return dao.getAllIncompatible(option.getId());
-    }
-
-    public List<Option> getCompatibleOptions(Option option) {
-        List<Option> compatible = dao.getAll();
-        List<Option> incompatible = dao.getAllIncompatible(option.getId());
-        for (int i = 0; i < compatible.size(); ++i) {
-            for (Option value : incompatible) {
-                if (compatible.get(i).getId() == value.getId()) {
-                    compatible.remove(compatible.get(i));
-                }
-            }
-        }
-        return compatible;
-    }
-
     @Override
     @Transactional
     public Option getById(long optionId) {

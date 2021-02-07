@@ -24,13 +24,17 @@
                 <td>
                     <button class="btn btn-outline-danger"
                             onclick="return confirm('Are you sure you want to delete the tariff?')"
-                            formaction="/admin/deleteTariff/${tariff.id}"
+                            formmethod="delete"
+                            formaction="/admin/tariffs/${tariff.id}"
                             type="submit"
                     >Delete
                     </button>
                 </td>
                 <td>
-                    <button class="btn btn-outline-primary" formaction="/admin/editTariff/${tariff.id}" type="submit">
+                    <button class="btn btn-outline-primary"
+                            formmethod="get"
+                            formaction="/admin/tariffs/${tariff.id}"
+                            type="submit">
                         Edit
                     </button>
                 </td>
@@ -42,7 +46,7 @@
             </tr>
         </c:forEach>
     </table>
-    <button class="btn btn-outline-primary" formaction="/admin/addNewTariff">Add new tariff</button>
+    <button class="btn btn-outline-primary" formmethod="get" formaction="/admin/addNewTariff">Add new tariff</button>
 </form:form>
 </body>
 </html>

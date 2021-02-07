@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "options")
-public class Option {
+public class Option implements Serializable {
 
     @Id
     @Column(name = "id")
@@ -24,7 +25,7 @@ public class Option {
     private long id;
 
     @Column(name = "name")
-    @NotBlank(message = "Название опции должно быть не пустым")
+    @NotBlank(message = "Option name can't be empty")
     private String name;
 
     @Column(name = "price")
@@ -45,23 +46,4 @@ public class Option {
             inverseJoinColumns = {@JoinColumn(name = "contract_id")}
     )
     private Set<Contract> contracts;
-
-    @ManyToMany
-    @JoinTable(
-            name = "incompatible_options",
-            joinColumns = {@JoinColumn(name = "option_id")},
-            inverseJoinColumns = {@JoinColumn(name = "incompat_option_id")}
-    )
-    private Set<Option> incompatibleOptions;
-
-    public void addIncompatible(Option option) {
-        if (incompatibleOptions == null) {
-            incompatibleOptions = new HashSet<>();
-        }
-        incompatibleOptions.add(option);
-    }
-
-    public void deleteIncompatible(Option option) {
-        incompatibleOptions.remove(option);
-    }
 }

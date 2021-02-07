@@ -25,15 +25,13 @@ public class TariffController {
     @Autowired
     OptionService optionService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping(value = "/addNewTariff")
+    @GetMapping(value = "/admin/addNewTariff")
     public String addNewTariff(Model model) {
         model.addAttribute("newTariff", new Tariff());
         return "/admin/addNewTariff";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping(value = "/saveTariff")
+    @PostMapping(value = "/admin/saveTariff")
     public String saveTariff(@Valid @ModelAttribute("newTariff") Tariff tariff, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "/admin/addNewTariff";
@@ -44,7 +42,7 @@ public class TariffController {
         return "redirect:/admin/addOption/{tariffId}";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value = "/tariffs")
     public ResponseEntity<?> showTariffs(Model model) {
         List<?> tariffs = tariffService.getAll();
@@ -52,8 +50,7 @@ public class TariffController {
         return ResponseEntity.ok(tariffs);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping(value = "tariffs/{tariffId}")
+    @DeleteMapping(value = "/admin/tariffs/{tariffId}")
     public String deleteTariff(@PathVariable String tariffId) {
         if (tariffService.delete(tariffService.getById(Long.parseLong(tariffId)))) {
             log.info("Tariff is deleted from DB");
@@ -63,8 +60,7 @@ public class TariffController {
         return "redirect:/tariffs";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping(value = "tariffs/{tariffId}")
+    @GetMapping(value = "/admin/tariffs/{tariffId}")
     public String editTariff(@PathVariable String tariffId, Model model) {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         model.addAttribute("editedTariff", tariff);

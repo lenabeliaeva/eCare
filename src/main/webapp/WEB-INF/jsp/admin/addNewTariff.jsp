@@ -11,7 +11,7 @@
 </head>
 <body>
 <h2>New tariff</h2>
-<form:form method="post" modelAttribute="newTariff" action="/saveTariff">
+<form:form method="post" modelAttribute="newTariff" action="/admin/saveTariff">
     <div class="form-group">
         <form:input type="text" required="name" class="form-control" path="name" placeholder="Name"/>
         <form:errors path="name" cssClass="error"/>
