@@ -17,7 +17,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "options")
-public class Option implements Serializable {
+public class Option {
 
     @Id
     @Column(name = "id")

@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.dto.TariffDto;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
 
@@ -8,7 +9,7 @@ import java.util.List;
 public interface TariffService {
     Tariff add(Tariff tariff);
 
-    List<Tariff> getAll();
+    List<TariffDto> getAll();
 
     boolean delete(Tariff tariff);
 

@@ -1,16 +1,21 @@
 package com.example.demo.services;
 
 import com.example.demo.dao.TariffDao;
+import com.example.demo.dto.OptionDto;
+import com.example.demo.dto.TariffDto;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -21,6 +26,9 @@ public class TariffServiceImpl implements TariffService {
 
     @Autowired
     MessageQueueService mqService;
+
+    @Autowired
+    ModelMapper modelMapper;
 
     @Override
     @Transactional
@@ -36,8 +44,12 @@ public class TariffServiceImpl implements TariffService {
 
     @Override
     @Transactional
-    public List<Tariff> getAll() {
-        return tariffDao.getAll();
+    public List<TariffDto> getAll() {
+        List<Tariff> tariffs = tariffDao.getAll();
+        return tariffs
+                .stream()
+                .map(it -> modelMapper.map(it, TariffDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -81,13 +93,13 @@ public class TariffServiceImpl implements TariffService {
     @Override
     @Transactional
     public boolean deleteOption(Tariff tariff, Option option) {
-        if (tariff.getOptions().size() > 1){
+        if (tariff.getOptions().size() > 1) {
             tariff.delete(option);
             tariff.setPrice(tariff.getPrice() - option.getPrice());
             tariffDao.edit(tariff);
             return true;
         } else {
-             return false;
+            return false;
         }
     }
 

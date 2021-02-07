@@ -13,7 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "tariffs")
-public class Tariff implements Serializable {
+public class Tariff {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

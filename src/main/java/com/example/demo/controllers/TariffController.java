@@ -6,8 +6,6 @@ import com.example.demo.services.OptionService;
 import com.example.demo.services.TariffService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -42,12 +40,9 @@ public class TariffController {
         return "redirect:/admin/addOption/{tariffId}";
     }
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value = "/tariffs")
-    public ResponseEntity<?> showTariffs(Model model) {
-        List<?> tariffs = tariffService.getAll();
-        model.addAttribute("tariffs", tariffs);
-        return ResponseEntity.ok(tariffs);
+    public List<?> showTariffs() {
+        return tariffService.getAll();
     }
 
     @DeleteMapping(value = "/admin/tariffs/{tariffId}")
