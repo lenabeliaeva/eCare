@@ -8,10 +8,10 @@
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
 <body>
-<form:form>
-    <button class="btn btn-outline-primary" formmethod="get" formaction="/tariffs">Tariffs</button>
-    <button class="btn btn-outline-primary" formmethod="get" formaction="/admin/clients">Clients</button>
-    <button class="btn btn-outline-primary" formmethod="get" formaction="/admin/options">Options</button>
+<form:form method="get">
+    <button class="btn btn-outline-primary" formaction="/admin/tariffs">Tariffs</button>
+    <button class="btn btn-outline-primary" formaction="/admin/clients">Clients</button>
+    <button class="btn btn-outline-primary" formaction="/admin/options">Options</button>
 </form:form>
 </body>
 </html>

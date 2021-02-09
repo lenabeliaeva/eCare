@@ -6,6 +6,7 @@ import com.example.demo.services.OptionService;
 import com.example.demo.services.TariffService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @Slf4j
-@RestController
+@Controller
 public class TariffController {
 
     @Autowired
@@ -29,7 +30,7 @@ public class TariffController {
         return "/admin/addNewTariff";
     }
 
-    @PostMapping(value = "/admin/saveTariff")
+    @PostMapping(value = "/admin/tariffs")
     public String saveTariff(@Valid @ModelAttribute("newTariff") Tariff tariff, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "/admin/addNewTariff";
@@ -41,8 +42,14 @@ public class TariffController {
     }
 
     @GetMapping(value = "/tariffs")
-    public List<?> showTariffs() {
+    public List<?> getTariffs() {
         return tariffService.getAll();
+    }
+
+    @GetMapping("/admin/tariffs")
+    public String showTariffs(Model model) {
+        model.addAttribute("tariffs", tariffService.getAll());
+        return "admin/tariffs";
     }
 
     @DeleteMapping(value = "/admin/tariffs/{tariffId}")
@@ -52,7 +59,7 @@ public class TariffController {
         } else {
             log.info("Tariff couldn't be deleted as it is contained in contract(s)");
         }
-        return "redirect:/tariffs";
+        return "redirect:/admin/tariffs";
     }
 
     @GetMapping(value = "/admin/tariffs/{tariffId}")
@@ -62,7 +69,7 @@ public class TariffController {
         return "/admin/editTariff";
     }
 
-    @PostMapping(value = "/admin/saveEditedTariff")
+    @PutMapping(value = "/admin/tariffs")
     public String saveEditedTariff(@ModelAttribute("editedTariff") Tariff edited) {
         Tariff initial = tariffService.getById(edited.getId());
         if (edited.getOptions() == null)

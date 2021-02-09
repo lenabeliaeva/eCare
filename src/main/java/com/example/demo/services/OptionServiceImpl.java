@@ -2,7 +2,9 @@ package com.example.demo.services;
 
 import com.example.demo.dao.OptionDao;
 import com.example.demo.dao.OptionDaoImpl;
+import com.example.demo.dto.OptionDto;
 import com.example.demo.models.Option;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -12,12 +14,16 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class OptionServiceImpl implements OptionService {
 
     @Autowired
     OptionDao dao;
+
+    @Autowired
+    ModelMapper modelMapper;
 
     @Override
     @Transactional
@@ -27,8 +33,12 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     @Transactional
-    public List<Option> getAll() {
-        return dao.getAll();
+    public List<OptionDto> getAll() {
+        List<Option> options = dao.getAll();
+        return options
+                .stream()
+                .map(it -> modelMapper.map(it, OptionDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override

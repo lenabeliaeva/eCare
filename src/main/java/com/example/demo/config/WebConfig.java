@@ -16,11 +16,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/admin").setViewName("admin");
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/WEB-INF/res/**").addResourceLocations("/res/");
-    }
-
     @Bean
     public ViewResolver internalResourceViewResolver() {
         InternalResourceViewResolver bean = new InternalResourceViewResolver();

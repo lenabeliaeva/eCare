@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.dto.OptionDto;
 import com.example.demo.models.Option;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.Set;
 
 public interface OptionService {
     void add(Option option);
-    List<Option> getAll();
+    List<OptionDto> getAll();
     List<Option> getAllForCertainTariff(long tariffId);
     Set<Option> getAllNotAddedToTariff(long tariffId);
     List<Option> getAllForCertainContract(long contractId, long tariffId);
