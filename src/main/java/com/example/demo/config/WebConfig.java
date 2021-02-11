@@ -8,7 +8,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.example.demo.controllers"})
+@ComponentScan(basePackages = {"com.example.demo.controllers", "com.example.demo.restcontrollers"})
 public class WebConfig implements WebMvcConfigurer {
 
     @Override

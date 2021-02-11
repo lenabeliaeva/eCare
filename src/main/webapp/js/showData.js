@@ -43,19 +43,15 @@ function showAllTariffs() {
     });
 }
 
-function showAllClients() {
-
-}
-
 function showAllOptions() {
-    $("#source").empty();
+    $("#os").empty();
     $.ajax({
         type: "GET",
-        url: "/admin/options",
+        url: "/options",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (response) {
-            $("#source")
+            $("#os")
                 .append(
                     '<div class="col-sm-12 prop rounded center ">' +
                     '<div class="col-sm-12">' +
@@ -82,10 +78,6 @@ function showAllOptions() {
             }
             $("#table")
                 .append("</table>");
-            $("#source")
-                .append(
-                    "<input type='submit' class=\"btn btn-outline-primary\" onclick='addNewOption()' value='Add new option'/>"
-                );
         },
         error: function () {
             alert("Some problems with getting options :( Please try later ");

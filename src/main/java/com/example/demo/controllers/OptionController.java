@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.dto.OptionDto;
 import com.example.demo.models.Option;
 import com.example.demo.services.OptionService;
 import com.example.demo.services.TariffService;
@@ -21,6 +22,11 @@ public class OptionController {
     TariffService tariffService;
     @Autowired
     OptionService optionService;
+
+    @GetMapping("/options")
+    public @ResponseBody List<OptionDto> getAllOptions() {
+        return optionService.getAll();
+    }
 
     @GetMapping(value = "/admin/options")
     public String showAllOptions(Model model) {

@@ -1,7 +1,6 @@
 package com.example.demo.services;
 
 import com.example.demo.dao.TariffDao;
-import com.example.demo.dto.OptionDto;
 import com.example.demo.dto.TariffDto;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
@@ -88,6 +86,11 @@ public class TariffServiceImpl implements TariffService {
     public void addOption(Tariff tariff, Option option) {
         tariff.setPrice(tariff.getPrice() + option.getPrice());
         tariffDao.addOption(tariff, option);
+        try {
+            mqService.sendMessage("Tariff " + tariff.getName() + " is updated");
+        } catch (IOException | TimeoutException e) {
+            log.warn("Couldn't send message. " + e.getMessage());
+        }
     }
 
     @Override
@@ -97,6 +100,11 @@ public class TariffServiceImpl implements TariffService {
             tariff.delete(option);
             tariff.setPrice(tariff.getPrice() - option.getPrice());
             tariffDao.edit(tariff);
+            try {
+                mqService.sendMessage("Tariff " + tariff.getName() + " is updated");
+            } catch (IOException | TimeoutException e) {
+                log.warn("Couldn't send message. " + e.getMessage());
+            }
             return true;
         } else {
             return false;

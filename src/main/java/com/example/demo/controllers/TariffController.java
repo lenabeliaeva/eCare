@@ -35,14 +35,16 @@ public class TariffController {
         if (result.hasErrors()) {
             return "/admin/addNewTariff";
         }
-        Tariff saved = tariffService.add(tariff);
-        model.addAttribute("tariffId", saved.getId());
-        log.info("New tariff is saved to DB");
-        return "redirect:/admin/addOption/{tariffId}";
+
+//        Tariff saved = tariffService.add(tariff);
+//        model.addAttribute("tariffId", saved.getId());
+//        log.info("New tariff is saved to DB");
+//        return "redirect:/admin/addOption/{tariffId}";
+        return "/admin/tariffs";
     }
 
     @GetMapping(value = "/tariffs")
-    public List<?> getTariffs() {
+    public @ResponseBody List<?> getTariffs() {
         return tariffService.getAll();
     }
 
@@ -52,7 +54,7 @@ public class TariffController {
         return "admin/tariffs";
     }
 
-    @DeleteMapping(value = "/admin/tariffs/{tariffId}")
+    @PostMapping(value = "/admin/tariffs/delete/{tariffId}")
     public String deleteTariff(@PathVariable String tariffId) {
         if (tariffService.delete(tariffService.getById(Long.parseLong(tariffId)))) {
             log.info("Tariff is deleted from DB");
@@ -62,14 +64,14 @@ public class TariffController {
         return "redirect:/admin/tariffs";
     }
 
-    @GetMapping(value = "/admin/tariffs/{tariffId}")
+    @GetMapping(value = "/admin/tariffs/edit/{tariffId}")
     public String editTariff(@PathVariable String tariffId, Model model) {
         Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
         model.addAttribute("editedTariff", tariff);
         return "/admin/editTariff";
     }
 
-    @PutMapping(value = "/admin/tariffs")
+    @PostMapping(value = "/admin/saveEditedTariff")
     public String saveEditedTariff(@ModelAttribute("editedTariff") Tariff edited) {
         Tariff initial = tariffService.getById(edited.getId());
         if (edited.getOptions() == null)
