@@ -18,7 +18,7 @@ public class Contract {
     private long id;
 
     @Column(name = "number")
-    @NotBlank(message = "Номер телефона не может быть пустым")
+    @NotBlank(message = "Phone number can't be empty")
     private String number;
 
     @Column(name = "blocked_by_client")

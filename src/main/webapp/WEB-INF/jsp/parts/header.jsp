@@ -18,5 +18,5 @@
 <%--            </c:if>--%>
 <%--        </ul>--%>
 <%--    </div>--%>
-    <a class="navbar-brand" href="/logout">Выйти</a>
+    <a class="navbar-brand" href="/logout">Log out</a>
 </nav>
