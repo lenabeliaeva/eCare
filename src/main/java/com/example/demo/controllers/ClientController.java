@@ -61,7 +61,7 @@ public class ClientController {
         return "login";
     }
 
-    @GetMapping({"/", "/profile"})
+    @GetMapping("/")
     public String showWelcomePage(Model model) {
         Client client = clientService.getAuthorizedClient();
         if (client != null) {
