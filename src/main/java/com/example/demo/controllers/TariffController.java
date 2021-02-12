@@ -35,12 +35,10 @@ public class TariffController {
         if (result.hasErrors()) {
             return "/admin/addNewTariff";
         }
-
-//        Tariff saved = tariffService.add(tariff);
-//        model.addAttribute("tariffId", saved.getId());
-//        log.info("New tariff is saved to DB");
-//        return "redirect:/admin/addOption/{tariffId}";
-        return "/admin/tariffs";
+        Tariff saved = tariffService.add(tariff);
+        model.addAttribute("tariffId", saved.getId());
+        log.info("New tariff is saved to DB");
+        return "redirect:/admin/addOption/{tariffId}";
     }
 
     @GetMapping(value = "/tariffs")
