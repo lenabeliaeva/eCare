@@ -28,8 +28,11 @@
                     </c:forEach>
                 </ul>
                 <button class="btn btn-outline-primary" type="submit"
-                        formaction="/profile/connectTariff/${contract.id}/${tariff.id}">Choose
+                        formaction="/cart/connectTariff/${tariff.id}">Add to the cart
                 </button>
+<%--                <button class="btn btn-outline-primary" type="submit"--%>
+<%--                        formaction="/profile/connectTariff/${contract.id}/${tariff.id}">Choose--%>
+<%--                </button>--%>
             </div>
         </div>
     </c:forEach>

@@ -39,11 +39,17 @@
                 <td>${option.price}</td>
                 <td>${option.connectionCost}</td>
                 <td>
-                    <button class="btn btn-outline-primary" formaction="/profile/connectOption/${contract.id}/${option.id}"
+                    <button class="btn btn-outline-primary" formaction="/cart/connectOption/${option.id}"
                             type="submit"
-                    >Connect
+                    >Add to the cart
                     </button>
                 </td>
+<%--                <td>--%>
+<%--                    <button class="btn btn-outline-primary" formaction="/profile/connectOption/${contract.id}/${option.id}"--%>
+<%--                            type="submit"--%>
+<%--                    >Connect--%>
+<%--                    </button>--%>
+<%--                </td>--%>
             </tr>
         </c:forEach>
     </table>
