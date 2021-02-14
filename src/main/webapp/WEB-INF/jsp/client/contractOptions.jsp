@@ -53,7 +53,7 @@
         <button class="btn btn-outline-primary" formaction="/profile/connectTariff/${contract.id}">Change tariff
         </button>
     </c:if>
-    <button class="btn btn-outline-primary" formmethod="get" formaction="/profile">
+    <button class="btn btn-outline-primary" formmethod="get" formaction="/">
         Back to contract list
     </button>
 </form:form>

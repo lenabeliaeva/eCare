@@ -105,20 +105,6 @@ public class ContractController {
         return "redirect:/admin/showContractOptions/{contractId}";
     }
 
-    /**
-     * This method is used by client to save selected tariff in contract
-     *
-     * @param tariffId
-     * @return
-     */
-    @PostMapping(value = "/profile/connectTariff/{contractId}/{tariffId}")
-    public String connectTariffByClient(@PathVariable long contractId, @PathVariable long tariffId) {
-        Contract contract = contractService.getContractById(contractId);
-        Tariff tariff = tariffService.getById(tariffId);
-        contractService.connectTariff(contract, tariff);
-        return "redirect:/profile";
-    }
-
     @GetMapping(value = "/admin/connectOptions/{contractId}")
     public String changeOptions(@PathVariable long contractId, Model model) {
         long tariffId = contractService.getContractById(contractId).getTariff().getId();
@@ -143,14 +129,6 @@ public class ContractController {
         model.addAttribute("availableOptions", optionService.getAllNotAddedToContract(contractId, tariffId));
         model.addAttribute("contract", contractService.getContractById(contractId));
         return "/client/addOptionsToContract";
-    }
-
-    @PostMapping(value = "/profile/connectOption/{contractId}/{optionId}")
-    public String connectOptionByClient(@PathVariable long contractId, @PathVariable long optionId) {
-        Contract contract = contractService.getContractById(contractId);
-        Option option = optionService.getById(optionId);
-        contractService.connectOption(contract, option);
-        return "redirect:/profile/connectOptions/{contractId}";
     }
 
     @PostMapping(value = "/admin/disconnectOption/{contractId}/{optionId}")

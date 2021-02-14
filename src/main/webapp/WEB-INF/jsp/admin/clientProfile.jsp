@@ -32,7 +32,7 @@
                     <td>
                         <c:if test="${contract.blockedByClient == false && contract.blockedByAdmin == false}">
                             <button class="btn btn-outline-danger"
-                                    onclick="return confirm('Вы уверены, что хотите заблокировать контракт?')"
+                                    onclick="return confirm('Are you sure you want to block the contract?')"
                                     formaction="/admin/blockContract/${contract.id}"
                                     type="submit">Block contract
                             </button>

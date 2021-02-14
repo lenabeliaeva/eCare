@@ -11,31 +11,35 @@
 <body>
 <h2>Available tariffs</h2>
 <form:form method="post">
-    <c:forEach var="tariff" items="${tariffs}">
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">${tariff.name}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">${tariff.price}</h6>
-                <ul>
-                    <c:forEach var="option" items="${tariff.options}">
-                        <li>
-                                ${option.name}
-                            <br>
-                            Price ${option.price}
-                            <br>
-                            Connection cost ${option.connectionCost}
-                        </li>
-                    </c:forEach>
-                </ul>
-                <button class="btn btn-outline-primary" type="submit"
-                        formaction="/cart/connectTariff/${tariff.id}">Add to the cart
-                </button>
-<%--                <button class="btn btn-outline-primary" type="submit"--%>
-<%--                        formaction="/profile/connectTariff/${contract.id}/${tariff.id}">Choose--%>
-<%--                </button>--%>
+    <div class="row">
+        <c:forEach var="tariff" items="${tariffs}">
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">${tariff.name}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">${tariff.price}</h6>
+                        <ul>
+                            <c:forEach var="option" items="${tariff.options}">
+                                <li>
+                                        ${option.name}
+                                    <br>
+                                    Price ${option.price}
+                                    <br>
+                                    Connection cost ${option.connectionCost}
+                                </li>
+                            </c:forEach>
+                        </ul>
+                        <button class="btn btn-outline-primary" type="submit"
+                                formaction="/cart/connectTariff/${tariff.id}/${contract.id}">Add to the cart
+                        </button>
+                            <%--                <button class="btn btn-outline-primary" type="submit"--%>
+                            <%--                        formaction="/profile/connectTariff/${contract.id}/${tariff.id}">Choose--%>
+                            <%--                </button>--%>
+                    </div>
+                </div>
             </div>
-        </div>
-    </c:forEach>
+        </c:forEach>
+    </div>
 </form:form>
 </body>
 </html>
