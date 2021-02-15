@@ -1,16 +1,13 @@
 package com.example.demo.services;
 
-import com.example.demo.models.Client;
 import com.example.demo.models.Contract;
-import com.example.demo.models.Option;
-import com.example.demo.models.Tariff;
 
 import java.util.List;
 
 public interface ContractService {
-    void saveContract(Contract contract);
+    void saveContract(Contract contract, long clientId, long tariffId);
 
-    void connectTariff(Contract contract, Tariff tariff);
+    void connectTariff(long contractId, long tariffId);
 
     Contract getContractById(long id);
 
@@ -18,17 +15,15 @@ public interface ContractService {
 
     String getGeneratedNumber();
 
-    void connectOption(Contract contract, Option option);
+    void connectOption(long contractId, long optionId);
 
-    void disconnectOption(Contract contract, Option option);
+    void disconnectOption(long contractId, long optionId);
 
-    List<Tariff> getAvailableTariffs(Client client);
+    void blockByClient(long contractId);
 
-    void blockByClient(Contract contract);
+    void unblockByClient(long contractId);
 
-    void unblockByClient(Contract contract);
+    void blockByAdmin(long contractId);
 
-    void blockByAdmin(Contract contract);
-
-    void unblockByAdmin(Contract contract);
+    void unblockByAdmin(long contractId);
 }

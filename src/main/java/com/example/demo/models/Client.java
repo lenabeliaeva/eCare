@@ -1,9 +1,5 @@
 package com.example.demo.models;
 
-import com.example.demo.validators.PasswordMatches;
-import com.example.demo.validators.ValidEmail;
-import com.example.demo.validators.ValidPassport;
-import com.example.demo.validators.ValidPassword;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,7 +15,6 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-//@PasswordMatches
 @Table(name = "clients")
 public class Client implements UserDetails {
     @Id

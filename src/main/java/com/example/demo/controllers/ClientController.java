@@ -76,16 +76,14 @@ public class ClientController {
     }
 
     @GetMapping("/profile/blockContract/{contractId}")
-    public String blockContractByClient(@PathVariable long contractId) {
-        Contract contract = contractService.getContractById(contractId);
-        contractService.blockByClient(contract);
-        return "redirect:/profile";
+    public String blockContract(@PathVariable long contractId) {
+        contractService.blockByClient(contractId);
+        return "redirect:/";
     }
 
     @GetMapping("/profile/unblockContract/{contractId}")
-    public String unblockContractByClient(@PathVariable long contractId) {
-        Contract contract = contractService.getContractById(contractId);
-        contractService.unblockByClient(contract);
-        return "redirect:/profile";
+    public String unblockContract(@PathVariable long contractId) {
+        contractService.unblockByClient(contractId);
+        return "redirect:/";
     }
 }

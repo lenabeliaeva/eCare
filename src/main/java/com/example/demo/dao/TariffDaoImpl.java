@@ -61,22 +61,6 @@ public class TariffDaoImpl implements TariffDao {
     }
 
     @Override
-    public void addOption(Tariff tariff, Option option) {
-        entityManager.getTransaction().begin();
-        tariff.add(option);
-        entityManager.merge(tariff);
-        entityManager.getTransaction().commit();
-    }
-
-    @Override
-    public void deleteOption(Tariff tariff, Option option) {
-        entityManager.getTransaction().begin();
-        tariff.delete(option);
-        entityManager.merge(tariff);
-        entityManager.getTransaction().commit();
-    }
-
-    @Override
     public List<Tariff> getNotAddedToContractTariffs(long tariffId) {
         return entityManager
                 .createQuery("select t from Tariff t where t.id <> :id")

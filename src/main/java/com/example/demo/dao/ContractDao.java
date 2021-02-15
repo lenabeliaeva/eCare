@@ -1,8 +1,6 @@
 package com.example.demo.dao;
 
 import com.example.demo.models.Contract;
-import com.example.demo.models.Option;
-import com.example.demo.models.Tariff;
 
 import java.util.List;
 
@@ -18,6 +16,4 @@ public interface ContractDao {
     void update(Contract contract);
 
     boolean isNumberUnique(String number);
-
-    List<Tariff> getNotAddedToContractTariffsByClient(long clientId);
 }

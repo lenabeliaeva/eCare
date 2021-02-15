@@ -21,5 +21,5 @@ public interface TariffService {
 
     boolean deleteOption(Tariff tariff, Option option);
 
-    List<Tariff> getNotAddedToContractTariffs(Tariff tariff);
+    List<Tariff> getNotAddedToContractTariffs(long tariffId);
 }
