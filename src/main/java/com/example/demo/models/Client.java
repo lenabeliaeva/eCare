@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import com.example.demo.validators.PasswordMatches;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@PasswordMatches
 @Table(name = "clients")
 public class Client implements UserDetails {
     @Id
@@ -22,39 +24,39 @@ public class Client implements UserDetails {
     private long id;
 
     @Column(name = "name")
-    @NotBlank(message = "Имя не может быть пустым")
+    @NotBlank(message = "Name can't be empty")
     private String name;
 
     @Column(name = "last_name")
-    @NotBlank(message = "Фамилия не может быть пустой")
+    @NotBlank(message = "Last name can't be empty")
     private String lastName;
 
     @Column(name = "birth_date")
     private Date birthDate;
 
     @Column(name = "passport")
-    @NotBlank(message = "Пасспорт не может быть пустым")
-    @Pattern(regexp = "\\d{4}\\s\\d{6}", message = "Введите серию и номер в формате 0123 456789")
+    @NotBlank(message = "Passport can't be empty")
+    @Pattern(regexp = "\\d{4}\\s\\d{6}", message = "Enter passport in format 0123 456789")
     private String passport;
 
     @Column(name = "address")
-    @NotBlank(message = "Адрес не может быть пустым")
+    @NotBlank(message = "Address can't be empty")
     private String address;
 
     @Column(name = "e_mail")
-    @NotBlank(message = "Email не может быть пустым")
+    @NotBlank(message = "Email can't be empty")
     @Pattern(regexp = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$",
-            message = "Не похоже на email")
+            message = "Does not look like an email")
     private String email;
 
     @Column(name = "password")
-    @NotBlank(message = "Пароль не может быть пустым")
+    @NotBlank(message = "Password can't be empty")
     @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}",
-            message = "Пароль должен содержать хотя бы одну цифру, одну строчную букву, одну заглавную и длина должна быть не менее 8 символов")
+            message = "Password must contain at least one digit, " +
+                    "one lowercase letter, one uppercase one and length must be not less than 8 symbols")
     private String password;
 
     @Transient
-    @NotBlank(message = "Пароль не может быть пустым")
     private String passwordConfirm;
 
     @OneToMany(mappedBy = "client")

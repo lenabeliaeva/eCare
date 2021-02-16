@@ -13,5 +13,9 @@ public interface ClientDao {
 
     List<Client> findByNumber(String number);
 
+    Client findByPassport(String passport);
+
     List<Client> getAll();
+
+    Client update(Client client);
 }

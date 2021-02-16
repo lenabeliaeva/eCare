@@ -4,6 +4,7 @@ import com.example.demo.models.Client;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.util.LinkedList;
 import java.util.List;
 
 @Repository
@@ -45,7 +46,7 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public List<Client> findByNumber(String number) {
-        List<Client> clients;
+        List<Client> clients = new LinkedList<>();
         try {
             clients = em
                     .createQuery("select c.client from Contract c where c.number = :n")
@@ -53,12 +54,34 @@ public class ClientDaoImpl implements ClientDao {
                     .getResultList();
             return clients;
         } catch (NoResultException e) {
+            return clients;
+        }
+    }
+
+    @Override
+    public Client findByPassport(String passport) {
+        Client client;
+        try {
+            client = (Client) em
+                    .createQuery("select c from Client c where c.passport = :p")
+                    .setParameter("p", passport).setMaxResults(1)
+                    .getSingleResult();
+            return client;
+        } catch (NoResultException e) {
             return null;
         }
     }
 
     @Override
     public List<Client> getAll() {
-        return (List<Client>) em.createQuery("select c from Client c").getResultList();
+        return em.createQuery("select c from Client c").getResultList();
+    }
+
+    @Override
+    public Client update(Client client) {
+        em.getTransaction().begin();
+        em.merge(client);
+        em.getTransaction().commit();
+        return client;
     }
 }

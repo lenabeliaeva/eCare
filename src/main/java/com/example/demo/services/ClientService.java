@@ -16,6 +16,8 @@ public interface ClientService {
 
     List<Client> getAll();
 
+    void editClientProfile(Client client);
+
     Client getAuthorizedClient();
 
     Client getAuthorizedAdmin();

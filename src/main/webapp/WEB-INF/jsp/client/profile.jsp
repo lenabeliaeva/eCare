@@ -7,8 +7,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <%@include file="../parts/header.jsp" %>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 </head>
 <body>
+<script src="${pageContext.request.contextPath}/res/js/profile.js" type="text/javascript"></script>
 <h2>Hello, ${client.name}!</h2>
 <c:if test="${contracts.size() > 0}">
     <h3>Your contracts</h3>
@@ -60,5 +62,35 @@
 <c:if test="${contracts.size() == 0}">
     <h3>You haven't got any contracts yet</h3>
 </c:if>
+<h3>Your info</h3>
+<form:form modelAttribute="client" action="/editProfile">
+    <div class="form-group">
+        <form:input type="text" required="name" class="form-control" path="name" placeholder="Name"/>
+        <form:errors path="name" cssClass="error"/>
+    </div>
+    <div class="form-group">
+        <form:input type="text" required="name" class="form-control" path="lastName" placeholder="Last Name"/>
+        <form:errors path="lastName" cssClass="error"/>
+    </div>
+    <div class="form-group">
+        <form:input type="date" required="name" class="form-control" path="birthDate" placeholder="Birth Date"/>
+        <form:errors path="birthDate" cssClass="error"/>
+    </div>
+    <div class="form-group">
+        <form:input type="text" required="name" class="form-control" path="address" placeholder="Address"/>
+        <form:errors path="address" cssClass="error"/>
+    </div>
+    <div class="form-group">
+        <form:input required="name" class="form-control" path="passport" placeholder="Passport"/>
+        <form:errors path="passport" cssClass="error"/>
+    </div>
+    <div class="form-group">
+        <form:input type="text" required="name" class="form-control" path="email" placeholder="Email"/>
+        <form:errors path="email" cssClass="error"/>
+    </div>
+    <form:input hidden="true" path="id"/>
+    <form:input hidden="true" path="password"/>
+    <button class="btn btn-outline-primary" type="submit">Edit</button>
+</form:form>
 </body>
 </html>

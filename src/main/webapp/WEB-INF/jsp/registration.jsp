@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Registartion</title>
+    <title>Registration</title>
     <%@include file="parts/header.jsp" %>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
@@ -44,7 +44,7 @@
         <form:label path="name">Password</form:label>
         <form:input type="password" required="password" class="form-control" path="password"
                     pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                    title="Пароль должен содержать хотя бы одну цифру, одну строчную букву, одну заглавную и длина должна быть не менее 8 символов"/>
+                    title="Password must contain at least one digit, one lowercase letter, one uppercase one and length must be not less than 8 symbols"/>
         <form:errors path="password" cssClass="error"/>
     </div>
     <div class="form-group">

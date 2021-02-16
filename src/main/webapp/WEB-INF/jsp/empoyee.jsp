@@ -17,7 +17,6 @@
 </head>
 <body>
 <script src="${pageContext.request.contextPath}/res/js/showData.js" type="text/javascript"></script>
-<script src="${pageContext.request.contextPath}/res/js/manipulateData.js" type="text/javascript"></script>
 <div class="btn-group">
     <input onclick="showAllTariffs()" class="btn btn-outline-primary" id="showTariffs" type="submit"
            value="Tariffs"/>

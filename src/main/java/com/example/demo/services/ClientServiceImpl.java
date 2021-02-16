@@ -36,6 +36,9 @@ public class ClientServiceImpl implements ClientService {
         if (dao.findByEmail(client.getEmail()) != null) {
             throw new UserAlreadyExistsException("There is an account with this email: " + client.getEmail());
         }
+        if (dao.findByPassport(client.getPassport()) != null) {
+            throw new UserAlreadyExistsException("There is an account with this passport: " + client.getPassport());
+        }
         client.setPassword(passwordEncoder.encode(client.getPassword()));
         Set<Role> roles = new HashSet<>();
         roles.add(roleDao.getById(1L));
@@ -67,6 +70,48 @@ public class ClientServiceImpl implements ClientService {
         return dao.getAll();
     }
 
+    @Override
+    @Transactional
+    public Client getAuthorizedClient() {
+        String role = getRole();
+        if (role != null) {
+            if (role.equals("ROLE_USER")) {
+                UserDetails userDetails = (UserDetails) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal();
+                return findByEmail(userDetails.getUsername());
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public Client getAuthorizedAdmin() {
+        String role = getRole();
+        if (role != null) {
+            if (role.equals("ROLE_ADMIN")) {
+                UserDetails userDetails = (UserDetails) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal();
+                return findByEmail(userDetails.getUsername());
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public void editClientProfile(Client client) {
+        dao.update(client);
+    }
+
     private String getRole() {
         String role = null;
         Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) SecurityContextHolder
@@ -78,33 +123,5 @@ public class ClientServiceImpl implements ClientService {
             role = authority.getAuthority();
         }
         return role;
-    }
-
-    @Override
-    public Client getAuthorizedClient() {
-        String role = getRole();
-        if (role.equals("ROLE_USER")) {
-            UserDetails userDetails = (UserDetails) SecurityContextHolder
-                    .getContext()
-                    .getAuthentication()
-                    .getPrincipal();
-            return findByEmail(userDetails.getUsername());
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public Client getAuthorizedAdmin() {
-        String role = getRole();
-        if (role.equals("ROLE_ADMIN")) {
-            UserDetails userDetails = (UserDetails) SecurityContextHolder
-                    .getContext()
-                    .getAuthentication()
-                    .getPrincipal();
-            return findByEmail(userDetails.getUsername());
-        } else {
-            return null;
-        }
     }
 }
