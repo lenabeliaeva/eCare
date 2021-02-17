@@ -7,11 +7,6 @@
     <%@include file="../parts/header.jsp" %>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <script>
-        function confirmDelete(question) {
-            const result = confirm(question);
-        }
-    </script>
 </head>
 <body>
 <h2>Options</h2>
@@ -29,12 +24,19 @@
                 <td>${option.connectionCost}</td>
                 <td>
                     <button class="btn btn-outline-danger"
-                            onclick="return confirm('Are you sure you want ot delete the  option?')"
+                            onclick="return confirm('Are you sure you want to delete the option?')"
                             formaction="/deleteOption/${option.id}" type="submit">Delete
                     </button>
                 </td>
                 <td>
-                    <button class="btn btn-outline-primary" formaction="/editOption/${option.id}" type="submit">Edit
+                    <button class="btn btn-outline-primary" formmethod="get" formaction="/editOption/${option.id}"
+                            type="submit">Edit
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-outline-primary" formmethod="get"
+                            formaction="/admin/options/incompatible/${option.id}">
+                        Incompatible options
                     </button>
                 </td>
             </tr>

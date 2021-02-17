@@ -17,8 +17,6 @@ public interface OptionDao {
 
     List<Option> getAllNotAddedToContract(long contractId, long tariffId);
 
-    List<Option> getAllIncompatible(long optionId);
-
     void delete(Option option);
 
     Option getById(long id);

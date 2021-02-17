@@ -65,13 +65,6 @@ public class OptionDaoImpl implements OptionDao {
                 .getResultList();
     }
 
-    public List<Option> getAllIncompatible(long optionId) {
-        return entityManager
-                .createQuery("select o from Option o join o.incompatibleOptions where o.id = :id")
-                .setParameter("id", optionId)
-                .getResultList();
-    }
-
     @Override
     public void delete(Option option) {
         entityManager.getTransaction().begin();

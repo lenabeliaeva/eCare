@@ -13,7 +13,7 @@ public interface TariffDao {
 
     Tariff getById(long id);
 
-    void edit(Tariff tariff);
+    void update(Tariff tariff);
 
     List<Tariff> getNotAddedToContractTariffs(long tariffId);
 }

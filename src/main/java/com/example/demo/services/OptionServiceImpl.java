@@ -77,13 +77,61 @@ public class OptionServiceImpl implements OptionService {
     @Override
     @Transactional
     public void edit(Option option) {
+        Option initialOption = getById(option.getId());
+        if (option.getTariff() == null) {
+            option.setTariff(initialOption.getTariff());
+        }
         dao.update(option);
     }
 
     @Override
     @Transactional
-    public void delete(Option option) {
+    public void delete(long optionId) {
+        Option option = dao.getById(optionId);
         dao.delete(option);
+    }
+
+    @Override
+    @Transactional
+    public void addIncompatibleOption(long firstOptionId, long secondOptionId) {
+        Option first = getById(firstOptionId);
+        Option second = getById(secondOptionId);
+        first.addIncompatibleOption(second);
+        second.addIncompatibleOption(first);
+        dao.update(first);
+        dao.update(second);
+    }
+
+    @Override
+    @Transactional
+    public void deleteIncompatibleOption(long firstOptionId, long secondOptionId) {
+        Option first = getById(firstOptionId);
+        Option second = getById(secondOptionId);
+        first.deleteIncompatibleOption(second);
+        second.deleteIncompatibleOption(first);
+        dao.update(first);
+        dao.update(second);
+    }
+
+    @Override
+    @Transactional
+    public Set<Option> getIncompatibleOptions(long optionId) {
+        Option option = getById(optionId);
+        return option.getIncompatibleOptions();
+    }
+
+    @Override
+    @Transactional
+    public List<OptionDto> getCompatible(long optionId) {
+        List<OptionDto> compatible = getAll();
+        Set<Option> incompatible = getById(optionId).getIncompatibleOptions();
+        for (Option o:
+             incompatible) {
+            long currentOptionId = o.getId();
+            compatible.removeIf(optionDto -> optionDto.getId() == currentOptionId);
+        }
+        compatible.removeIf(o -> o.getId() == optionId);
+        return compatible;
     }
 
 }

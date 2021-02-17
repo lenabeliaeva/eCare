@@ -73,7 +73,7 @@ public class TariffServiceImpl implements TariffService {
     @Override
     @Transactional
     public void edit(Tariff tariff) {
-        tariffDao.edit(tariff);
+        tariffDao.update(tariff);
         try {
             mqService.sendMessage("Tariff " + tariff.getName() + " is updated");
         } catch (IOException | TimeoutException e) {
@@ -84,9 +84,10 @@ public class TariffServiceImpl implements TariffService {
     @Override
     @Transactional
     public void addOption(Tariff tariff, Option option) {
+
         tariff.setPrice(tariff.getPrice() + option.getPrice());
         tariff.add(option);
-        tariffDao.edit(tariff);
+        tariffDao.update(tariff);
         try {
             mqService.sendMessage("Tariff " + tariff.getName() + " is updated");
         } catch (IOException | TimeoutException e) {
@@ -100,7 +101,7 @@ public class TariffServiceImpl implements TariffService {
         if (tariff.getOptions().size() > 1) {
             tariff.delete(option);
             tariff.setPrice(tariff.getPrice() - option.getPrice());
-            tariffDao.edit(tariff);
+            tariffDao.update(tariff);
             try {
                 mqService.sendMessage("Tariff " + tariff.getName() + " is updated");
             } catch (IOException | TimeoutException e) {

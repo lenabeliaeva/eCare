@@ -23,5 +23,13 @@ public interface OptionService {
 
     void edit(Option option);
 
-    void delete(Option option);
+    void delete(long optionId);
+
+    void addIncompatibleOption(long firstOptionId, long secondOptionId);
+
+    void deleteIncompatibleOption(long firstOptionId, long secondOptionId);
+
+    Set<Option> getIncompatibleOptions(long optionId);
+
+    List<OptionDto> getCompatible(long optionId);
 }

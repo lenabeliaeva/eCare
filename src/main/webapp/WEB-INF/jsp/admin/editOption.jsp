@@ -9,7 +9,7 @@
 </head>
 <body>
 <h2>Enter new information</h2>
-<form:form method="post" modelAttribute="editedOption" action="/saveEditedOption">
+<form:form method="post" modelAttribute="editedOption" action="/editOption">
     <form:input hidden="true" path="id"/>
     <div class="form-group">
         <form:input type="text" required="name" class="form-control" path="name" placeholder="Name"/>

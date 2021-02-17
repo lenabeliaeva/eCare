@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -41,4 +42,20 @@ public class Option {
             inverseJoinColumns = {@JoinColumn(name = "contract_id")}
     )
     private Set<Contract> contracts;
+
+    @ManyToMany
+    @JoinTable(
+            name = "incompatible_options",
+            joinColumns = {@JoinColumn(name = "option_id")},
+            inverseJoinColumns = {@JoinColumn(name = "incompat_option_id")}
+    )
+    private Set<Option> incompatibleOptions = new HashSet<>();
+
+    public void addIncompatibleOption(Option option) {
+        incompatibleOptions.add(option);
+    }
+
+    public void deleteIncompatibleOption(Option option) {
+        incompatibleOptions.removeIf(option1 -> option1.getId() == option.getId());
+    }
 }

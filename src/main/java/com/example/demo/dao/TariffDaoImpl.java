@@ -51,7 +51,7 @@ public class TariffDaoImpl implements TariffDao {
     }
 
     @Override
-    public void edit(Tariff tariff) {
+    public void update(Tariff tariff) {
         entityManager.getTransaction().begin();
         entityManager.merge(tariff);
         entityManager.getTransaction().commit();
