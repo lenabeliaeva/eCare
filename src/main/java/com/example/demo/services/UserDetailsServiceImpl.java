@@ -1,7 +1,6 @@
 package com.example.demo.services;
 
 import com.example.demo.dao.ClientDao;
-import com.example.demo.dao.ClientDaoImpl;
 import com.example.demo.models.Client;
 import com.example.demo.models.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("Client is not found");
         }
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (Role role:
+        for (Role role :
                 client.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }

@@ -1,7 +1,6 @@
 package com.example.demo.dao;
 
 import com.example.demo.models.Contract;
-import com.example.demo.models.Tariff;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;

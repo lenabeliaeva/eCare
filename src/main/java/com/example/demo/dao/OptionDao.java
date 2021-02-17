@@ -3,7 +3,6 @@ package com.example.demo.dao;
 import com.example.demo.models.Option;
 
 import java.util.List;
-import java.util.Set;
 
 public interface OptionDao {
     void add(Option option);

@@ -52,6 +52,6 @@ public class Contract {
     }
 
     public boolean delete(Option o) {
-        return this.option.removeIf(option -> option.getId() == o.getId());
+        return this.option.removeIf(it -> it.getId() == o.getId());
     }
 }

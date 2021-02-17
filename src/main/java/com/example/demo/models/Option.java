@@ -1,16 +1,11 @@
 package com.example.demo.models;
 
-import liquibase.pro.packaged.J;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter

@@ -1,15 +1,12 @@
 package com.example.demo.dao;
 
-import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
-import org.postgresql.util.PSQLException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository
