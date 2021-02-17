@@ -42,17 +42,6 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public void connectTariff(long contractId, long tariffId) {
-        Contract contract = dao.getById(contractId);
-        Tariff tariff = tariffDao.getById(tariffId);
-        contract.setTariff(tariff);
-        contract.setTariffPrice(tariff.getPrice());
-        contract.getOption().clear();
-        contract.setConnectionCost(calcConnectionCost(tariff));
-        dao.update(contract);
-    }
-
-    @Override
     public Contract getContractById(long id) {
         return dao.getById(id);
     }
@@ -69,18 +58,6 @@ public class ContractServiceImpl implements ContractService {
             number = generateNumber();
         }
         return number;
-    }
-
-    @Override
-    public void connectOption(long contractId, long optionId) {
-        Contract contract = dao.getById(contractId);
-        Option option = optionDao.getById(optionId);
-        contract.add(option);
-        double newPrice = contract.getTariffPrice() + option.getPrice();
-        contract.setTariffPrice(newPrice);
-        double newConnectionCost = contract.getConnectionCost() + option.getConnectionCost();
-        contract.setConnectionCost(newConnectionCost);
-        dao.update(contract);
     }
 
     @Override
