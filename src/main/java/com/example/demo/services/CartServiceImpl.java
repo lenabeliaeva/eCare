@@ -114,8 +114,10 @@ public class CartServiceImpl implements CartService {
         CartItem cartItem = new CartItem();
         Contract contract = contractDao.getById(contractId);
         Tariff tariff = contract.getTariff();
+        Set<Option> options = contract.getOption();
         cartItem.setContract(contract);
         cartItem.setTariff(tariff);
+        cartItem.setOptions(options);
         return cartItem;
     }
 }

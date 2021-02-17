@@ -6,6 +6,7 @@ import com.example.demo.exceptions.UserAlreadyExistsException;
 import com.example.demo.models.Client;
 import com.example.demo.models.Role;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -72,44 +73,44 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     @Transactional
+    public void editClientProfile(Client client) {
+        String authName = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+        Client oldClient = findByEmail(authName);
+        client.setRoles(oldClient.getRoles());
+        dao.update(client);
+    }
+
+    @Override
+    @Transactional
     public Client getAuthorizedClient() {
         String role = getRole();
-        if (role != null) {
-            if (role.equals("ROLE_USER")) {
-                UserDetails userDetails = (UserDetails) SecurityContextHolder
-                        .getContext()
-                        .getAuthentication()
-                        .getPrincipal();
-                return findByEmail(userDetails.getUsername());
-            } else {
-                return null;
-            }
+        if (role != null && role.equals("ROLE_USER")) {
+            UserDetails userDetails = (UserDetails) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+            return findByEmail(userDetails.getUsername());
+        } else {
+            return null;
         }
-        return null;
     }
 
     @Override
     @Transactional
     public Client getAuthorizedAdmin() {
         String role = getRole();
-        if (role != null) {
-            if (role.equals("ROLE_ADMIN")) {
-                UserDetails userDetails = (UserDetails) SecurityContextHolder
-                        .getContext()
-                        .getAuthentication()
-                        .getPrincipal();
-                return findByEmail(userDetails.getUsername());
-            } else {
-                return null;
-            }
+        if (role != null && role.equals("ROLE_ADMIN")) {
+            UserDetails userDetails = (UserDetails) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+            return findByEmail(userDetails.getUsername());
+        } else {
+            return null;
         }
-        return null;
-    }
-
-    @Override
-    @Transactional
-    public void editClientProfile(Client client) {
-        dao.update(client);
     }
 
     private String getRole() {

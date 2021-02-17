@@ -40,7 +40,7 @@ public class ClientController {
         } catch (UserAlreadyExistsException e) {
             return "registration";
         }
-        return "redirect:/profile";
+        return "redirect:/";
     }
 
     @GetMapping("/login")
@@ -60,7 +60,7 @@ public class ClientController {
         if (client != null) {
             model.addAttribute("client", client);
             model.addAttribute("contracts", contractService.getClientsContracts(client.getId()));
-            return "client/profile";
+            return "profile";
         } else if (clientService.getAuthorizedAdmin() != null) {
             return "redirect:/admin";
         } else {

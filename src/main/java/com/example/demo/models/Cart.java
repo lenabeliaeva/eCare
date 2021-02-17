@@ -6,19 +6,13 @@ import lombok.Setter;
 import java.util.LinkedList;
 import java.util.List;
 
+@Getter
+@Setter
 public class Cart {
-    @Getter
-    @Setter
+
     private double totalPrice;
 
-    @Setter
     private List<CartItem> cartItems = new LinkedList<>();
-
-    public List<CartItem> getCartItems() {
-        cartItems.removeIf(item ->
-                (item.getOptions().isEmpty() || item.getOptions() == null) && item.getTariff() == null);
-        return cartItems;
-    }
 
     public void addItem(CartItem item) {
         cartItems.add(item);

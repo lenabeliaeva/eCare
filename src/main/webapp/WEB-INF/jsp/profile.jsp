@@ -6,11 +6,10 @@
     <title>Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <%@include file="../parts/header.jsp" %>
+    <%@include file="parts/header.jsp" %>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 </head>
 <body>
-<script src="${pageContext.request.contextPath}/res/js/profile.js" type="text/javascript"></script>
 <h2>Hello, ${client.name}!</h2>
 <c:if test="${contracts.size() > 0}">
     <h3>Your contracts</h3>
@@ -28,7 +27,7 @@
                     <td>${contract.tariffPrice}</td>
                     <td>
                         <button class="btn btn-outline-primary"
-                                formaction="/profile/contractOptions/${contract.id}"
+                                formaction="/contract/options/${contract.id}"
                                 type="submit">Connected options
                         </button>
                     </td>

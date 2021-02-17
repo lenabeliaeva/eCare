@@ -36,7 +36,7 @@
                         <c:if test="${contract.blockedByClient == false && contract.blockedByAdmin == false}">
                             <button class="btn btn-outline-danger"
                                     onclick="return confirm('Are you sure you want to disconnect the option?')"
-                                    formaction="/profile/disconnectOption/${contract.id}/${option.id}"
+                                    formaction="/contract/disconnectOption/${contract.id}/${option.id}"
                                     type="submit"
                             >Disconnect
                             </button>
@@ -47,15 +47,13 @@
         </table>
     </c:if>
     <c:if test="${contract.blockedByAdmin == false && contract.blockedByClient == false}">
-        <button class="btn btn-outline-primary" formmethod="get" formaction="/profile/connectOptions/${contract.id}">
+        <button class="btn btn-outline-primary" formmethod="get" formaction="/contract/connectOptions/${contract.id}">
             Connect new options
         </button>
-        <button class="btn btn-outline-primary" formaction="/profile/connectTariff/${contract.id}">Change tariff
+        <button class="btn btn-outline-primary" formmethod="get" formaction="/contract/changeTariff/${contract.id}">
+            Change tariff
         </button>
     </c:if>
-    <button class="btn btn-outline-primary" formmethod="get" formaction="/">
-        Back to contract list
-    </button>
 </form:form>
 </body>
 </html>

@@ -24,7 +24,7 @@
                     <td>${contract.tariffPrice}</td>
                     <td>
                         <button class="btn btn-outline-primary"
-                                formaction="/admin/showContractOptions/${contract.id}"
+                                formaction="/contract/options/${contract.id}"
                                 type="submit"
                                 formmethod="get">Connected options
                         </button>
