@@ -39,6 +39,12 @@
                         Incompatible options
                     </button>
                 </td>
+                <td>
+                    <button class="btn btn-outline-primary" formmethod="get"
+                            formaction="/admin/options/dependent/${option.id}">
+                        Dependent options
+                    </button>
+                </td>
             </tr>
         </c:forEach>
     </table>

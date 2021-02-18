@@ -96,4 +96,24 @@ public class OptionController {
         optionService.deleteIncompatibleOption(firstId, secondId);
         return "redirect:/admin/options/incompatible/{firstId}";
     }
+
+    @GetMapping("/admin/options/dependent/{optionId}")
+    public String showDependentOptions(@PathVariable long optionId, Model model) {
+        model.addAttribute("first", optionService.getById(optionId));
+        model.addAttribute("dependent", optionService.getDependentOptions(optionId));
+        model.addAttribute("independent", optionService.getIndependentOptions(optionId));
+        return "admin/dependentOptions";
+    }
+
+    @PostMapping("/admin/options/dependent/{firstId}/{secondId}")
+    public String addDependentOption(@PathVariable long firstId, @PathVariable long secondId) {
+        optionService.addDependentOption(firstId, secondId);
+        return "redirect:/admin/options/dependent/{firstId}";
+    }
+
+    @PostMapping("/admin/options/deleteDependent/{firstId}/{secondId}")
+    public String deleteDependentOption(@PathVariable long firstId, @PathVariable long secondId) {
+        optionService.deleteDependentOption(firstId, secondId);
+        return "redirect:/admin/options/dependent/{firstId}";
+    }
 }

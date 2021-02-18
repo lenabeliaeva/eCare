@@ -9,22 +9,22 @@
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
 <body>
-<h3>Connected options</h3>
-<table class="table table-hover">
-    <tr>
-        <td>Name</td>
-        <td>Price</td>
-        <td>Connection cost</td>
-    </tr>
-    <c:forEach var="option" items="${connectedOptions}">
-        <tr>
-            <td>${option.name}</td>
-            <td>${option.price}</td>
-            <td>${option.connectionCost}</td>
-        </tr>
-    </c:forEach>
-</table>
-<br>
+<%--<h3>Connected options</h3>--%>
+<%--<table class="table table-hover">--%>
+<%--    <tr>--%>
+<%--        <td>Name</td>--%>
+<%--        <td>Price</td>--%>
+<%--        <td>Connection cost</td>--%>
+<%--    </tr>--%>
+<%--    <c:forEach var="option" items="${connectedOptions}">--%>
+<%--        <tr>--%>
+<%--            <td>${option.name}</td>--%>
+<%--            <td>${option.price}</td>--%>
+<%--            <td>${option.connectionCost}</td>--%>
+<%--        </tr>--%>
+<%--    </c:forEach>--%>
+<%--</table>--%>
+<%--<br>--%>
 <h3>Available options</h3>
 <form:form>
     <table class="table table-hover">

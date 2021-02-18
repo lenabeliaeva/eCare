@@ -71,15 +71,14 @@ public class ContractController {
     }
 
     /**
-     * This method is used to show connected to contract options and available for connection
+     * This method is used to show available for connection options
      * @param contractId
      * @param model
-     * @return view with two options list
+     * @return view with options list
      */
     @GetMapping(value = "/contract/connectOptions/{contractId}")
     public String showOptions(@PathVariable long contractId, Model model) {
         Contract contract = contractService.getContractById(contractId);
-        model.addAttribute("connectedOptions", optionService.getContractOptions(contract));
         model.addAttribute("availableOptions", optionService.getAllNotAddedToContractOptions(contract));
         model.addAttribute("contract", contract);
         return "/contract/addOptionsToContract";
@@ -91,6 +90,12 @@ public class ContractController {
         return "redirect:/contract/options/{contractId}";
     }
 
+    /**
+     * This method is used to show options included in contract and tariff
+     * @param contractId
+     * @param model
+     * @return view with options list
+     */
     @GetMapping(value = "/contract/options/{contractId}")
     public String showContractOptions(@PathVariable long contractId, Model model) {
         Contract contract = contractService.getContractById(contractId);

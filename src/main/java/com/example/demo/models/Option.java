@@ -51,6 +51,14 @@ public class Option {
     )
     private Set<Option> incompatibleOptions;
 
+    @OneToMany
+    @JoinTable(
+            name = "dependent_options",
+            joinColumns = {@JoinColumn(name = "option_id")},
+            inverseJoinColumns = {@JoinColumn(name = "dependent_option_id")}
+    )
+    private Set<Option> dependentOptions;
+
     public void addIncompatibleOption(Option option) {
         if (incompatibleOptions == null) {
             incompatibleOptions = new HashSet<>();
@@ -60,5 +68,28 @@ public class Option {
 
     public void deleteIncompatibleOption(Option option) {
         incompatibleOptions.removeIf(option1 -> option1.getId() == option.getId());
+    }
+
+    public void addDependentOption(Option option) {
+        if (dependentOptions == null) {
+            dependentOptions = new HashSet<>();
+        }
+        dependentOptions.add(option);
+    }
+
+    public void deleteDependentOption(Option option) {
+        dependentOptions.removeIf(o -> o.getId() == option.getId());
+    }
+
+    public boolean isDependentFrom(Set<Option> alreadyAddedOptions) {
+        for (Option option :
+                alreadyAddedOptions) {
+            if (option.getDependentOptions()
+                            .stream()
+                            .anyMatch(o -> o.getId() == this.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -32,4 +32,12 @@ public interface OptionService {
     Set<Option> getIncompatibleOptions(long optionId);
 
     List<Option> getCompatible(long optionId);
+
+    void addDependentOption(long firstOptionId, long secondOptionId);
+
+    void deleteDependentOption(long firstOptionId, long secondOptionId);
+
+    Set<Option> getDependentOptions(long optionId);
+
+    List<Option> getIndependentOptions(long optionId);
 }

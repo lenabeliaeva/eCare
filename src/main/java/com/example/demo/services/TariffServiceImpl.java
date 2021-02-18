@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
@@ -87,13 +88,15 @@ public class TariffServiceImpl implements TariffService {
     @Override
     @Transactional
     public void addOption(Tariff tariff, Option option) {
-        tariff.setPrice(tariff.getPrice() + option.getPrice());
-        tariff.add(option);
-        tariffDao.update(tariff);
-        try {
-            mqService.sendMessage("Tariff " + tariff.getName() + " is updated");
-        } catch (IOException | TimeoutException e) {
-            log.warn("Couldn't send message. " + e.getMessage());
+        if (checkCompatibility(option.getId(), tariff.getOptions()) && option.isDependentFrom(tariff.getOptions())) {
+            tariff.setPrice(tariff.getPrice() + option.getPrice());
+            tariff.add(option);
+            tariffDao.update(tariff);
+            try {
+                mqService.sendMessage("Tariff " + tariff.getName() + " is updated");
+            } catch (IOException | TimeoutException e) {
+                log.warn("Couldn't send message. " + e.getMessage());
+            }
         }
     }
 
@@ -121,5 +124,17 @@ public class TariffServiceImpl implements TariffService {
         List<Tariff> tariffs = tariffDao.getAll();
         tariffs.removeIf(t -> t.getId() == tariffId);
         return tariffs;
+    }
+
+    private boolean checkCompatibility(long optionId, Set<Option> alreadyAddedOptions) {
+        for (Option option :
+                alreadyAddedOptions) {
+            if (option.getIncompatibleOptions()
+                    .stream()
+                    .anyMatch(o -> o.getId() == optionId)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

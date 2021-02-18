@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 
 @Service
@@ -36,17 +35,31 @@ public class CartServiceImpl implements CartService {
         cartItem.setConnectionCost(updateCartItemConnectionCost(cartItem));
     }
 
+    /**
+     * This method is used to add an option to a cart.
+     * First of all, the option is checked for compatibility with other options.
+     * If the cart hasn't got items for the contract, new cart item has to be created to save option there.
+     *
+     * @param cart       Cart object from session
+     * @param optionId   to get Option entity
+     * @param contractId to get Contract entity
+     */
     @Override
     public void addOption(Cart cart, long optionId, long contractId) {
         Option option = optionDao.getById(optionId);
-        CartItem cartItem = cart.getItemByContract(contractId);
-        if (cartItem == null) {
-            cartItem = createCartItem(contractId);
-            cart.addItem(cartItem);
+        Contract contract = contractDao.getById(contractId);
+        Set<Option> allCartItemOptions = new HashSet<>(contract.getOption());
+        allCartItemOptions.addAll(contract.getTariff().getOptions());
+        if (checkCompatibility(optionId, allCartItemOptions) && option.isDependentFrom(allCartItemOptions)) {
+            CartItem cartItem = cart.getItemByContract(contractId);
+            if (cartItem == null) {
+                cartItem = createCartItem(contractId);
+                cart.addItem(cartItem);
+            }
+            cartItem.addOption(option);
+            cartItem.setPrice(updateCartItemPrice(cartItem));
+            cartItem.setConnectionCost(updateCartItemConnectionCost(cartItem));
         }
-        cartItem.addOption(option);
-        cartItem.setPrice(updateCartItemPrice(cartItem));
-        cartItem.setConnectionCost(updateCartItemConnectionCost(cartItem));
     }
 
     @Override
@@ -66,8 +79,8 @@ public class CartServiceImpl implements CartService {
     @Override
     public void submitAndAddToContract(Cart cart) {
         Contract contract;
-        for (CartItem item:
-             cart.getCartItems()) {
+        for (CartItem item :
+                cart.getCartItems()) {
             contract = item.getContract();
             contract.setTariff(item.getTariff());
             contract.setOption(item.getOptions());
@@ -122,5 +135,23 @@ public class CartServiceImpl implements CartService {
         cartItem.setTariff(tariff);
         cartItem.setOptions(options);
         return cartItem;
+    }
+
+    /**
+     *
+     * @param optionId
+     * @param alreadyAddedOptions
+     * @return
+     */
+    private boolean checkCompatibility(long optionId, Set<Option> alreadyAddedOptions) {
+        for (Option option :
+                alreadyAddedOptions) {
+            if (option.getIncompatibleOptions()
+                    .stream()
+                    .anyMatch(o -> o.getId() == optionId)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

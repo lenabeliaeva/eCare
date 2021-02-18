@@ -57,6 +57,9 @@ public class OptionServiceImpl implements OptionService {
         if (option.getIncompatibleOptions() == null) {
             option.setIncompatibleOptions(initialOption.getIncompatibleOptions());
         }
+        if (option.getDependentOptions() == null) {
+            option.setDependentOptions(initialOption.getDependentOptions());
+        }
         if (option.getContracts() == null) {
             option.setContracts(initialOption.getContracts());
         }
@@ -147,6 +150,43 @@ public class OptionServiceImpl implements OptionService {
         }
         compatible.removeIf(o -> o.getId() == optionId);
         return compatible;
+    }
+
+    @Override
+    @Transactional
+    public void addDependentOption(long firstOptionId, long secondOptionId) {
+        Option first = dao.getById(firstOptionId);
+        Option second = dao.getById(secondOptionId);
+        first.addDependentOption(second);
+        dao.update(first);
+    }
+
+    @Override
+    @Transactional
+    public void deleteDependentOption(long firstOptionId, long secondOptionId) {
+        Option first = dao.getById(firstOptionId);
+        Option second = dao.getById(secondOptionId);
+        first.deleteDependentOption(second);
+        dao.update(first);
+    }
+
+    @Override
+    @Transactional
+    public Set<Option> getDependentOptions(long optionId) {
+        Option option = dao.getById(optionId);
+        return option.getDependentOptions();
+    }
+
+    @Override
+    @Transactional
+    public List<Option> getIndependentOptions(long optionId) {
+        List<Option> independent = dao.getAll();
+        Set<Option> dependent = dao.getById(optionId).getDependentOptions();
+        for (Option option:
+             dependent) {
+            independent.removeIf(o -> o.getId() == option.getId());
+        }
+        return independent;
     }
 
 }
