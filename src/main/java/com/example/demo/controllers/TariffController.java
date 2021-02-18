@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Controller
@@ -42,7 +41,8 @@ public class TariffController {
     }
 
     @GetMapping(value = "/tariffs")
-    public @ResponseBody List<?> getTariffs() {
+    public @ResponseBody
+    List<?> getTariffs() {
         return tariffService.getAll();
     }
 
@@ -53,8 +53,8 @@ public class TariffController {
     }
 
     @PostMapping(value = "/admin/tariffs/delete/{tariffId}")
-    public String deleteTariff(@PathVariable String tariffId) {
-        if (tariffService.delete(tariffService.getById(Long.parseLong(tariffId)))) {
+    public String deleteTariff(@PathVariable long tariffId) {
+        if (tariffService.delete(tariffService.getById(tariffId))) {
             log.info("Tariff is deleted from DB");
         } else {
             log.info("Tariff couldn't be deleted as it is contained in contract(s)");
@@ -63,46 +63,41 @@ public class TariffController {
     }
 
     @GetMapping(value = "/admin/tariffs/edit/{tariffId}")
-    public String editTariff(@PathVariable String tariffId, Model model) {
-        Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
+    public String editTariff(@PathVariable long tariffId, Model model) {
+        Tariff tariff = tariffService.getById(tariffId);
         model.addAttribute("editedTariff", tariff);
         return "/admin/editTariff";
     }
 
-    @PostMapping(value = "/admin/saveEditedTariff")
+    @PostMapping(value = "/admin/tariffs/edit")
     public String saveEditedTariff(@ModelAttribute("editedTariff") Tariff edited) {
-        Tariff initial = tariffService.getById(edited.getId());
-        if (edited.getOptions() == null)
-            edited.setOptions(initial.getOptions());
         tariffService.edit(edited);
         log.info("Tariff is updated in DB");
         return "redirect:/admin/tariffs";
     }
 
-    @RequestMapping(value = "/admin/addOption/{tariffId}")
-    public String addOptionForTariff(@PathVariable long tariffId, Model model) {
+    @GetMapping(value = "/admin/tariffs/options/{tariffId}")
+    public String showOptionsForTariffToAdd(@PathVariable long tariffId, Model model) {
         Tariff tariff = tariffService.getById(tariffId);
-        Set<Option> options = optionService.getAllNotAddedToTariff(tariffId);
-        List<Option> selectedOptions = optionService.getAllForCertainTariff(tariffId);
-        model.addAttribute("addOptionTariff", tariff);
-        model.addAttribute("options", options);
-        model.addAttribute("selectedOptions", selectedOptions);
+        model.addAttribute("tariff", tariff);
+        model.addAttribute("options", optionService.getAllNotAddedToTariff(tariff));
+        model.addAttribute("selectedOptions", tariff.getOptions());
         return "/admin/chooseOptions";
     }
 
-    @PostMapping(value = "/addOption/{tariffId}/{optionId}")
-    public String saveAddedOption(@PathVariable String optionId, @PathVariable String tariffId) {
-        Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
-        Option option = optionService.getById(Long.parseLong(optionId));
+    @PostMapping(value = "/admin/tariffs/options/{tariffId}/{optionId}")
+    public String addOption(@PathVariable long optionId, @PathVariable long tariffId) {
+        Tariff tariff = tariffService.getById(tariffId);
+        Option option = optionService.getById(optionId);
         tariffService.addOption(tariff, option);
         log.info("New option is added to tariff");
-        return "redirect:/admin/addOption/{tariffId}";
+        return "redirect:/admin/tariffs/options/{tariffId}";
     }
 
     @PostMapping(value = "/deleteOption/{tariffId}/{optionId}")
-    public String deleteAddedOption(@PathVariable String tariffId, @PathVariable String optionId) {
-        Tariff tariff = tariffService.getById(Long.parseLong(tariffId));
-        Option option = optionService.getById(Long.parseLong(optionId));
+    public String deleteAddedOption(@PathVariable long tariffId, @PathVariable long optionId) {
+        Tariff tariff = tariffService.getById(tariffId);
+        Option option = optionService.getById(optionId);
         if (!tariffService.deleteOption(tariff, option)) {
             return "redirect:/admin/showOptions/{tariffId}";
         }

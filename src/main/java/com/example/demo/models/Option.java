@@ -49,9 +49,12 @@ public class Option {
             joinColumns = {@JoinColumn(name = "option_id")},
             inverseJoinColumns = {@JoinColumn(name = "incompat_option_id")}
     )
-    private Set<Option> incompatibleOptions = new HashSet<>();
+    private Set<Option> incompatibleOptions;
 
     public void addIncompatibleOption(Option option) {
+        if (incompatibleOptions == null) {
+            incompatibleOptions = new HashSet<>();
+        }
         incompatibleOptions.add(option);
     }
 

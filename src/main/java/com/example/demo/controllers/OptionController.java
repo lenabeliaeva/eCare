@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.dto.OptionDto;
 import com.example.demo.models.Option;
+import com.example.demo.models.Tariff;
 import com.example.demo.services.OptionService;
 import com.example.demo.services.TariffService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,29 +35,21 @@ public class OptionController {
         return "admin/options";
     }
 
-    @GetMapping(value = "/admin/showOptions/{tariffId}")
+    @GetMapping(value = "/admin/options/{tariffId}")
     public String showOptionsForTariff(@PathVariable long tariffId, Model model) {
-        List<?> options = optionService.getAllForCertainTariff(tariffId);
-        model.addAttribute("options", options);
-        model.addAttribute("tariff", tariffService.getById(tariffId));
+        Tariff tariff = tariffService.getById(tariffId);
+        model.addAttribute("options", tariff.getOptions());
+        model.addAttribute("tariff", tariff);
         return "/admin/tariffOptions";
     }
 
-    @GetMapping(value = "/profile/showOptions/{tariffId}")
-    public String showOptionsForTariffForClient(@PathVariable long tariffId, Model model) {
-        List<?> options = optionService.getAllForCertainTariff(tariffId);
-        model.addAttribute("options", options);
-        model.addAttribute("tariff", tariffService.getById(tariffId));
-        return "client/tariffOptions";
-    }
-
-    @PostMapping(value = "/createOption")
+    @GetMapping(value = "/admin/createOption")
     public String createOption(Model model) {
         model.addAttribute("newOption", new Option());
         return "/admin/addNewOption";
     }
 
-    @PostMapping(value = "/saveOption")
+    @PostMapping(value = "/options")
     public String saveOption(@Valid @ModelAttribute("newOption") Option option, BindingResult result) {
         if (result.hasErrors()) {
             return "/admin/addNewOption";
@@ -66,7 +59,7 @@ public class OptionController {
         return "redirect:/admin/options";
     }
 
-    @GetMapping(value = "/editOption/{optionId}")
+    @GetMapping(value = "/admin/editOption/{optionId}")
     public String editOption(@PathVariable long optionId, Model model) {
         model.addAttribute("editedOption", optionService.getById(optionId));
         return "/admin/editOption";
@@ -78,7 +71,7 @@ public class OptionController {
         return "redirect:/admin/options";
     }
 
-    @PostMapping("/deleteOption/{optionId}")
+    @PostMapping("/admin/deleteOption/{optionId}")
     public String deleteOption(@PathVariable long optionId) {
         optionService.delete(optionId);
         return "redirect:/admin/options";

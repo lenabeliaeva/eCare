@@ -2,7 +2,9 @@ package com.example.demo.services;
 
 import com.example.demo.dao.OptionDao;
 import com.example.demo.dto.OptionDto;
+import com.example.demo.models.Contract;
 import com.example.demo.models.Option;
+import com.example.demo.models.Tariff;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,35 +43,6 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     @Transactional
-    public List<Option> getAllForCertainTariff(long tariffId) {
-        return dao.getAllByTariffId(tariffId);
-    }
-
-    @Override
-    @Transactional
-    public Set<Option> getAllNotAddedToTariff(long tariffId) {
-        List<Option> options = dao.getAllNotAddedToTariff(tariffId);
-        return new HashSet<>(options);
-    }
-
-    @Override
-    @Transactional
-    public List<Option> getAllForCertainContract(long contractId, long tariffId) {
-        List<Option> contractsAndTariffsOptions = new LinkedList<>(dao.getAllByTariffId(tariffId));
-        contractsAndTariffsOptions.addAll(dao.getAllByContractId(contractId));
-        return contractsAndTariffsOptions;
-    }
-
-    @Override
-    @Transactional
-    public Set<Option> getAllNotAddedToContract(long contractId, long tariffId) {
-        List<Option> options = dao.getAllNotAddedToContract(contractId, tariffId);
-        options.removeAll(dao.getAllByTariffId(tariffId));
-        return new HashSet<>(options);
-    }
-
-    @Override
-    @Transactional
     public Option getById(long optionId) {
         return dao.getById(optionId);
     }
@@ -81,6 +54,12 @@ public class OptionServiceImpl implements OptionService {
         if (option.getTariff() == null) {
             option.setTariff(initialOption.getTariff());
         }
+        if (option.getIncompatibleOptions() == null) {
+            option.setIncompatibleOptions(initialOption.getIncompatibleOptions());
+        }
+        if (option.getContracts() == null) {
+            option.setContracts(initialOption.getContracts());
+        }
         dao.update(option);
     }
 
@@ -89,6 +68,40 @@ public class OptionServiceImpl implements OptionService {
     public void delete(long optionId) {
         Option option = dao.getById(optionId);
         dao.delete(option);
+    }
+
+    @Override
+    @Transactional
+    public List<Option> getAllNotAddedToTariff(Tariff tariff) {
+        Set<Option> tariffOptions = tariff.getOptions();
+        List<Option> options = dao.getAll();
+        for (Option option:
+                tariffOptions) {
+            options.removeIf(o -> o.getId() == option.getId());
+        }
+        return options;
+    }
+
+    @Override
+    @Transactional
+    public Set<Option> getContractOptions(Contract contract) {
+        Set<Option> contractOptions = contract.getOption();
+        Set<Option> tariffOptions = contract.getTariff().getOptions();
+        Set<Option> options = new HashSet<>(contractOptions);
+        options.addAll(tariffOptions);
+        return options;
+    }
+
+    @Override
+    @Transactional
+    public List<Option> getAllNotAddedToContractOptions(Contract contract) {
+        Set<Option> contractOptions = getContractOptions(contract);
+        List<Option> notAddedToContractOptions = dao.getAll();
+        for (Option option:
+                contractOptions) {
+            notAddedToContractOptions.removeIf(o -> o.getId() == option.getId());
+        }
+        return notAddedToContractOptions;
     }
 
     @Override
@@ -122,13 +135,15 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     @Transactional
-    public List<OptionDto> getCompatible(long optionId) {
-        List<OptionDto> compatible = getAll();
+    public List<Option> getCompatible(long optionId) {
+        List<Option> compatible = dao.getAll();
         Set<Option> incompatible = getById(optionId).getIncompatibleOptions();
-        for (Option o:
-             incompatible) {
-            long currentOptionId = o.getId();
-            compatible.removeIf(optionDto -> optionDto.getId() == currentOptionId);
+        if (incompatible != null) {
+            for (Option o :
+                    incompatible) {
+                long currentOptionId = o.getId();
+                compatible.removeIf(option -> option.getId() == currentOptionId);
+            }
         }
         compatible.removeIf(o -> o.getId() == optionId);
         return compatible;

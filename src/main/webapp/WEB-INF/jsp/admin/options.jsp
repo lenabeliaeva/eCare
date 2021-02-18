@@ -10,7 +10,7 @@
 </head>
 <body>
 <h2>Options</h2>
-<form:form method="post">
+<form:form>
     <table class="table table-hover">
         <tr>
             <td>Name</td>
@@ -25,11 +25,11 @@
                 <td>
                     <button class="btn btn-outline-danger"
                             onclick="return confirm('Are you sure you want to delete the option?')"
-                            formaction="/deleteOption/${option.id}" type="submit">Delete
+                            formaction="/admin/deleteOption/${option.id}" type="submit">Delete
                     </button>
                 </td>
                 <td>
-                    <button class="btn btn-outline-primary" formmethod="get" formaction="/editOption/${option.id}"
+                    <button class="btn btn-outline-primary" formmethod="get" formaction="/admin/editOption/${option.id}"
                             type="submit">Edit
                     </button>
                 </td>
@@ -42,7 +42,7 @@
             </tr>
         </c:forEach>
     </table>
-    <button class="btn btn-outline-primary" formaction="/createOption">Add new option</button>
+    <button class="btn btn-outline-primary" formmethod="get" formaction="/admin/createOption">Add new option</button>
 </form:form>
 </body>
 </html>

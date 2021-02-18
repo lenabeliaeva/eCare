@@ -10,7 +10,7 @@
 </head>
 <body>
 <h2>"${tariff.name}" options</h2>
-<form:form method="post">
+<form:form>
     <table class="table table-hover">
         <tr>
             <td>Name</td>
@@ -33,7 +33,8 @@
             </tr>
         </c:forEach>
     </table>
-    <button class="btn btn-outline-primary" formaction="/admin/addOption/${tariff.id}">Add new option to the tariff
+    <button class="btn btn-outline-primary" formmethod="get" formaction="/admin/tariffs/options/${tariff.id}">Add new
+        option to the tariff
     </button>
 </form:form>
 </body>

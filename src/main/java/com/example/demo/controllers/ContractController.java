@@ -79,9 +79,8 @@ public class ContractController {
     @GetMapping(value = "/contract/connectOptions/{contractId}")
     public String showOptions(@PathVariable long contractId, Model model) {
         Contract contract = contractService.getContractById(contractId);
-        long tariffId = contract.getTariff().getId();
-        model.addAttribute("connectedOptions", optionService.getAllForCertainContract(contractId, tariffId));
-        model.addAttribute("availableOptions", optionService.getAllNotAddedToContract(contractId, tariffId));
+        model.addAttribute("connectedOptions", optionService.getContractOptions(contract));
+        model.addAttribute("availableOptions", optionService.getAllNotAddedToContractOptions(contract));
         model.addAttribute("contract", contract);
         return "/contract/addOptionsToContract";
     }
@@ -95,8 +94,7 @@ public class ContractController {
     @GetMapping(value = "/contract/options/{contractId}")
     public String showContractOptions(@PathVariable long contractId, Model model) {
         Contract contract = contractService.getContractById(contractId);
-        long tariffId = contract.getTariff().getId();
-        model.addAttribute("options", optionService.getAllForCertainContract(contractId, tariffId));
+        model.addAttribute("options", optionService.getContractOptions(contract));
         model.addAttribute("contract", contract);
         return "/contract/contractOptions";
     }

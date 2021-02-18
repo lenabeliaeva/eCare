@@ -1,7 +1,9 @@
 package com.example.demo.services;
 
 import com.example.demo.dto.OptionDto;
+import com.example.demo.models.Contract;
 import com.example.demo.models.Option;
+import com.example.demo.models.Tariff;
 
 import java.util.List;
 import java.util.Set;
@@ -11,13 +13,11 @@ public interface OptionService {
 
     List<OptionDto> getAll();
 
-    List<Option> getAllForCertainTariff(long tariffId);
+    List<Option> getAllNotAddedToTariff(Tariff tariff);
 
-    Set<Option> getAllNotAddedToTariff(long tariffId);
+    Set<Option> getContractOptions(Contract contract);
 
-    List<Option> getAllForCertainContract(long contractId, long tariffId);
-
-    Set<Option> getAllNotAddedToContract(long contractId, long tariffId);
+    List<Option> getAllNotAddedToContractOptions(Contract contract);
 
     Option getById(long optionId);
 
@@ -31,5 +31,5 @@ public interface OptionService {
 
     Set<Option> getIncompatibleOptions(long optionId);
 
-    List<OptionDto> getCompatible(long optionId);
+    List<Option> getCompatible(long optionId);
 }

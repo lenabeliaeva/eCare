@@ -9,14 +9,6 @@ public interface OptionDao {
 
     List<Option> getAll();
 
-    List<Option> getAllByTariffId(long tariffId);
-
-    List<Option> getAllNotAddedToTariff(long tariffId);
-
-    List<Option> getAllByContractId(long contractId);
-
-    List<Option> getAllNotAddedToContract(long contractId, long tariffId);
-
     void delete(Option option);
 
     Option getById(long id);

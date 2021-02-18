@@ -7,6 +7,8 @@ import com.example.demo.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 @Service
@@ -73,6 +75,7 @@ public class CartServiceImpl implements CartService {
             contract.setConnectionCost(item.getConnectionCost());
             contractDao.update(contract);
         }
+        cart.getCartItems().clear();
     }
 
     private double updateCartItemPrice(CartItem cartItem) {
@@ -114,7 +117,7 @@ public class CartServiceImpl implements CartService {
         CartItem cartItem = new CartItem();
         Contract contract = contractDao.getById(contractId);
         Tariff tariff = contract.getTariff();
-        Set<Option> options = contract.getOption();
+        Set<Option> options = new HashSet<>(contract.getOption());
         cartItem.setContract(contract);
         cartItem.setTariff(tariff);
         cartItem.setOptions(options);

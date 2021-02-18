@@ -10,7 +10,7 @@
 </head>
 <body>
 <h2>New option</h2>
-<form:form method="post" modelAttribute="newOption" action="/saveOption">
+<form:form modelAttribute="newOption" action="/options">
     <div class="form-group">
         <form:input type="text" required="name" class="form-control" path="name" placeholder="Name"/>
         <form:errors cssClass="error"/>

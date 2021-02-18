@@ -73,6 +73,9 @@ public class TariffServiceImpl implements TariffService {
     @Override
     @Transactional
     public void edit(Tariff tariff) {
+        Tariff initial = getById(tariff.getId());
+        if (tariff.getOptions() == null)
+            tariff.setOptions(initial.getOptions());
         tariffDao.update(tariff);
         try {
             mqService.sendMessage("Tariff " + tariff.getName() + " is updated");
@@ -84,7 +87,6 @@ public class TariffServiceImpl implements TariffService {
     @Override
     @Transactional
     public void addOption(Tariff tariff, Option option) {
-
         tariff.setPrice(tariff.getPrice() + option.getPrice());
         tariff.add(option);
         tariffDao.update(tariff);
@@ -116,6 +118,8 @@ public class TariffServiceImpl implements TariffService {
     @Override
     @Transactional
     public List<Tariff> getNotAddedToContractTariffs(long tariffId) {
-        return tariffDao.getNotAddedToContractTariffs(tariffId);
+        List<Tariff> tariffs = tariffDao.getAll();
+        tariffs.removeIf(t -> t.getId() == tariffId);
+        return tariffs;
     }
 }

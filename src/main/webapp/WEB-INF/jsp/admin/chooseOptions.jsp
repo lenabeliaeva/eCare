@@ -9,8 +9,8 @@
     <%@include file="../parts/header.jsp" %>
 </head>
 <body>
-<h3>Available for "${addOptionTariff.name}" options</h3>
-<form:form method="post">
+<h3>Available for "${tariff.name}" options</h3>
+<form:form>
     <table class="table table-hover">
         <tr>
             <td>Name</td>
@@ -24,13 +24,13 @@
                 <td>${option.connectionCost}</td>
                 <td>
                     <button class="btn btn-outline-primary"
-                            formaction="/addOption/${addOptionTariff.id}/${option.id}" type="submit">Add
+                            formaction="/admin/tariffs/options/${tariff.id}/${option.id}" type="submit">Add
                     </button>
                 </td>
             </tr>
         </c:forEach>
     </table>
-    <h3>Tariff price: ${addOptionTariff.price}</h3>
+    <h3>Tariff price: ${tariff.price}</h3>
     <c:if test="${selectedOptions.size() > 0}">
         <h3>Selected options</h3>
         <table class="table table-hover">

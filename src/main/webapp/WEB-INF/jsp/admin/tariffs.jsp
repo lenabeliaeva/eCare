@@ -37,7 +37,7 @@
                     </button>
                 </td>
                 <td>
-                    <button class="btn btn-outline-primary" formaction="/admin/showOptions/${tariff.id}" type="submit"
+                    <button class="btn btn-outline-primary" formaction="/admin/options/${tariff.id}" type="submit"
                             formmethod="get">Tariff options
                     </button>
                 </td>

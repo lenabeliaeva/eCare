@@ -10,7 +10,7 @@
 </head>
 <body>
 <h2>Enter new data</h2>
-<form:form method="post" modelAttribute="editedTariff" action="/admin/saveEditedTariff">
+<form:form method="post" modelAttribute="editedTariff" action="/admin/tariffs/edit">
     <form:input type="hidden" path="id"/>
     <div class="form-group">
         <form:input type="text" required="name" class="form-control" path="name" placeholder="Name"/>
