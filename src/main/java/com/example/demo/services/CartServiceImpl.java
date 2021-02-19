@@ -4,12 +4,16 @@ import com.example.demo.dao.ContractDao;
 import com.example.demo.dao.OptionDao;
 import com.example.demo.dao.TariffDao;
 import com.example.demo.models.*;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Slf4j
 @Service
 public class CartServiceImpl implements CartService {
 
@@ -22,6 +26,8 @@ public class CartServiceImpl implements CartService {
     @Autowired
     ContractDao contractDao;
 
+    Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
+
     @Override
     public void changeTariff(Cart cart, long tariffId, long contractId) {
         Tariff tariff = tariffDao.getById(tariffId);
@@ -29,10 +35,12 @@ public class CartServiceImpl implements CartService {
         if (cartItem == null) {
             cartItem = createCartItem(contractId);
             cart.addItem(cartItem);
+            logger.info("New cart item is created to add tariff");
         }
         cartItem.setTariff(tariff);
         cartItem.setPrice(updateCartItemPrice(cartItem));
         cartItem.setConnectionCost(updateCartItemConnectionCost(cartItem));
+        logger.info("Tariff is added to the cart");
     }
 
     /**
@@ -50,15 +58,17 @@ public class CartServiceImpl implements CartService {
         Contract contract = contractDao.getById(contractId);
         Set<Option> allCartItemOptions = new HashSet<>(contract.getOption());
         allCartItemOptions.addAll(contract.getTariff().getOptions());
-        if (checkCompatibility(optionId, allCartItemOptions) && option.isDependentFrom(allCartItemOptions)) {
+        if (option.isCompatibleWith(allCartItemOptions) && option.isDependentFrom(allCartItemOptions)) {
             CartItem cartItem = cart.getItemByContract(contractId);
             if (cartItem == null) {
                 cartItem = createCartItem(contractId);
                 cart.addItem(cartItem);
+                logger.info("New cart item is created to add the option " + option.getName());
             }
             cartItem.addOption(option);
             cartItem.setPrice(updateCartItemPrice(cartItem));
             cartItem.setConnectionCost(updateCartItemConnectionCost(cartItem));
+            logger.info("Option " + option.getName() + " is added to the cart");
         }
     }
 
@@ -137,12 +147,6 @@ public class CartServiceImpl implements CartService {
         return cartItem;
     }
 
-    /**
-     *
-     * @param optionId
-     * @param alreadyAddedOptions
-     * @return
-     */
     private boolean checkCompatibility(long optionId, Set<Option> alreadyAddedOptions) {
         for (Option option :
                 alreadyAddedOptions) {

@@ -49,20 +49,20 @@ public class Option {
             joinColumns = {@JoinColumn(name = "option_id")},
             inverseJoinColumns = {@JoinColumn(name = "incompat_option_id")}
     )
-    private Set<Option> incompatibleOptions;
+    private Set<Option> incompatibleOptions = new HashSet<>();
 
-    @OneToMany
+    /**
+     * Options on which this option depends
+     */
+    @ManyToMany
     @JoinTable(
             name = "dependent_options",
             joinColumns = {@JoinColumn(name = "option_id")},
             inverseJoinColumns = {@JoinColumn(name = "dependent_option_id")}
     )
-    private Set<Option> dependentOptions;
+    private Set<Option> dependentOptions = new HashSet<>();
 
     public void addIncompatibleOption(Option option) {
-        if (incompatibleOptions == null) {
-            incompatibleOptions = new HashSet<>();
-        }
         incompatibleOptions.add(option);
     }
 
@@ -71,9 +71,6 @@ public class Option {
     }
 
     public void addDependentOption(Option option) {
-        if (dependentOptions == null) {
-            dependentOptions = new HashSet<>();
-        }
         dependentOptions.add(option);
     }
 
@@ -81,15 +78,30 @@ public class Option {
         dependentOptions.removeIf(o -> o.getId() == option.getId());
     }
 
-    public boolean isDependentFrom(Set<Option> alreadyAddedOptions) {
+    public boolean isCompatibleWith(Set<Option> alreadyAddedOptions) {
         for (Option option :
                 alreadyAddedOptions) {
-            if (option.getDependentOptions()
-                            .stream()
-                            .anyMatch(o -> o.getId() == this.getId())) {
-                return true;
+            if (option.getIncompatibleOptions()
+                    .stream()
+                    .anyMatch(o -> o.getId() == this.getId())) {
+                return false;
             }
         }
-        return false;
+        return true;
+    }
+
+    public boolean isDependentFrom(Set<Option> alreadyAddedOptions) {
+        if (this.getDependentOptions().isEmpty()) {
+            return true;
+        }
+        for (Option option:
+             this.getDependentOptions()) {
+            if (alreadyAddedOptions
+                    .stream()
+                    .noneMatch(o -> o.getId() == option.getId())) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -88,7 +88,7 @@ public class TariffServiceImpl implements TariffService {
     @Override
     @Transactional
     public void addOption(Tariff tariff, Option option) {
-        if (checkCompatibility(option.getId(), tariff.getOptions()) && option.isDependentFrom(tariff.getOptions())) {
+        if (option.isCompatibleWith(tariff.getOptions()) && option.isDependentFrom(tariff.getOptions())) {
             tariff.setPrice(tariff.getPrice() + option.getPrice());
             tariff.add(option);
             tariffDao.update(tariff);

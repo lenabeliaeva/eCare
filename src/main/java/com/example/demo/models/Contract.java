@@ -42,12 +42,9 @@ public class Contract {
     private Tariff tariff;
 
     @ManyToMany
-    private Set<Option> option;
+    private Set<Option> option = new HashSet<>();
 
     public void add(Option o) {
-        if(option == null){
-            option = new HashSet<>();
-        }
         this.option.add(o);
     }
 
