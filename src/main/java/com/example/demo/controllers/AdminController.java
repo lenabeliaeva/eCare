@@ -46,22 +46,15 @@ public class AdminController {
         return "/admin/clientProfile";
     }
 
-//    TODO: why GET??? Fix it somehow
-    @GetMapping("/admin/blockContract/{contractId}")
-    public String blockContract(@PathVariable long contractId, Model model) {
+    @PostMapping("/admin/blockContract/{clientId}/{contractId}")
+    public String blockContract(@PathVariable long contractId) {
         contractService.blockByAdmin(contractId);
-        Contract contract = contractService.getContractById(contractId);
-        long clientId = contract.getClient().getId();
-        model.addAttribute("clientId", clientId);
         return "redirect:/admin/clientProfile/{clientId}";
     }
 
-    @GetMapping("/admin/unblockContract/{contractId}")
-    public String unblockContract(@PathVariable long contractId, Model model) {
+    @PostMapping("/admin/unblockContract/{clientId}/{contractId}")
+    public String unblockContract(@PathVariable long contractId) {
         contractService.unblockByAdmin(contractId);
-        Contract contract = contractService.getContractById(contractId);
-        long clientId = contract.getClient().getId();
-        model.addAttribute("clientId", clientId);
         return "redirect:/admin/clientProfile/{clientId}";
     }
 }
