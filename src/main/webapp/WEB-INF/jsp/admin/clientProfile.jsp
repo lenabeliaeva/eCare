@@ -3,14 +3,15 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Client contract</title>
+    <title>${client.name} ${client.lastName}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <%@include file="../parts/header.jsp" %>
 </head>
 <body>
 <c:if test="${clientContracts.size() > 0}">
-    <form method="get">
+    <h3>Contracts</h3>
+    <form>
         <table class="table table-hover">
             <tr>
                 <td>Number</td>
@@ -24,22 +25,22 @@
                     <td>${contract.tariffPrice}</td>
                     <td>
                         <button class="btn btn-outline-primary"
+                                formmethod="get"
                                 formaction="/contract/options/${contract.id}"
-                                type="submit"
-                                formmethod="get">Connected options
+                                type="submit">Connected options
                         </button>
                     </td>
                     <td>
                         <c:if test="${contract.blockedByClient == false && contract.blockedByAdmin == false}">
                             <button class="btn btn-outline-danger"
                                     onclick="return confirm('Are you sure you want to block the contract?')"
-                                    formaction="/admin/blockContract/${contract.id}"
+                                    formaction="/admin/blockContract/${client.id}/${contract.id}"
                                     type="submit">Block contract
                             </button>
                         </c:if>
                         <c:if test="${contract.blockedByClient == true || contract.blockedByAdmin == true}">
                             <button class="btn btn-outline-primary"
-                                    formaction="/admin/unblockContract/${contract.id}"
+                                    formaction="/admin/unblockContract/${client.id}/${contract.id}"
                                     type="submit">Unblock contract
                             </button>
                         </c:if>
