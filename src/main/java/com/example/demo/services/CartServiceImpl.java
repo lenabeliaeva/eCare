@@ -47,7 +47,6 @@ public class CartServiceImpl implements CartService {
      * This method is used to add an option to a cart.
      * First of all, the option is checked for compatibility with other options.
      * If the cart hasn't got items for the contract, new cart item has to be created to save option there.
-     *
      * @param cart       Cart object from session
      * @param optionId   to get Option entity
      * @param contractId to get Contract entity
@@ -145,17 +144,5 @@ public class CartServiceImpl implements CartService {
         cartItem.setTariff(tariff);
         cartItem.setOptions(options);
         return cartItem;
-    }
-
-    private boolean checkCompatibility(long optionId, Set<Option> alreadyAddedOptions) {
-        for (Option option :
-                alreadyAddedOptions) {
-            if (option.getIncompatibleOptions()
-                    .stream()
-                    .anyMatch(o -> o.getId() == optionId)) {
-                return false;
-            }
-        }
-        return true;
     }
 }
