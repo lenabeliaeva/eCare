@@ -1,7 +1,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
+<!DOCTYPE>
+<html lang="en">
 <head>
     <title>Clients</title>
     <%@include file="../parts/header.jsp" %>
@@ -19,9 +20,6 @@
 </div>
 <c:if test="${clients.size() == 0}">
     <h3>Clients are not found</h3>
-    <form action="/admin">
-        <button type="submit" class="btn btn-outline-primary">Back to the main page</button>
-    </form>
 </c:if>
 <c:if test="${clients.size() > 0}">
     <form:form method="get">

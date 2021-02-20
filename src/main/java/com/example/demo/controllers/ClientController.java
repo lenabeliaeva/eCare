@@ -61,8 +61,6 @@ public class ClientController {
             model.addAttribute("client", client);
             model.addAttribute("contracts", contractService.getClientsContracts(client.getId()));
             return "profile";
-        } else if (clientService.getAuthorizedAdmin() != null) {
-            return "redirect:/admin";
         } else {
             return "welcome";
         }

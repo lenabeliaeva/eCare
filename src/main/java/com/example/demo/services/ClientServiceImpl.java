@@ -97,21 +97,6 @@ public class ClientServiceImpl implements ClientService {
         }
     }
 
-    @Override
-    @Transactional
-    public Client getAuthorizedAdmin() {
-        String role = getRole();
-        if (role != null && role.equals("ROLE_ADMIN")) {
-            UserDetails userDetails = (UserDetails) SecurityContextHolder
-                    .getContext()
-                    .getAuthentication()
-                    .getPrincipal();
-            return findByEmail(userDetails.getUsername());
-        } else {
-            return null;
-        }
-    }
-
     private String getRole() {
         String role = null;
         Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) SecurityContextHolder

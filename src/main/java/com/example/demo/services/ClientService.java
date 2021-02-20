@@ -19,6 +19,4 @@ public interface ClientService {
     void editClientProfile(Client client);
 
     Client getAuthorizedClient();
-
-    Client getAuthorizedAdmin();
 }

@@ -2,6 +2,11 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <nav class="navbar navbar-dark bg-dark">
     <a class="navbar-brand" href="/">eCare</a>
+    <sec:authorize access="hasRole('ADMIN')">
+        <a class="navbar-brand" href="/admin/clients">Clients</a>
+        <a class="navbar-brand" href="/admin/tariffs">Tariffs</a>
+        <a class="navbar-brand" href="/admin/options">Options</a>
+    </sec:authorize>
     <sec:authorize access="hasRole('USER')">
         <a class="navbar-brand" href="/cart">Cart</a>
     </sec:authorize>
