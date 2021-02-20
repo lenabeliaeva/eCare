@@ -11,7 +11,9 @@
 <body>
 <div class="container">
     <form class="form-inline" method="get" action="/admin/searchClient">
-        <input type="text" name="number" class="form-control" placeholder="Enter client's number">
+        <label>
+            <input type="text" name="number" class="form-control" placeholder="Enter client's number">
+        </label>
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
 </div>

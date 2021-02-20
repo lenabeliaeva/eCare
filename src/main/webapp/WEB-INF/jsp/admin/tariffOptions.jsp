@@ -10,31 +10,24 @@
 </head>
 <body>
 <h2>"${tariff.name}" options</h2>
-<form:form>
-    <table class="table table-hover">
+<table class="table table-hover">
+    <tr>
+        <td>Name</td>
+        <td>Price</td>
+        <td>Connection Cost</td>
+    </tr>
+    <c:forEach var="option" items="${options}">
         <tr>
-            <td>Name</td>
-            <td>Price</td>
-            <td>Connection Cost</td>
+            <td>${option.name}</td>
+            <td>${option.price}</td>
+            <td>${option.connectionCost}</td>
         </tr>
-        <c:forEach var="option" items="${options}">
-            <tr>
-                <td>${option.name}</td>
-                <td>${option.price}</td>
-                <td>${option.connectionCost}</td>
-                <td>
-                    <button class="btn btn-outline-danger"
-                            onclick="return confirm('Are you sure you want to delete the option?')"
-                            formaction="/deleteOption/${tariff.id}/${option.id}"
-                            type="submit"
-                    >Delete
-                    </button>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
-    <button class="btn btn-outline-primary" formmethod="get" formaction="/admin/tariffs/options/${tariff.id}">Add new
-        option to the tariff
+    </c:forEach>
+</table>
+<form:form>
+    <button class="btn btn-outline-primary"
+            formmethod="get"
+            formaction="/admin/tariffs/options">Manage options
     </button>
 </form:form>
 </body>

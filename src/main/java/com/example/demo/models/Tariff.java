@@ -31,12 +31,9 @@ public class Tariff {
             joinColumns = {@JoinColumn(name = "tariff_id")},
             inverseJoinColumns = {@JoinColumn(name = "option_id")}
     )
-    private Set<Option> options;
+    private Set<Option> options = new HashSet<>();
 
     public void add(Option o) {
-        if (options == null) {
-            options = new HashSet<>();
-        }
         options.add(o);
     }
 

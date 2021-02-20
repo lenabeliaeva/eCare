@@ -5,19 +5,20 @@ import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
 import com.example.demo.services.OptionService;
 import com.example.demo.services.TariffService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
-@Slf4j
 @Controller
 public class OptionController {
+
+    private static final String TARIFF = "tariff";
 
     @Autowired
     TariffService tariffService;
@@ -35,11 +36,18 @@ public class OptionController {
         return "admin/options";
     }
 
+    /**
+     * This method is used to show options for the tariff.
+     * @param tariffId
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/admin/options/{tariffId}")
-    public String showOptionsForTariff(@PathVariable long tariffId, Model model) {
+    public String showOptionsForTariff(@PathVariable long tariffId, Model model, HttpSession session) {
         Tariff tariff = tariffService.getById(tariffId);
         model.addAttribute("options", tariff.getOptions());
-        model.addAttribute("tariff", tariff);
+        model.addAttribute(TARIFF, tariff);
+        session.setAttribute(TARIFF, tariff);
         return "/admin/tariffOptions";
     }
 
@@ -55,7 +63,6 @@ public class OptionController {
             return "/admin/addNewOption";
         }
         optionService.add(option);
-        log.info("New option is saved to DB");
         return "redirect:/admin/options";
     }
 

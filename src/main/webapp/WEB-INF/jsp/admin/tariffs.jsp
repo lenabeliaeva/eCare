@@ -44,7 +44,7 @@
             </tr>
         </c:forEach>
     </table>
-        <button class="btn btn-outline-primary" formmethod="get" formaction="/admin/addNewTariff">Add new tariff</button>
+        <button class="btn btn-outline-primary" formmethod="get" formaction="/admin/tariffs/new">Add new tariff</button>
 </form:form>
 </body>
 </html>

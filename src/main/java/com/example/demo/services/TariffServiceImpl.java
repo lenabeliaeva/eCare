@@ -31,14 +31,13 @@ public class TariffServiceImpl implements TariffService {
 
     @Override
     @Transactional
-    public Tariff add(Tariff tariff) {
-        Tariff savedTariff = tariffDao.add(tariff);
+    public void add(Tariff tariff) {
+        tariffDao.add(tariff);
         try {
             mqService.sendMessage("Tariff " + tariff.getName() + " is created");
         } catch (IOException | TimeoutException e) {
             log.warn("Couldn't send message. " + e.getMessage());
         }
-        return savedTariff;
     }
 
     @Override
@@ -91,12 +90,6 @@ public class TariffServiceImpl implements TariffService {
         if (option.isCompatibleWith(tariff.getOptions()) && option.isDependentFrom(tariff.getOptions())) {
             tariff.setPrice(tariff.getPrice() + option.getPrice());
             tariff.add(option);
-            tariffDao.update(tariff);
-            try {
-                mqService.sendMessage("Tariff " + tariff.getName() + " is updated");
-            } catch (IOException | TimeoutException e) {
-                log.warn("Couldn't send message. " + e.getMessage());
-            }
         }
     }
 
@@ -106,12 +99,6 @@ public class TariffServiceImpl implements TariffService {
         if (tariff.getOptions().size() > 1) {
             tariff.delete(option);
             tariff.setPrice(tariff.getPrice() - option.getPrice());
-            tariffDao.update(tariff);
-            try {
-                mqService.sendMessage("Tariff " + tariff.getName() + " is updated");
-            } catch (IOException | TimeoutException e) {
-                log.warn("Couldn't send message. " + e.getMessage());
-            }
             return true;
         } else {
             return false;

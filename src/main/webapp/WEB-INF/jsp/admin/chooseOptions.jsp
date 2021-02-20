@@ -1,7 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
+<!DOCTYPE>
+<html lang="en">
 <head>
     <title>Options</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -24,7 +25,7 @@
                 <td>${option.connectionCost}</td>
                 <td>
                     <button class="btn btn-outline-primary"
-                            formaction="/admin/tariffs/options/${tariff.id}/${option.id}" type="submit">Add
+                            formaction="/admin/tariffs/options/${option.id}" type="submit">Add
                     </button>
                 </td>
             </tr>
@@ -44,12 +45,18 @@
                     <td>${option.name}</td>
                     <td>${option.price}</td>
                     <td>${option.connectionCost}</td>
+                    <td>
+                        <button class="btn btn-outline-danger"
+                                onclick="return confirm('Are you sure you want to delete the option?')"
+                                formaction="/admin/tariffs/options/delete/${option.id}"
+                                type="submit">Delete
+                        </button>
+                    </td>
                 </tr>
             </c:forEach>
         </table>
     </c:if>
-    <button class="btn btn-outline-primary" type="submit" formmethod="get" formaction="/admin/tariffs">Submit and go to
-        tariff list
+    <button class="btn btn-outline-primary" type="submit" formaction="/admin/tariffs/put">Submit
     </button>
 </form:form>
 </body>

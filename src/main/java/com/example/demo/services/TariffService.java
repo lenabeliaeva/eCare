@@ -7,7 +7,7 @@ import com.example.demo.models.Tariff;
 import java.util.List;
 
 public interface TariffService {
-    Tariff add(Tariff tariff);
+    void add(Tariff tariff);
 
     List<TariffDto> getAll();
 

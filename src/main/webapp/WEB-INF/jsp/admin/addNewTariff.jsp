@@ -1,7 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
+<!DOCTYPE>
+<html lang="en">
 <head>
     <title>Create new tariff</title>
     <%@include file="../parts/header.jsp" %>
@@ -11,7 +12,7 @@
 </head>
 <body>
 <h2>New tariff</h2>
-<form:form method="post" modelAttribute="newTariff" action="/admin/tariffs">
+<form:form method="post" modelAttribute="newTariff" action="/admin/tariffs/new">
     <div class="form-group">
         <form:input type="text" required="name" class="form-control" path="name" placeholder="Name"/>
         <form:errors path="name" cssClass="error"/>
