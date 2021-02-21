@@ -5,17 +5,18 @@ import com.example.demo.dto.OptionDto;
 import com.example.demo.models.Contract;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
+import lombok.extern.log4j.Log4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Log4j
 @Service
 public class OptionServiceImpl implements OptionService {
 
@@ -31,6 +32,11 @@ public class OptionServiceImpl implements OptionService {
         dao.add(option);
     }
 
+    /**
+     * OptionDTO is used to serialize this list and to sent to client app.
+     *
+     * @return all options list
+     */
     @Override
     @Transactional
     public List<OptionDto> getAll() {
@@ -64,6 +70,7 @@ public class OptionServiceImpl implements OptionService {
             option.setContracts(initialOption.getContracts());
         }
         dao.update(option);
+        log.info("Option" + option.getName() + " info is updated");
     }
 
     @Override
@@ -78,7 +85,7 @@ public class OptionServiceImpl implements OptionService {
     public List<Option> getAllNotAddedToTariff(Tariff tariff) {
         Set<Option> tariffOptions = tariff.getOptions();
         List<Option> options = dao.getAll();
-        for (Option option:
+        for (Option option :
                 tariffOptions) {
             options.removeIf(o -> o.getId() == option.getId());
         }
@@ -100,13 +107,19 @@ public class OptionServiceImpl implements OptionService {
     public List<Option> getAllNotAddedToContractOptions(Contract contract) {
         Set<Option> contractOptions = getContractOptions(contract);
         List<Option> notAddedToContractOptions = dao.getAll();
-        for (Option option:
+        for (Option option :
                 contractOptions) {
             notAddedToContractOptions.removeIf(o -> o.getId() == option.getId());
         }
         return notAddedToContractOptions;
     }
 
+    /**
+     * Options are incompatible in pairs.
+     *
+     * @param firstOptionId
+     * @param secondOptionId
+     */
     @Override
     @Transactional
     public void addIncompatibleOption(long firstOptionId, long secondOptionId) {
@@ -116,6 +129,7 @@ public class OptionServiceImpl implements OptionService {
         second.addIncompatibleOption(first);
         dao.update(first);
         dao.update(second);
+        log.info("Options " + first.getName() + " and " + second.getName() + " are made incompatible");
     }
 
     @Override
@@ -127,6 +141,7 @@ public class OptionServiceImpl implements OptionService {
         second.deleteIncompatibleOption(first);
         dao.update(first);
         dao.update(second);
+        log.info("Options " + first.getName() + " and " + second.getName() + " are made compatible");
     }
 
     @Override
@@ -152,6 +167,11 @@ public class OptionServiceImpl implements OptionService {
         return compatible;
     }
 
+    /**
+     * First option depends on second while second stay independent from first.
+     * @param firstOptionId
+     * @param secondOptionId
+     */
     @Override
     @Transactional
     public void addDependentOption(long firstOptionId, long secondOptionId) {
@@ -159,6 +179,7 @@ public class OptionServiceImpl implements OptionService {
         Option second = dao.getById(secondOptionId);
         first.addDependentOption(second);
         dao.update(first);
+        log.info("Option " + first.getName() + " now depends on " + second.getName());
     }
 
     @Override
@@ -168,6 +189,7 @@ public class OptionServiceImpl implements OptionService {
         Option second = dao.getById(secondOptionId);
         first.deleteDependentOption(second);
         dao.update(first);
+        log.info("Option " + first.getName() + " doesn't depends on " + second.getName());
     }
 
     @Override
@@ -182,8 +204,8 @@ public class OptionServiceImpl implements OptionService {
     public List<Option> getIndependentOptions(long optionId) {
         List<Option> independent = dao.getAll();
         Set<Option> dependent = dao.getById(optionId).getDependentOptions();
-        for (Option option:
-             dependent) {
+        for (Option option :
+                dependent) {
             independent.removeIf(o -> o.getId() == option.getId());
         }
         return independent;

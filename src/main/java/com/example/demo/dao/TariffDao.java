@@ -9,11 +9,9 @@ public interface TariffDao {
 
     List<Tariff> getAll();
 
-    boolean delete(Tariff tariff);
+    void delete(Tariff tariff);
 
     Tariff getById(long id);
 
     void update(Tariff tariff);
-
-    List<Tariff> getNotAddedToContractTariffs(long tariffId);
 }

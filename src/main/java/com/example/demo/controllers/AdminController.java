@@ -1,18 +1,10 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.Client;
-import com.example.demo.models.Contract;
-import com.example.demo.models.Tariff;
 import com.example.demo.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.LinkedList;
-import java.util.List;
 
 @Controller
 public class AdminController {
@@ -25,24 +17,20 @@ public class AdminController {
 
     @GetMapping(value = "/admin/searchClient")
     public String searchForClientByNumber(@RequestParam String number, Model model) {
-        List<Client> clients = clientService.findByNumber(number);
-        model.addAttribute("clients", clients);
+        model.addAttribute("clients", clientService.findByNumber(number));
         return "/admin/clients";
     }
 
     @GetMapping(value = "/admin/clients")
     public String showAllClients(Model model) {
-        List<Client> clients = clientService.getAll();
-        model.addAttribute("clients", clients);
+        model.addAttribute("clients", clientService.getAll());
         return "/admin/clients";
     }
 
     @GetMapping(value = "/admin/clientProfile/{clientId}")
     public String showClientProfile(@PathVariable long clientId, Model model) {
-        Client client = clientService.findById(clientId);
-        List<Contract> clientContracts = contractService.getClientsContracts(clientId);
-        model.addAttribute("client", client);
-        model.addAttribute("clientContracts", clientContracts);
+        model.addAttribute("client", clientService.findById(clientId));
+        model.addAttribute("clientContracts", contractService.getClientsContracts(clientId));
         return "/admin/clientProfile";
     }
 

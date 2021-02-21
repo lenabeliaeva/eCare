@@ -11,7 +11,7 @@ public interface TariffService {
 
     List<TariffDto> getAll();
 
-    boolean delete(Tariff tariff);
+    void delete(Tariff tariff);
 
     Tariff getById(long id);
 
@@ -19,7 +19,7 @@ public interface TariffService {
 
     void addOption(Tariff tariff, Option option);
 
-    boolean deleteOption(Tariff tariff, Option option);
+    void deleteOption(Tariff tariff, Option option);
 
     List<Tariff> getNotAddedToContractTariffs(long tariffId);
 }

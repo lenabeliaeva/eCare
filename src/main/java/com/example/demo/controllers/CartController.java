@@ -14,17 +14,15 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class CartController {
 
+    private static final String CART = "cart";
+
     @Autowired
     CartService service;
 
     @GetMapping("/cart")
     public String showCart(Model model, HttpSession session) {
-        Cart cart = (Cart) session.getAttribute("cart");
-        if (cart != null) {
-            model.addAttribute("cart", cart);
-        } else {
-            session.setAttribute("cart", new Cart());
-        }
+        Cart cart = getCartFromSession(session);
+        model.addAttribute(CART, cart);
         return "contract/cart";
     }
 
@@ -37,11 +35,7 @@ public class CartController {
 
     @PostMapping("/cart/connectOption/{optionId}/{contractId}")
     public String connectOption(@PathVariable long optionId, @PathVariable long contractId, HttpSession session) {
-        Cart cart = (Cart) session.getAttribute("cart");
-        if (cart == null) {
-            cart = new Cart();
-            session.setAttribute("cart", cart);
-        }
+        Cart cart = getCartFromSession(session);
         service.addOption(cart, optionId, contractId);
         return "redirect:/contract/connectOptions/{contractId}";
     }
@@ -55,11 +49,7 @@ public class CartController {
 
     @PostMapping("/cart/connectTariff/{tariffId}/{contractId}")
     public String connectTariff(@PathVariable long tariffId, @PathVariable long contractId, HttpSession session) {
-        Cart cart = (Cart) session.getAttribute("cart");
-        if (cart == null) {
-            cart = new Cart();
-            session.setAttribute("cart", cart);
-        }
+        Cart cart = getCartFromSession(session);
         service.changeTariff(cart, tariffId, contractId);
         return "redirect:/cart";
     }
@@ -69,5 +59,14 @@ public class CartController {
         Cart cart = (Cart) session.getAttribute("cart");
         service.deleteCartItem(cart, contractId);
         return "redirect:/cart";
+    }
+
+    private Cart getCartFromSession(HttpSession session) {
+        Cart cart = (Cart) session.getAttribute(CART);
+        if (cart == null) {
+            cart = new Cart();
+            session.setAttribute("cart", cart);
+        }
+        return cart;
     }
 }

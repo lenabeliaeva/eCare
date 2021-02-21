@@ -5,6 +5,7 @@ import com.example.demo.dao.RoleDao;
 import com.example.demo.exceptions.UserAlreadyExistsException;
 import com.example.demo.models.Client;
 import com.example.demo.models.Role;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@Log4j
 public class ClientServiceImpl implements ClientService {
 
     @Autowired
@@ -30,13 +32,22 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    /**
+     * Before saving new client it is necessary to check its email and passport as they should be unique.
+     * If they are unique password is encoded, role is added and new client is saved.
+     *
+     * @param client
+     * @throws UserAlreadyExistsException
+     */
     @Override
     @Transactional
     public void registerNewClient(Client client) throws UserAlreadyExistsException {
         if (dao.findByEmail(client.getEmail()) != null) {
+            log.info("Client can't be saved because there is an account with this email: " + client.getEmail());
             throw new UserAlreadyExistsException("There is an account with this email: " + client.getEmail());
         }
         if (dao.findByPassport(client.getPassport()) != null) {
+            log.info("Client can't be saved because there is an account with this passport: " + client.getPassport());
             throw new UserAlreadyExistsException("There is an account with this passport: " + client.getPassport());
         }
         client.setPassword(passwordEncoder.encode(client.getPassword()));
@@ -44,6 +55,7 @@ public class ClientServiceImpl implements ClientService {
         roles.add(roleDao.getById(1L));
         client.setRoles(roles);
         dao.register(client);
+        log.info("Client is saved to DB");
     }
 
     @Override
@@ -80,8 +92,14 @@ public class ClientServiceImpl implements ClientService {
         Client oldClient = findByEmail(authName);
         client.setRoles(oldClient.getRoles());
         dao.update(client);
+        log.info("Client info is updated");
     }
 
+    /**
+     * This method is used to show client's profile after authorization
+     *
+     * @return authorized client
+     */
     @Override
     @Transactional
     public Client getAuthorizedClient() {

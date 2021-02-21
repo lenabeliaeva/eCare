@@ -22,11 +22,10 @@ public class ContractController {
     ContractService contractService;
 
     /**
-     * This method is used for getting a new number for a new contract
-     *
+     * This method is used to create a new contract. Client, tariff and new number is necessary for it.
      * @param clientId
      * @param model
-     * @return
+     * @return view with tariffs list
      */
     @GetMapping(value = "/admin/signContract/{clientId}")
     public String createContract(@PathVariable long clientId, Model model) {
@@ -40,7 +39,6 @@ public class ContractController {
 
     /**
      * This method is used to save new contract with connected tariff and client
-     *
      * @param clientId
      * @param tariffId
      * @param contract
@@ -57,7 +55,6 @@ public class ContractController {
 
     /**
      * This method is used to watch tariffs available to change for existing contract
-     *
      * @param contractId
      * @param model
      * @return view with available tariffs

@@ -2,13 +2,16 @@ package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import java.util.List;
+
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.example.demo.controllers", "com.example.demo.restcontrollers"})
+@ComponentScan(basePackages = {"com.example.demo.controllers"})
 public class WebConfig implements WebMvcConfigurer {
 
     @Override

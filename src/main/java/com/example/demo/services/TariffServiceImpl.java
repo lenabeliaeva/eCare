@@ -4,19 +4,19 @@ import com.example.demo.dao.TariffDao;
 import com.example.demo.dto.TariffDto;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.RollbackException;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
-@Slf4j
+@Log4j
 @Service
 public class TariffServiceImpl implements TariffService {
 
@@ -38,6 +38,7 @@ public class TariffServiceImpl implements TariffService {
         } catch (IOException | TimeoutException e) {
             log.warn("Couldn't send message. " + e.getMessage());
         }
+        log.info("Tariff " + tariff.getName() + " is created");
     }
 
     @Override
@@ -50,18 +51,20 @@ public class TariffServiceImpl implements TariffService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * If tariff is not contained in any contract it is deleted and message to the client app is sent.
+     * @param tariff to be deleted
+     */
     @Override
     @Transactional
-    public boolean delete(Tariff tariff) {
-        boolean isSuccessful = tariffDao.delete(tariff);
-        if (isSuccessful) {
-            try {
-                mqService.sendMessage("Tariff " + tariff.getName() + " is deleted");
-            } catch (IOException | TimeoutException e) {
-                log.warn("Couldn't send message. " + e.getMessage());
-            }
+    public void delete(Tariff tariff) {
+        try {
+            tariffDao.delete(tariff);
+            sendMessage("Tariff " + tariff.getName() + "is deleted");
+            log.info("Tariff " + tariff.getName() + " is deleted");
+        } catch (RollbackException e) {
+            log.info("Tariff " + tariff.getName() + " can't be deleted as it is contained in contract");
         }
-        return isSuccessful;
     }
 
     @Override
@@ -77,31 +80,37 @@ public class TariffServiceImpl implements TariffService {
         if (tariff.getOptions() == null)
             tariff.setOptions(initial.getOptions());
         tariffDao.update(tariff);
-        try {
-            mqService.sendMessage("Tariff " + tariff.getName() + " is updated");
-        } catch (IOException | TimeoutException e) {
-            log.warn("Couldn't send message. " + e.getMessage());
-        }
+        sendMessage("Tariff " + tariff.getName() + " is updated");
+        log.info("Tariff " + tariff.getName() + " is updated");
     }
 
+    /**
+     * There is a tariff object in a session and it will be added after submitting.
+     * @param tariff from session
+     * @param option
+     */
     @Override
     @Transactional
     public void addOption(Tariff tariff, Option option) {
         if (option.isCompatibleWith(tariff.getOptions()) && option.isDependentFrom(tariff.getOptions())) {
             tariff.setPrice(tariff.getPrice() + option.getPrice());
             tariff.add(option);
+            log.info("Option " + option.getName() + " is going to be added to " + tariff.getName());
         }
     }
 
+    /**
+     * There is a tariff object in a session and it will be deleted after submitting.
+     * @param tariff
+     * @param option
+     */
     @Override
     @Transactional
-    public boolean deleteOption(Tariff tariff, Option option) {
+    public void deleteOption(Tariff tariff, Option option) {
         if (tariff.getOptions().size() > 1) {
             tariff.delete(option);
             tariff.setPrice(tariff.getPrice() - option.getPrice());
-            return true;
-        } else {
-            return false;
+            log.info("Option " + option.getName() + " is going to be deleted from " + tariff.getName());
         }
     }
 
@@ -113,15 +122,11 @@ public class TariffServiceImpl implements TariffService {
         return tariffs;
     }
 
-    private boolean checkCompatibility(long optionId, Set<Option> alreadyAddedOptions) {
-        for (Option option :
-                alreadyAddedOptions) {
-            if (option.getIncompatibleOptions()
-                    .stream()
-                    .anyMatch(o -> o.getId() == optionId)) {
-                return false;
-            }
+    private void sendMessage(String message) {
+        try {
+            mqService.sendMessage(message);
+        } catch (IOException | TimeoutException e) {
+            log.warn("Couldn't send message. " + e.getMessage());
         }
-        return true;
     }
 }

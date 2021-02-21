@@ -34,15 +34,10 @@ public class TariffDaoImpl implements TariffDao {
     }
 
     @Override
-    public boolean delete(Tariff tariff) {
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.remove(tariff);
-            entityManager.getTransaction().commit();
-            return true;
-        } catch (RollbackException e) {
-            return false;
-        }
+    public void delete(Tariff tariff) {
+        entityManager.getTransaction().begin();
+        entityManager.remove(tariff);
+        entityManager.getTransaction().commit();
     }
 
     @Override
@@ -55,13 +50,5 @@ public class TariffDaoImpl implements TariffDao {
         entityManager.getTransaction().begin();
         entityManager.merge(tariff);
         entityManager.getTransaction().commit();
-    }
-
-    @Override
-    public List<Tariff> getNotAddedToContractTariffs(long tariffId) {
-        return entityManager
-                .createQuery("select t from Tariff t where t.id <> :id")
-                .setParameter("id", tariffId)
-                .getResultList();
     }
 }
