@@ -58,11 +58,11 @@ public class TariffServiceImpl implements TariffService {
     @Override
     @Transactional
     public void delete(Tariff tariff) {
-        try {
+        if (tariff.getContracts() == null || tariff.getContracts().isEmpty()) {
             tariffDao.delete(tariff);
             sendMessage("Tariff " + tariff.getName() + "is deleted");
             log.info("Tariff " + tariff.getName() + " is deleted");
-        } catch (RollbackException e) {
+        } else {
             log.info("Tariff " + tariff.getName() + " can't be deleted as it is contained in contract");
         }
     }

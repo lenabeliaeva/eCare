@@ -78,10 +78,10 @@ public class OptionServiceImpl implements OptionService {
     @Transactional
     public void delete(long optionId) {
         Option option = dao.getById(optionId);
-        try {
+        if (option.getTariff() == null || option.getTariff().isEmpty()) {
             dao.delete(option);
             log.info(option.getName() + " is deleted");
-        } catch (RollbackException e) {
+        } else {
             log.info(option.getName() + " can't be deleted as it is hold in a tariff");
         }
     }
