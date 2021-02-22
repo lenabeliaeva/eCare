@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.RollbackException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -77,7 +78,12 @@ public class OptionServiceImpl implements OptionService {
     @Transactional
     public void delete(long optionId) {
         Option option = dao.getById(optionId);
-        dao.delete(option);
+        try {
+            dao.delete(option);
+            log.info(option.getName() + " is deleted");
+        } catch (RollbackException e) {
+            log.info(option.getName() + " can't be deleted as it is hold in a tariff");
+        }
     }
 
     @Override
@@ -169,6 +175,7 @@ public class OptionServiceImpl implements OptionService {
 
     /**
      * First option depends on second while second stay independent from first.
+     *
      * @param firstOptionId
      * @param secondOptionId
      */
