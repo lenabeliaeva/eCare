@@ -41,17 +41,6 @@ public class ClientController {
         return "redirect:/";
     }
 
-    @GetMapping("/login")
-    public String login(Model model, @RequestParam String error, @RequestParam String logOut) {
-        if (error != null) {
-            model.addAttribute("error", "Username and password are invalid");
-        }
-        if (logOut != null) {
-            model.addAttribute("message", "You have been logged out successfully");
-        }
-        return "login";
-    }
-
     @GetMapping("/")
     public String showWelcomePage(Model model) {
         Client client = clientService.getAuthorizedClient();
