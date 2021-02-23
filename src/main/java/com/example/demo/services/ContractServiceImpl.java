@@ -73,7 +73,7 @@ public class ContractServiceImpl implements ContractService {
     }
 
     /**
-     * Option can be deleted from the contract if it belongs to the contract and to the tariff in the contract.
+     * Option can't be deleted from the contract if it belongs not to the contract but to the tariff in the contract.
      * If option can be deleted contract's price and connection cost should recalculated.
      * @param contractId
      * @param optionId
@@ -89,8 +89,9 @@ public class ContractServiceImpl implements ContractService {
             contract.setConnectionCost(newConnectionCost);
             dao.update(contract);
             log.info("Option " + option.getName() + " is deleted from the contract");
+        } else {
+            log.info(option.getName() + " couldn't be deleted from the contract as it belongs to tariff in the contract");
         }
-        log.info(option.getName() + " couldn't be deleted from the contract as it belongs to tariff in the contract");
     }
 
     @Override

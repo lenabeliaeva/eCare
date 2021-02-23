@@ -141,8 +141,8 @@ public class OptionServiceImpl implements OptionService {
     @Override
     @Transactional
     public void addIncompatibleOption(long firstOptionId, long secondOptionId) {
-        Option first = getById(firstOptionId);
-        Option second = getById(secondOptionId);
+        Option first = dao.getById(firstOptionId);
+        Option second = dao.getById(secondOptionId);
         if (first.getDependentOptions().stream().noneMatch(o -> o.getId() == second.getId()) &&
         second.getDependentOptions().stream().noneMatch(o -> o.getId() == first.getId())) {
             first.addIncompatibleOption(second);

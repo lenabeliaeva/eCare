@@ -1,12 +1,17 @@
 package com.example.demo;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.example.demo.dao.ContractDao;
+import com.example.demo.dao.OptionDao;
 import com.example.demo.models.Client;
 import com.example.demo.models.Contract;
+import com.example.demo.models.Option;
+import com.example.demo.models.Tariff;
 import com.example.demo.services.ContractServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,12 +29,16 @@ class ContractServiceTest {
     @Mock
     private ContractDao contractDao;
 
+    @Mock
+    private OptionDao optionDao;
+
     @InjectMocks
     private ContractServiceImpl contractService;
 
     private Contract contract;
     private Contract anotherContract;
     List<Contract> clientContracts;
+    private Option option;
 
     @BeforeEach
     public void setup() {
@@ -42,6 +51,10 @@ class ContractServiceTest {
         contract.setClient(client);
         clientContracts = new LinkedList<>();
         clientContracts.add(contract);
+        option = new Option();
+        option.setId(1L);
+        option.setPrice(200);
+        option.setConnectionCost(100);
     }
 
     @Test
@@ -70,5 +83,32 @@ class ContractServiceTest {
         when(contractDao.getByClientId(2L)).thenReturn(new LinkedList<>());
         List<Contract> found = contractService.getClientsContracts(2L);
         assertNotEquals(clientContracts, found);
+    }
+
+    @Test
+    void shouldDisconnectOption() {
+        when(contractDao.getById(1L)).thenReturn(contract);
+        when(optionDao.getById(1L)).thenReturn(option);
+        doNothing().when(contractDao).update(isA(Contract.class));
+        contract.add(option);
+        contract.setPrice(200);
+        contract.setConnectionCost(100);
+        contractService.disconnectOption(1L, 1L);
+        Contract expected = new Contract();
+        assertEquals(expected.getPrice(), contract.getPrice());
+        assertEquals(expected.getConnectionCost(), contract.getConnectionCost());
+        assertEquals(expected.getOption(), contract.getOption());
+    }
+
+    @Test
+    void shouldNotDisconnectOption() {
+        when(contractDao.getById(1L)).thenReturn(contract);
+        when(optionDao.getById(1L)).thenReturn(option);
+        Tariff tariff = new Tariff();
+        tariff.add(option);
+        contract.setTariff(tariff);
+        contractService.disconnectOption(1L, 1L);
+        Contract expected = new Contract();
+        assertEquals(expected.getOption(), contract.getOption());
     }
 }

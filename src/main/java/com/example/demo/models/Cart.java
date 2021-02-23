@@ -10,8 +10,6 @@ import java.util.List;
 @Setter
 public class Cart {
 
-    private double totalPrice;
-
     private List<CartItem> cartItems = new LinkedList<>();
 
     public void addItem(CartItem item) {

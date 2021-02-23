@@ -35,6 +35,7 @@
                     </tr>
                 </c:forEach>
             </table>
+            <h3>Tariff price: ${item.price}</h3>
         </c:if>
         <br>
         <c:if test="${item.options.size() > 0}">
@@ -61,7 +62,6 @@
                     </tr>
                 </c:forEach>
             </table>
-            <h3>Tariff price: ${item.price}</h3>
             <h3>Connection cost: ${item.connectionCost}</h3>
         </c:if>
         <button class="btn btn-outline-danger"

@@ -111,7 +111,7 @@ public class CartServiceImpl implements CartService {
             contract.setPrice(item.getPrice());
             contract.setConnectionCost(item.getConnectionCost());
             contractDao.update(contract);
-            log.info("Contract is updated");
+            log.info("Contract " + contract.getNumber() + " is updated");
         }
         cart.getCartItems().clear();
     }

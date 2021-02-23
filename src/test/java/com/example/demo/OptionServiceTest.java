@@ -1,9 +1,8 @@
 package com.example.demo;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 import com.example.demo.dao.OptionDao;
 import com.example.demo.models.Contract;
@@ -170,5 +169,26 @@ class OptionServiceTest {
         unexpected.add(option);
         Set<Option> found = optionService.getDependentOptions(1L);
         assertNotEquals(unexpected, found);
+    }
+
+    @Test
+    void shouldMakeOptionsIncompatible() {
+        when(optionDao.getById(1L)).thenReturn(option);
+        when(optionDao.getById(2L)).thenReturn(anotherOption);
+        doNothing().when(optionDao).update(isA(Option.class));
+        Set<Option> expected = new HashSet<>();
+        expected.add(anotherOption);
+        optionService.addIncompatibleOption(option.getId(), anotherOption.getId());
+        assertEquals(expected, option.getIncompatibleOptions());
+    }
+
+    @Test
+    void shouldNotMakeOptionsIncompatible() {
+        option.addDependentOption(anotherOption);
+        when(optionDao.getById(1L)).thenReturn(option);
+        when(optionDao.getById(2L)).thenReturn(anotherOption);
+        optionService.addIncompatibleOption(option.getId(), anotherOption.getId());
+        assertEquals(new HashSet<>(), option.getIncompatibleOptions());
+        option.deleteDependentOption(anotherOption);
     }
 }
