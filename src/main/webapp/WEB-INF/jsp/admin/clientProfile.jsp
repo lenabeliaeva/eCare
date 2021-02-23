@@ -22,7 +22,7 @@
                 <tr>
                     <td>${contract.number}</td>
                     <td>${contract.tariff.name}</td>
-                    <td>${contract.tariffPrice}</td>
+                    <td>${contract.price}</td>
                     <td>
                         <button class="btn btn-outline-primary"
                                 formmethod="get"

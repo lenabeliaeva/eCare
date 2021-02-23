@@ -9,21 +9,26 @@
     <%@include file="../parts/header.jsp" %>
 </head>
 <body>
-<h2>"${tariff.name}" options</h2>
-<table class="table table-hover">
-    <tr>
-        <td>Name</td>
-        <td>Price</td>
-        <td>Connection Cost</td>
-    </tr>
-    <c:forEach var="option" items="${options}">
+<c:if test="${tariff.options.size() > 0}">
+    <h2>"${tariff.name}" options</h2>
+    <table class="table table-hover">
         <tr>
-            <td>${option.name}</td>
-            <td>${option.price}</td>
-            <td>${option.connectionCost}</td>
+            <td>Name</td>
+            <td>Price</td>
+            <td>Connection Cost</td>
         </tr>
-    </c:forEach>
-</table>
+        <c:forEach var="option" items="${options}">
+            <tr>
+                <td>${option.name}</td>
+                <td>${option.price}</td>
+                <td>${option.connectionCost}</td>
+            </tr>
+        </c:forEach>
+    </table>
+</c:if>
+<c:if test="${tariff.options.size() == 0}">
+    <h3>There are no options for ${tariff.name}</h3>
+</c:if>
 <form:form>
     <button class="btn btn-outline-primary"
             formmethod="get"

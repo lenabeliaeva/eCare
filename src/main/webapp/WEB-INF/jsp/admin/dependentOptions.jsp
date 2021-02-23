@@ -18,7 +18,7 @@
 </head>
 <body>
 <c:if test="${dependent.size() > 0}">
-    <h3>Dependent options</h3>
+    <h3>${first.name} depends on these options</h3>
     <form:form>
         <table class="table table-hover">
             <tr>
@@ -39,7 +39,7 @@
                     </th>
                     <th scope="col">
                         <button class="btn btn-outline-danger"
-                                formaction="/admin/options/dependent/${first.id}/${option.id}" type="submit">
+                                formaction="/admin/options/deleteDependent/${first.id}/${option.id}" type="submit">
                             Make
                             independent
                         </button>
@@ -50,7 +50,7 @@
     </form:form>
 </c:if>
 <c:if test="${independent.size() > 0}">
-    <h3>You can make these options dependent from ${first.name}</h3>
+    <h3>You can make ${first.name} dependent from these options</h3>
     <form:form>
         <table class="table table-hover">
             <tr>
@@ -71,7 +71,7 @@
                     </th>
                     <th scope="col">
                         <button class="btn btn-outline-primary"
-                                formaction="/admin/options/deleteDependent/${first.id}/${option.id}" type="submit">
+                                formaction="/admin/options/dependent/${first.id}/${option.id}" type="submit">
                             Make dependent
                         </button>
                     </th>

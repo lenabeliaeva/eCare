@@ -27,8 +27,8 @@ public class Contract {
     @Column(name = "blocked_by_admin")
     private boolean blockedByAdmin = false;
 
-    @Column(name = "tariff_price")
-    private double tariffPrice;
+    @Column(name = "price")
+    private double price;
 
     @Column(name = "connection_cost")
     private double connectionCost;

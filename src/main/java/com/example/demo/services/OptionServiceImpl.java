@@ -56,7 +56,7 @@ public class OptionServiceImpl implements OptionService {
     @Override
     @Transactional
     public void edit(Option option) {
-        Option initialOption = getById(option.getId());
+        Option initialOption = dao.getById(option.getId());
         if (option.getTariff() == null) {
             option.setTariff(initialOption.getTariff());
         }
@@ -73,15 +73,20 @@ public class OptionServiceImpl implements OptionService {
         log.info("Option" + option.getName() + " info is updated");
     }
 
+    /**
+     * We have to check if the option is hold in a tariff. If it is the option is not deleted.
+     * @param optionId
+     */
     @Override
     @Transactional
     public void delete(long optionId) {
         Option option = dao.getById(optionId);
-        if (option.getTariff() == null || option.getTariff().isEmpty()) {
+        if (option.getTariff().isEmpty() && option.getDependentOptions().isEmpty()
+                && option.getIncompatibleOptions().isEmpty()) {
             dao.delete(option);
             log.info(option.getName() + " is deleted");
         } else {
-            log.info(option.getName() + " can't be deleted as it is hold in a tariff");
+            log.info(option.getName() + " can't be deleted as it is hold in a tariff or depends on other options");
         }
     }
 
@@ -100,11 +105,19 @@ public class OptionServiceImpl implements OptionService {
     @Override
     @Transactional
     public Set<Option> getContractOptions(Contract contract) {
-        Set<Option> contractOptions = contract.getOption();
-        Set<Option> tariffOptions = contract.getTariff().getOptions();
-        Set<Option> options = new HashSet<>(contractOptions);
-        options.addAll(tariffOptions);
-        return options;
+        if (contract != null) {
+            Set<Option> contractOptions = contract.getOption();
+            Tariff contractTariff = contract.getTariff();
+            if (contractTariff != null) {
+                Set<Option> tariffOptions = contractTariff.getOptions();
+                Set<Option> options = new HashSet<>(contractOptions);
+                options.addAll(tariffOptions);
+                contract.setPrice(options.stream().mapToDouble(Option::getPrice).sum());
+                contract.setConnectionCost(options.stream().mapToDouble(Option::getConnectionCost).sum());
+                return options;
+            }
+        }
+        return new HashSet<>();
     }
 
     @Override
@@ -152,7 +165,7 @@ public class OptionServiceImpl implements OptionService {
     @Override
     @Transactional
     public Set<Option> getIncompatibleOptions(long optionId) {
-        Option option = getById(optionId);
+        Option option = dao.getById(optionId);
         return option.getIncompatibleOptions();
     }
 
@@ -160,7 +173,7 @@ public class OptionServiceImpl implements OptionService {
     @Transactional
     public List<Option> getCompatible(long optionId) {
         List<Option> compatible = dao.getAll();
-        Set<Option> incompatible = getById(optionId).getIncompatibleOptions();
+        Set<Option> incompatible = dao.getById(optionId).getIncompatibleOptions();
         if (incompatible != null) {
             for (Option o :
                     incompatible) {
@@ -214,7 +227,27 @@ public class OptionServiceImpl implements OptionService {
                 dependent) {
             independent.removeIf(o -> o.getId() == option.getId());
         }
+        independent.removeIf(o -> o.getId() == optionId);
         return independent;
     }
 
+    private double calcPrice(Contract contract) {
+        double contractPrice = 0;
+        Tariff tariff = contract.getTariff();
+        if (tariff != null) {
+            contractPrice += tariff.getPrice();
+        }
+        contractPrice += contract.getOption().stream().mapToDouble(Option::getPrice).sum();
+        return contractPrice;
+    }
+
+    private double calcConnectionCost(Contract contract) {
+        double contractConnectionCost = 0;
+        Tariff tariff = contract.getTariff();
+        if (tariff != null) {
+            contractConnectionCost += tariff.getOptions().stream().mapToDouble(Option::getConnectionCost).sum();
+        }
+        contractConnectionCost += contract.getOption().stream().mapToDouble(Option::getConnectionCost).sum();
+        return contractConnectionCost;
+    }
 }

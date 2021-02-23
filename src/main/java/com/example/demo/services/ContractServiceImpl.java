@@ -38,8 +38,8 @@ public class ContractServiceImpl implements ContractService {
         Tariff tariff = tariffDao.getById(tariffId);
         contract.setClient(client);
         contract.setTariff(tariff);
-        contract.setTariffPrice(tariff.getPrice());
-        contract.setConnectionCost(calcConnectionCost(tariff));
+        contract.setPrice(tariff.getPrice());
+        contract.setConnectionCost(tariff.getOptions().stream().mapToDouble(Option::getConnectionCost).sum());
         dao.save(contract);
         log.info("Contract is saved to DB");
     }
@@ -49,6 +49,11 @@ public class ContractServiceImpl implements ContractService {
         return dao.getById(id);
     }
 
+    /**
+     * As tariff could be changed contracts price and connection cost have to be recalculated.
+     * @param clientId to get all contracts of a client
+     * @return list of renewed contracts of the client
+     */
     @Override
     public List<Contract> getClientsContracts(long clientId) {
         return dao.getByClientId(clientId);
@@ -78,8 +83,8 @@ public class ContractServiceImpl implements ContractService {
         Contract contract = dao.getById(contractId);
         Option option = optionDao.getById(optionId);
         if (contract.delete(option)) {
-            double newPrice = contract.getTariffPrice() - option.getPrice();
-            contract.setTariffPrice(newPrice);
+            double newPrice = contract.getPrice() - option.getPrice();
+            contract.setPrice(newPrice);
             double newConnectionCost = contract.getConnectionCost() - option.getConnectionCost();
             contract.setConnectionCost(newConnectionCost);
             dao.update(contract);
@@ -137,14 +142,5 @@ public class ContractServiceImpl implements ContractService {
         else
             result = BASE_NUMBER + suffix;
         return result;
-    }
-
-    private double calcConnectionCost(Tariff tariff) {
-        double contractConnectionCost = 0;
-        for (Option o:
-                tariff.getOptions()) {
-            contractConnectionCost += o.getConnectionCost();
-        }
-        return contractConnectionCost;
     }
 }

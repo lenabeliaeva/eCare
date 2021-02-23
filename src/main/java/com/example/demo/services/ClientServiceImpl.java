@@ -109,7 +109,7 @@ public class ClientServiceImpl implements ClientService {
                     .getContext()
                     .getAuthentication()
                     .getPrincipal();
-            return findByEmail(userDetails.getUsername());
+            return dao.findByEmail(userDetails.getUsername());
         } else {
             return null;
         }

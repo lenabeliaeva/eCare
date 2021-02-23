@@ -5,8 +5,6 @@ import com.example.demo.dao.OptionDao;
 import com.example.demo.dao.TariffDao;
 import com.example.demo.models.*;
 import lombok.extern.log4j.Log4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +28,9 @@ public class CartServiceImpl implements CartService {
      * This method adds Tariff to the Cart.
      * Each cart item holds contract which is need to be changed.
      * If the cart hasn't got item for the contract, new cart item has to be created to save tariff there.
-     * @param cart from session
-     * @param tariffId to get Tariff
+     *
+     * @param cart       from session
+     * @param tariffId   to get Tariff
      * @param contractId to get Contract
      */
     @Override
@@ -54,6 +53,7 @@ public class CartServiceImpl implements CartService {
      * First of all, the option is checked for compatibility with other options.
      * Each cart item holds contract which is need to be changed.
      * If the cart hasn't got item for the contract, new cart item has to be created to save option there.
+     *
      * @param cart       Cart object from session
      * @param optionId   to get Option entity
      * @param contractId to get Contract entity
@@ -80,8 +80,9 @@ public class CartServiceImpl implements CartService {
 
     /**
      * When option is deleted price and connection cost in cart item should be recalculated
+     *
      * @param cart
-     * @param optionId to get Option to add to the cart
+     * @param optionId   to get Option to add to the cart
      * @param contractId to get cart item for the contract
      */
     @Override
@@ -107,7 +108,7 @@ public class CartServiceImpl implements CartService {
             contract = item.getContract();
             contract.setTariff(item.getTariff());
             contract.setOption(item.getOptions());
-            contract.setTariffPrice(item.getPrice());
+            contract.setPrice(item.getPrice());
             contract.setConnectionCost(item.getConnectionCost());
             contractDao.update(contract);
             log.info("Contract is updated");
@@ -120,10 +121,7 @@ public class CartServiceImpl implements CartService {
         Tariff tariff = cartItem.getTariff();
         Set<Option> options = cartItem.getOptions();
         if (options != null) {
-            for (Option option :
-                    options) {
-                newPrice += option.getPrice();
-            }
+            newPrice += options.stream().mapToDouble(Option::getPrice).sum();
         }
         if (tariff != null) {
             newPrice += tariff.getPrice();
@@ -136,16 +134,10 @@ public class CartServiceImpl implements CartService {
         Tariff tariff = cartItem.getTariff();
         Set<Option> options = cartItem.getOptions();
         if (options != null) {
-            for (Option option :
-                    options) {
-                newConnectionCost += option.getConnectionCost();
-            }
+            newConnectionCost += options.stream().mapToDouble(Option::getConnectionCost).sum();
         }
         if (tariff != null) {
-            for (Option option :
-                    tariff.getOptions()) {
-                newConnectionCost += option.getConnectionCost();
-            }
+            newConnectionCost += tariff.getOptions().stream().mapToDouble(Option::getConnectionCost).sum();
         }
         return newConnectionCost;
     }
@@ -153,7 +145,8 @@ public class CartServiceImpl implements CartService {
     /**
      * Cart item is created for the contract which is has to be modified.
      * That is why cart item should contain all information about the contract.
-     * @param contractId to get Contract from DB
+     *
+     * @param contractId to get contract from DB
      * @return created CartItem
      */
     private CartItem createCartItem(long contractId) {

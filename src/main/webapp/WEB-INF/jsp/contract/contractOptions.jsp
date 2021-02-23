@@ -17,7 +17,7 @@
 </head>
 <body>
 <h3>Tariff: ${contract.tariff.name}</h3>
-<h3>Price: ${contract.tariffPrice}</h3>
+<h3>Price: ${contract.price}</h3>
 <h3>Connection cost: ${contract.connectionCost}</h3>
 <form:form method="post">
     <c:if test="${options.size() > 0}">

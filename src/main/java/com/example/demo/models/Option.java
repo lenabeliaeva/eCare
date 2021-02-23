@@ -33,7 +33,7 @@ public class Option {
     private double connectionCost;
 
     @ManyToMany
-    private Set<Tariff> tariff;
+    private Set<Tariff> tariff = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -51,9 +51,6 @@ public class Option {
     )
     private Set<Option> incompatibleOptions = new HashSet<>();
 
-    /**
-     * Options on which this option depends
-     */
     @ManyToMany
     @JoinTable(
             name = "dependent_options",
@@ -79,6 +76,9 @@ public class Option {
     }
 
     public boolean isCompatibleWith(Set<Option> alreadyAddedOptions) {
+        if (this.incompatibleOptions.isEmpty()) {
+            return true;
+        }
         for (Option option :
                 alreadyAddedOptions) {
             if (option.getIncompatibleOptions()
@@ -91,7 +91,7 @@ public class Option {
     }
 
     public boolean isDependentFrom(Set<Option> alreadyAddedOptions) {
-        if (this.getDependentOptions().isEmpty()) {
+        if (this.dependentOptions.isEmpty()) {
             return true;
         }
         for (Option option:

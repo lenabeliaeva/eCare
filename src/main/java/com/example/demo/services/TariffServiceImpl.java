@@ -32,11 +32,7 @@ public class TariffServiceImpl implements TariffService {
     @Transactional
     public void add(Tariff tariff) {
         tariffDao.add(tariff);
-        try {
-            mqService.sendMessage("Tariff " + tariff.getName() + " is created");
-        } catch (IOException | TimeoutException e) {
-            log.warn("Couldn't send message. " + e.getMessage());
-        }
+        sendMessage("Tariff " + tariff.getName() + " is created");
         log.info("Tariff " + tariff.getName() + " is created");
     }
 
@@ -76,8 +72,11 @@ public class TariffServiceImpl implements TariffService {
     @Transactional
     public void edit(Tariff tariff) {
         Tariff initial = getById(tariff.getId());
-        if (tariff.getOptions() == null)
+        if (tariff.getOptions().isEmpty())
             tariff.setOptions(initial.getOptions());
+        if (tariff.getPrice() == 0) {
+            tariff.setPrice(initial.getPrice());
+        }
         tariffDao.update(tariff);
         sendMessage("Tariff " + tariff.getName() + " is updated");
         log.info("Tariff " + tariff.getName() + " is updated");
@@ -95,6 +94,8 @@ public class TariffServiceImpl implements TariffService {
             tariff.setPrice(tariff.getPrice() + option.getPrice());
             tariff.add(option);
             log.info("Option " + option.getName() + " is going to be added to " + tariff.getName());
+        } else {
+            log.info(option.getName() + " can't be added to " + tariff.getName());
         }
     }
 
