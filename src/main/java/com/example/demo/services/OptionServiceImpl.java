@@ -134,7 +134,7 @@ public class OptionServiceImpl implements OptionService {
 
     /**
      * Options are incompatible in pairs.
-     *
+     * If one of options depends on other they can't be incompatible.
      * @param firstOptionId
      * @param secondOptionId
      */
@@ -143,11 +143,16 @@ public class OptionServiceImpl implements OptionService {
     public void addIncompatibleOption(long firstOptionId, long secondOptionId) {
         Option first = getById(firstOptionId);
         Option second = getById(secondOptionId);
-        first.addIncompatibleOption(second);
-        second.addIncompatibleOption(first);
-        dao.update(first);
-        dao.update(second);
-        log.info("Options " + first.getName() + " and " + second.getName() + " are made incompatible");
+        if (first.getDependentOptions().stream().noneMatch(o -> o.getId() == second.getId()) &&
+        second.getDependentOptions().stream().noneMatch(o -> o.getId() == first.getId())) {
+            first.addIncompatibleOption(second);
+            second.addIncompatibleOption(first);
+            dao.update(first);
+            dao.update(second);
+            log.info("Options " + first.getName() + " and " + second.getName() + " are made incompatible");
+        } else {
+            log.info(first.getName() + " and " + second.getName() + " are dependent and can't be incompatible");
+        }
     }
 
     @Override
@@ -187,7 +192,7 @@ public class OptionServiceImpl implements OptionService {
 
     /**
      * First option depends on second while second stay independent from first.
-     *
+     * If options are already incompatible they won't become dependent.
      * @param firstOptionId
      * @param secondOptionId
      */
@@ -196,9 +201,13 @@ public class OptionServiceImpl implements OptionService {
     public void addDependentOption(long firstOptionId, long secondOptionId) {
         Option first = dao.getById(firstOptionId);
         Option second = dao.getById(secondOptionId);
-        first.addDependentOption(second);
-        dao.update(first);
-        log.info("Option " + first.getName() + " now depends on " + second.getName());
+        if (first.getIncompatibleOptions().stream().noneMatch(o -> o.getId() == second.getId())) {
+            first.addDependentOption(second);
+            dao.update(first);
+            log.info("Option " + first.getName() + " now depends on " + second.getName());
+        } else {
+            log.info(first.getName() + " is incompatible with " + second.getName() + " and can't become dependent");
+        }
     }
 
     @Override
@@ -229,25 +238,5 @@ public class OptionServiceImpl implements OptionService {
         }
         independent.removeIf(o -> o.getId() == optionId);
         return independent;
-    }
-
-    private double calcPrice(Contract contract) {
-        double contractPrice = 0;
-        Tariff tariff = contract.getTariff();
-        if (tariff != null) {
-            contractPrice += tariff.getPrice();
-        }
-        contractPrice += contract.getOption().stream().mapToDouble(Option::getPrice).sum();
-        return contractPrice;
-    }
-
-    private double calcConnectionCost(Contract contract) {
-        double contractConnectionCost = 0;
-        Tariff tariff = contract.getTariff();
-        if (tariff != null) {
-            contractConnectionCost += tariff.getOptions().stream().mapToDouble(Option::getConnectionCost).sum();
-        }
-        contractConnectionCost += contract.getOption().stream().mapToDouble(Option::getConnectionCost).sum();
-        return contractConnectionCost;
     }
 }

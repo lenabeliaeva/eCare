@@ -58,17 +58,17 @@ class ContractServiceTest {
         assertNotEquals(contract, found);
     }
 
-//    @Test
-//    void shouldGetByClientId() {
-//        when(contractDao.getByClientId(1L)).thenReturn(clientContracts);
-//        List<Contract> found = contractService.getClientsContracts(1L);
-//        assertEquals(clientContracts, found);
-//    }
-//
-//    @Test
-//    void shouldNotGetByClientId() {
-//        when(contractDao.getByClientId(2L)).thenReturn(new LinkedList<>());
-//        List<Contract> found = contractService.getClientsContracts(2L);
-//        assertNotEquals(clientContracts, found);
-//    }
+    @Test
+    void shouldGetByClientId() {
+        when(contractDao.getByClientId(1L)).thenReturn(clientContracts);
+        List<Contract> found = contractService.getClientsContracts(1L);
+        assertEquals(clientContracts, found);
+    }
+
+    @Test
+    void shouldNotGetByClientId() {
+        when(contractDao.getByClientId(2L)).thenReturn(new LinkedList<>());
+        List<Contract> found = contractService.getClientsContracts(2L);
+        assertNotEquals(clientContracts, found);
+    }
 }
