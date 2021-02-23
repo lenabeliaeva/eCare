@@ -55,9 +55,12 @@
                 </tr>
             </c:forEach>
         </table>
+        <button class="btn btn-outline-primary" type="submit" formaction="/admin/tariffs/put">Submit
+        </button>
     </c:if>
-    <button class="btn btn-outline-primary" type="submit" formaction="/admin/tariffs/put">Submit
-    </button>
+    <c:if test="${selectedOptions.size() == 0}">
+        <p style="color: red">You have to choose at least one option</p>
+    </c:if>
 </form:form>
 </body>
 </html>

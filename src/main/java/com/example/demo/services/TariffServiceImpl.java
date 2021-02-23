@@ -48,6 +48,7 @@ public class TariffServiceImpl implements TariffService {
 
     /**
      * If tariff is not contained in any contract it is deleted and message to the client app is sent.
+     *
      * @param tariff to be deleted
      */
     @Override
@@ -84,6 +85,7 @@ public class TariffServiceImpl implements TariffService {
 
     /**
      * There is a tariff object in a session and it will be added after submitting.
+     *
      * @param tariff from session
      * @param option
      */
@@ -101,6 +103,7 @@ public class TariffServiceImpl implements TariffService {
 
     /**
      * There is a tariff object in a session and it will be deleted after submitting.
+     *
      * @param tariff
      * @param option
      */
@@ -109,8 +112,11 @@ public class TariffServiceImpl implements TariffService {
     public void deleteOption(Tariff tariff, Option option) {
         if (tariff.getOptions().size() > 1) {
             tariff.delete(option);
-            tariff.setPrice(tariff.getPrice() - option.getPrice());
+            deleteDependentOptions(tariff, option);
+            tariff.setPrice(calcTariffPrice(tariff));
             log.info("Option " + option.getName() + " is going to be deleted from " + tariff.getName());
+        } else {
+            log.info(option.getName() + " is the last in the tariff and can't be deleted");
         }
     }
 
@@ -128,5 +134,18 @@ public class TariffServiceImpl implements TariffService {
         } catch (IOException | TimeoutException e) {
             log.warn("Couldn't send message. " + e.getMessage());
         }
+    }
+
+    private void deleteDependentOptions(Tariff tariff, Option option) {
+        tariff.getOptions()
+                .removeIf(o ->
+                        o.getDependentOptions().stream().anyMatch(option1 -> option1.getId() == option.getId())
+                );
+    }
+
+    private double calcTariffPrice(Tariff tariff) {
+        double newPrice = 0;
+        newPrice += tariff.getOptions().stream().mapToDouble(Option::getPrice).sum();
+        return newPrice;
     }
 }
