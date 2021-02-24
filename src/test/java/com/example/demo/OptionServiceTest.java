@@ -182,13 +182,12 @@ class OptionServiceTest {
         assertEquals(expected, option.getIncompatibleOptions());
     }
 
-//    @Test
-//    void shouldNotMakeOptionsIncompatible() throws OptionsDependentException {
-//        option.addDependentOption(anotherOption);
-//        when(optionDao.getById(1L)).thenReturn(option);
-//        when(optionDao.getById(2L)).thenReturn(anotherOption);
-//        optionService.addIncompatibleOption(option.getId(), anotherOption.getId());
-//        assertThrows(OptionsDependentException, );
-//        option.deleteDependentOption(anotherOption);
-//    }
+    @Test
+    void shouldNotMakeOptionsIncompatible() throws OptionsDependentException {
+        option.addDependentOption(anotherOption);
+        when(optionDao.getById(1L)).thenReturn(option);
+        when(optionDao.getById(2L)).thenReturn(anotherOption);
+        assertThrows(OptionsDependentException.class, () -> optionService.addIncompatibleOption(option.getId(), anotherOption.getId()));
+        option.deleteDependentOption(anotherOption);
+    }
 }
