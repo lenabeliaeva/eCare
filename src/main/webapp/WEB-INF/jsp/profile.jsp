@@ -12,7 +12,7 @@
 <h2>Hello, ${client.name}!</h2>
 <c:if test="${contracts.size() > 0}">
     <h3>Your contracts</h3>
-    <form method="get">
+    <form:form>
         <table class="table table-hover">
             <tr>
                 <td>Number</td>
@@ -26,6 +26,7 @@
                     <td>${contract.price}</td>
                     <td>
                         <button class="btn btn-outline-primary"
+                                formmethod="get"
                                 formaction="/contract/options/${contract.id}"
                                 type="submit">Connected options
                         </button>
@@ -55,7 +56,7 @@
                 </tr>
             </c:forEach>
         </table>
-    </form>
+    </form:form>
 </c:if>
 <c:if test="${contracts.size() == 0}">
     <h3>You haven't got any contracts yet</h3>
@@ -88,6 +89,7 @@
     </div>
     <form:input hidden="true" path="id"/>
     <form:input hidden="true" path="password"/>
+    <form:input hidden="true" path="passwordConfirm"/>
     <button class="btn btn-outline-primary" type="submit">Edit</button>
 </form:form>
 </body>

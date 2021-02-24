@@ -96,7 +96,9 @@ public class ClientServiceImpl implements ClientService {
     }
 
     /**
-     * This method is used to show client's profile after authorization
+     * This method is used to show client's profile after authorization.
+     * As Client has PasswordMatches validation we have to set password confirm to password
+     * because this field is not hold in DB.
      *
      * @return authorized client
      */
@@ -109,7 +111,9 @@ public class ClientServiceImpl implements ClientService {
                     .getContext()
                     .getAuthentication()
                     .getPrincipal();
-            return dao.findByEmail(userDetails.getUsername());
+            Client client = dao.findByEmail(userDetails.getUsername());
+            client.setPasswordConfirm(client.getPassword());
+            return client;
         } else {
             return null;
         }

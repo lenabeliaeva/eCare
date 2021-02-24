@@ -54,18 +54,21 @@ public class ClientController {
     }
 
     @PostMapping("/editProfile")
-    public String saveEditedProfile(@ModelAttribute @Valid Client client) {
+    public String saveEditedProfile(@ModelAttribute @Valid Client client, BindingResult br) {
+        if (br.hasErrors()) {
+            return "profile";
+        }
         clientService.editClientProfile(client);
         return "redirect:/";
     }
 
-    @GetMapping("/profile/blockContract/{contractId}")
+    @PostMapping("/profile/blockContract/{contractId}")
     public String blockContract(@PathVariable long contractId) {
         contractService.blockByClient(contractId);
         return "redirect:/";
     }
 
-    @GetMapping("/profile/unblockContract/{contractId}")
+    @PostMapping("/profile/unblockContract/{contractId}")
     public String unblockContract(@PathVariable long contractId) {
         contractService.unblockByClient(contractId);
         return "redirect:/";
