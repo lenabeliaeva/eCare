@@ -3,6 +3,8 @@ package com.example.demo.services;
 import com.example.demo.dao.ContractDao;
 import com.example.demo.dao.OptionDao;
 import com.example.demo.dao.TariffDao;
+import com.example.demo.exceptions.OptionsDependentException;
+import com.example.demo.exceptions.OptionsIncompatibleException;
 import com.example.demo.models.*;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,7 @@ public class CartServiceImpl implements CartService {
     /**
      * This method is used to add an option to a cart.
      * First of all, the option is checked for compatibility with other options.
+     * Then, dependent options are checked.
      * Each cart item holds contract which is need to be changed.
      * If the cart hasn't got item for the contract, new cart item has to be created to save option there.
      *
@@ -59,29 +62,35 @@ public class CartServiceImpl implements CartService {
      * @param contractId to get Contract entity
      */
     @Override
-    public void addOption(Cart cart, long optionId, long contractId) {
+    public void addOption(Cart cart, long optionId, long contractId) throws OptionsIncompatibleException,
+            OptionsDependentException {
         Option option = optionDao.getById(optionId);
         Contract contract = contractDao.getById(contractId);
         Set<Option> allCartItemOptions = new HashSet<>(contract.getOption());
         allCartItemOptions.addAll(contract.getTariff().getOptions());
-        if (option.isCompatibleWith(allCartItemOptions) && option.isDependentFrom(allCartItemOptions)) {
-            CartItem cartItem = cart.getItemByContract(contractId);
-            if (cartItem == null) {
-                cartItem = createCartItem(contractId);
-                cart.addItem(cartItem);
-                log.info("New cart item is created to add the option " + option.getName());
-            }
-            cartItem.addOption(option);
-            cartItem.setPrice(updateCartItemPrice(cartItem));
-            cartItem.setConnectionCost(updateCartItemConnectionCost(cartItem));
-            log.info("Option " + option.getName() + " is added to the cart");
+        if (!option.isCompatibleWith(allCartItemOptions)) {
+            throw new OptionsIncompatibleException("Option is incompatible with the added options");
         }
+        if (!option.isDependentFrom(allCartItemOptions)) {
+            throw new OptionsDependentException("Option is dependent from other options");
+        }
+        CartItem cartItem = cart.getItemByContract(contractId);
+        if (cartItem == null) {
+            cartItem = createCartItem(contractId);
+            cart.addItem(cartItem);
+            log.info("New cart item is created to add the option " + option.getName());
+        }
+        cartItem.addOption(option);
+        cartItem.setPrice(updateCartItemPrice(cartItem));
+        cartItem.setConnectionCost(updateCartItemConnectionCost(cartItem));
+        log.info("Option " + option.getName() + " is added to the cart");
+
     }
 
     /**
      * When option is deleted price and connection cost in cart item should be recalculated
      *
-     * @param cart
+     * @param cart from session.
      * @param optionId   to get Option to add to the cart
      * @param contractId to get cart item for the contract
      */
@@ -116,6 +125,12 @@ public class CartServiceImpl implements CartService {
         cart.getCartItems().clear();
     }
 
+    /**
+     * CartItem price is calculated from prices of a tariff and options which it contains.
+     * It has to be recalculated every time CartItem is changed.
+     * @param cartItem
+     * @return new price
+     */
     private double updateCartItemPrice(CartItem cartItem) {
         double newPrice = 0;
         Tariff tariff = cartItem.getTariff();
@@ -129,6 +144,13 @@ public class CartServiceImpl implements CartService {
         return newPrice;
     }
 
+    /**
+     * CartItem connection cost is calculated from connection costs of tariff options and options which are
+     * contained there.
+     * It has to be recalculated every time CartItem is changed.
+     * @param cartItem
+     * @return new connection cost
+     */
     private double updateCartItemConnectionCost(CartItem cartItem) {
         double newConnectionCost = 0;
         Tariff tariff = cartItem.getTariff();

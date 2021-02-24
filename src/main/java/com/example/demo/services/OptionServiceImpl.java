@@ -4,6 +4,7 @@ import com.example.demo.dao.OptionDao;
 import com.example.demo.dto.OptionDto;
 import com.example.demo.exceptions.CantBeDeletedException;
 import com.example.demo.exceptions.OptionsDependentException;
+import com.example.demo.exceptions.OptionsIncompatibleException;
 import com.example.demo.models.Contract;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
@@ -205,7 +206,7 @@ public class OptionServiceImpl implements OptionService {
      */
     @Override
     @Transactional
-    public void addDependentOption(long firstOptionId, long secondOptionId) throws OptionsDependentException {
+    public void addDependentOption(long firstOptionId, long secondOptionId) throws OptionsIncompatibleException {
         Option first = dao.getById(firstOptionId);
         Option second = dao.getById(secondOptionId);
         if (first.getIncompatibleOptions().stream().noneMatch(o -> o.getId() == second.getId())) {
@@ -214,7 +215,7 @@ public class OptionServiceImpl implements OptionService {
             log.info("Option " + first.getName() + " now depends on " + second.getName());
         } else {
             log.info(first.getName() + " is incompatible with " + second.getName() + " and can't become dependent");
-            throw new OptionsDependentException(
+            throw new OptionsIncompatibleException(
                     first.getName() + " is incompatible with " + second.getName() + " and can't become dependent");
         }
     }

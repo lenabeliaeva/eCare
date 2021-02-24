@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.dto.OptionDto;
 import com.example.demo.exceptions.CantBeDeletedException;
 import com.example.demo.exceptions.OptionsDependentException;
+import com.example.demo.exceptions.OptionsIncompatibleException;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
 import com.example.demo.services.OptionService;
@@ -129,7 +130,7 @@ public class OptionController {
         try {
             optionService.addDependentOption(firstId, secondId);
             return "redirect:/admin/options/dependent/{firstId}";
-        } catch (OptionsDependentException e) {
+        } catch (OptionsIncompatibleException e) {
             model.addAttribute("msg", e.getMessage());
             showDependents(model, firstId);
             return "admin/dependentOptions";

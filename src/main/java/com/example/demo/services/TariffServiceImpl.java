@@ -61,7 +61,7 @@ public class TariffServiceImpl implements TariffService {
             log.info("Tariff " + tariff.getName() + " is deleted");
         } else {
             log.info("Tariff " + tariff.getName() + " can't be deleted as it is contained in contract");
-            throw new CantBeDeletedException(tariff.getName() + " can't be deleted as it is contained in contract");
+            throw new CantBeDeletedException(tariff.getName() + " can't be deleted as it is contained in a contract");
         }
     }
 

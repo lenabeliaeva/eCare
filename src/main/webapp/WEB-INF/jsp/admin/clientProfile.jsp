@@ -47,7 +47,7 @@
                     </td>
                     <td>
                         <button class="btn btn-outline-danger"
-                                onclick="return confirm('Are you sure you want to terminat the contract?')"
+                                onclick="return confirm('Are you sure you want to terminate the contract?')"
                                 formaction="/admin/clientProfile/${client.id}/delete/${contract.id}"
                                 type="submit">
                             Terminate contract

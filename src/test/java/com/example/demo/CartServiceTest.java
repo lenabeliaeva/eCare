@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.example.demo.dao.ContractDao;
 import com.example.demo.dao.OptionDao;
 import com.example.demo.dao.TariffDao;
+import com.example.demo.exceptions.OptionsDependentException;
+import com.example.demo.exceptions.OptionsIncompatibleException;
 import com.example.demo.models.*;
 import com.example.demo.services.CartServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,7 +64,7 @@ public class CartServiceTest {
     }
 
     @Test
-    void shouldAddOptionAndCreateNewCartItem() {
+    void shouldAddOptionAndCreateNewCartItem() throws OptionsDependentException, OptionsIncompatibleException {
         when(optionDao.getById(1L)).thenReturn(option);
         when(contractDao.getById(1L)).thenReturn(contract);
         contract.setTariff(tariff);

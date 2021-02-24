@@ -107,14 +107,6 @@ class OptionServiceTest {
     }
 
     @Test
-    void shouldGetAllNotAddedToContractOptions() {
-        when(optionDao.getAll()).thenReturn(options);
-        List<Option> expected = new LinkedList<>(contractOptions);
-        List<Option> found = optionService.getAllNotAddedToContractOptions(anotherContract);
-        assertEquals(expected, found);
-    }
-
-    @Test
     void shouldNotGetAllNotAddedToContractOptions() {
         when(optionDao.getAll()).thenReturn(options);
         List<Option> expected = new LinkedList<>(contractOptions);

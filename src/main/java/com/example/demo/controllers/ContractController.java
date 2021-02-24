@@ -67,20 +67,6 @@ public class ContractController {
         return "/contract/changeTariff";
     }
 
-    /**
-     * This method is used to show available for connection options
-     * @param contractId
-     * @param model
-     * @return view with options list
-     */
-    @GetMapping(value = "/contract/connectOptions/{contractId}")
-    public String showOptions(@PathVariable long contractId, Model model) {
-        Contract contract = contractService.getContractById(contractId);
-        model.addAttribute("availableOptions", optionService.getAllNotAddedToContractOptions(contract));
-        model.addAttribute("contract", contract);
-        return "/contract/addOptionsToContract";
-    }
-
     @PostMapping(value = "/contract/disconnectOption/{contractId}/{optionId}")
     public String disconnectOption(@PathVariable long contractId, @PathVariable long optionId) {
         contractService.disconnectOption(contractId, optionId);

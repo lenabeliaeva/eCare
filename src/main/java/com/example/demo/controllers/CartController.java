@@ -1,7 +1,12 @@
 package com.example.demo.controllers;
 
+import com.example.demo.exceptions.OptionsDependentException;
+import com.example.demo.exceptions.OptionsIncompatibleException;
 import com.example.demo.models.Cart;
+import com.example.demo.models.Contract;
 import com.example.demo.services.CartService;
+import com.example.demo.services.ContractService;
+import com.example.demo.services.OptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +24,12 @@ public class CartController {
     @Autowired
     CartService service;
 
+    @Autowired
+    ContractService contractService;
+
+    @Autowired
+    OptionService optionService;
+
     @GetMapping("/cart")
     public String showCart(Model model, HttpSession session) {
         Cart cart = getCartFromSession(session);
@@ -33,11 +44,31 @@ public class CartController {
         return "redirect:/";
     }
 
+    /**
+     * This method is used to show available for connection options
+     * @param contractId to get Contract which is modified
+     * @param model to show options
+     * @return view with options list
+     */
+    @GetMapping(value = "/contract/connectOptions/{contractId}")
+    public String showOptions(@PathVariable long contractId, Model model) {
+        showAvailableOptions(contractId, model);
+        return "/contract/addOptionsToContract";
+    }
+
     @PostMapping("/cart/connectOption/{optionId}/{contractId}")
-    public String connectOption(@PathVariable long optionId, @PathVariable long contractId, HttpSession session) {
+    public String connectOption(@PathVariable long optionId, @PathVariable long contractId, HttpSession session,
+                                Model model) {
         Cart cart = getCartFromSession(session);
-        service.addOption(cart, optionId, contractId);
-        return "redirect:/contract/connectOptions/{contractId}";
+        try {
+            service.addOption(cart, optionId, contractId);
+            model.addAttribute("msg", "Option is successfully added to the cart");
+            return "redirect:/contract/connectOptions/{contractId}";
+        } catch (OptionsIncompatibleException | OptionsDependentException e) {
+            model.addAttribute("msg", e.getMessage());
+            showAvailableOptions(contractId, model);
+            return "/contract/addOptionsToContract";
+        }
     }
 
     @PostMapping("/cart/deleteOption/{optionId}/{contractId}")
@@ -68,5 +99,11 @@ public class CartController {
             session.setAttribute("cart", cart);
         }
         return cart;
+    }
+
+    private void showAvailableOptions(long contractId, Model model) {
+        Contract contract = contractService.getContractById(contractId);
+        model.addAttribute("availableOptions", optionService.getAllNotAddedToContractOptions(contract));
+        model.addAttribute("contract", contract);
     }
 }

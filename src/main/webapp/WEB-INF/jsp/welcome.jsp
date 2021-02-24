@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
+<!DOCTYPE>
+<html lang="en">
 <head>
     <title>Welcome!</title>
     <%@include file="parts/header.jsp" %>

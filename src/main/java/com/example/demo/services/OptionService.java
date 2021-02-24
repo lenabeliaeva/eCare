@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.dto.OptionDto;
 import com.example.demo.exceptions.CantBeDeletedException;
 import com.example.demo.exceptions.OptionsDependentException;
+import com.example.demo.exceptions.OptionsIncompatibleException;
 import com.example.demo.models.Contract;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
@@ -35,7 +36,7 @@ public interface OptionService {
 
     List<Option> getCompatible(long optionId);
 
-    void addDependentOption(long firstOptionId, long secondOptionId) throws OptionsDependentException;
+    void addDependentOption(long firstOptionId, long secondOptionId) throws OptionsIncompatibleException;
 
     void deleteDependentOption(long firstOptionId, long secondOptionId);
 
