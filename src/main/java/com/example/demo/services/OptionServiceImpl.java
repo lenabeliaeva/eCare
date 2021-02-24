@@ -58,13 +58,13 @@ public class OptionServiceImpl implements OptionService {
     @Transactional
     public void edit(Option option) {
         Option initialOption = dao.getById(option.getId());
-        if (option.getTariff() == null) {
+        if (option.getTariff().isEmpty()) {
             option.setTariff(initialOption.getTariff());
         }
-        if (option.getIncompatibleOptions() == null) {
+        if (option.getIncompatibleOptions().isEmpty()) {
             option.setIncompatibleOptions(initialOption.getIncompatibleOptions());
         }
-        if (option.getDependentOptions() == null) {
+        if (option.getDependentOptions().isEmpty()) {
             option.setDependentOptions(initialOption.getDependentOptions());
         }
         if (option.getContracts() == null) {
