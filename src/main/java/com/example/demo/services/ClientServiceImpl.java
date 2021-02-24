@@ -51,6 +51,7 @@ public class ClientServiceImpl implements ClientService {
             throw new UserAlreadyExistsException("There is an account with this passport: " + client.getPassport());
         }
         client.setPassword(passwordEncoder.encode(client.getPassword()));
+        client.setPasswordConfirm(client.getPassword());
         Set<Role> roles = new HashSet<>();
         roles.add(roleDao.getById(1L));
         client.setRoles(roles);
