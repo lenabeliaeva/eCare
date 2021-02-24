@@ -11,7 +11,7 @@
 <body>
 <c:if test="${clientContracts.size() > 0}">
     <h3>Contracts</h3>
-    <form>
+    <form:form>
         <table class="table table-hover">
             <tr>
                 <td>Number</td>
@@ -48,7 +48,7 @@
                 </tr>
             </c:forEach>
         </table>
-    </form>
+    </form:form>
 </c:if>
 <c:if test="${clientContracts.size() == 0}">
     <p>The client hasn't got any contracts</p>
