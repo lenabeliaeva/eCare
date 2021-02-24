@@ -100,4 +100,10 @@ public class ContractController {
         model.addAttribute("contract", contract);
         return "/contract/contractOptions";
     }
+
+    @PostMapping("/admin/clientProfile/{clientId}/delete/{contractId}")
+    public String terminateContract(@PathVariable long contractId) {
+        contractService.terminateContract(contractId);
+        return "redirect:/admin/clientProfile/{clientId}";
+    }
 }
