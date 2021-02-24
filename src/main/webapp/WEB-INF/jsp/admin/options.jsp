@@ -10,6 +10,9 @@
 </head>
 <body>
 <h2>Options</h2>
+<c:if test="${msg != null}">
+    <div class="alert alert-danger">${msg}</div>
+</c:if>
 <form:form>
     <table class="table table-hover">
         <tr>
