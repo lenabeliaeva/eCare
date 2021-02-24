@@ -78,6 +78,7 @@ public class OptionServiceImpl implements OptionService {
 
     /**
      * We have to check if the option is hold in a tariff. If it is the option is not deleted.
+     *
      * @param optionId
      */
     @Override
@@ -92,7 +93,7 @@ public class OptionServiceImpl implements OptionService {
             log.info(option.getName() + " can't be deleted as it is hold in a tariff or depends on other options");
             throw new
                     CantBeDeletedException(
-                            option.getName() + " can't be deleted as it is hold in a tariff or depends on other options");
+                    option.getName() + " can't be deleted as it is hold in a tariff or depends on other options");
         }
     }
 
@@ -111,36 +112,20 @@ public class OptionServiceImpl implements OptionService {
     @Override
     @Transactional
     public Set<Option> getContractOptions(Contract contract) {
-        if (contract != null) {
-            Set<Option> contractOptions = contract.getOption();
-            Tariff contractTariff = contract.getTariff();
-            if (contractTariff != null) {
-                Set<Option> tariffOptions = contractTariff.getOptions();
-                Set<Option> options = new HashSet<>(contractOptions);
-                options.addAll(tariffOptions);
-                contract.setPrice(options.stream().mapToDouble(Option::getPrice).sum());
-                contract.setConnectionCost(options.stream().mapToDouble(Option::getConnectionCost).sum());
-                return options;
-            }
+        Set<Option> contractOptions = new HashSet<>(contract.getOption());
+        Tariff contractTariff = contract.getTariff();
+        if (contractTariff != null) {
+            contractOptions.addAll(contractTariff.getOptions());
         }
-        return new HashSet<>();
-    }
-
-    @Override
-    @Transactional
-    public List<Option> getAllNotAddedToContractOptions(Contract contract) {
-        Set<Option> contractOptions = getContractOptions(contract);
-        List<Option> notAddedToContractOptions = dao.getAll();
-        for (Option option :
-                contractOptions) {
-            notAddedToContractOptions.removeIf(o -> o.getId() == option.getId());
-        }
-        return notAddedToContractOptions;
+        contract.setPrice(contractOptions.stream().mapToDouble(Option::getPrice).sum());
+        contract.setConnectionCost(contractOptions.stream().mapToDouble(Option::getConnectionCost).sum());
+        return contractOptions;
     }
 
     /**
      * Options are incompatible in pairs.
      * If one of options depends on other they can't be incompatible.
+     *
      * @param firstOptionId
      * @param secondOptionId
      */
@@ -150,7 +135,7 @@ public class OptionServiceImpl implements OptionService {
         Option first = dao.getById(firstOptionId);
         Option second = dao.getById(secondOptionId);
         if (first.getDependentOptions().stream().noneMatch(o -> o.getId() == second.getId()) &&
-        second.getDependentOptions().stream().noneMatch(o -> o.getId() == first.getId())) {
+                second.getDependentOptions().stream().noneMatch(o -> o.getId() == first.getId())) {
             first.addIncompatibleOption(second);
             second.addIncompatibleOption(first);
             dao.update(first);
@@ -201,6 +186,7 @@ public class OptionServiceImpl implements OptionService {
     /**
      * First option depends on second while second stay independent from first.
      * If options are already incompatible they won't become dependent.
+     *
      * @param firstOptionId
      * @param secondOptionId
      */

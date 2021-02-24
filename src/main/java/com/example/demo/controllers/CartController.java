@@ -51,8 +51,8 @@ public class CartController {
      * @return view with options list
      */
     @GetMapping(value = "/contract/connectOptions/{contractId}")
-    public String showOptions(@PathVariable long contractId, Model model) {
-        showAvailableOptions(contractId, model);
+    public String showOptions(@PathVariable long contractId, Model model, HttpSession session) {
+        showAvailableOptions(contractId, model, session);
         return "/contract/addOptionsToContract";
     }
 
@@ -63,12 +63,11 @@ public class CartController {
         try {
             service.addOption(cart, optionId, contractId);
             model.addAttribute("msg", "Option is successfully added to the cart");
-            return "redirect:/contract/connectOptions/{contractId}";
         } catch (OptionsIncompatibleException | OptionsDependentException e) {
             model.addAttribute("msg", e.getMessage());
-            showAvailableOptions(contractId, model);
-            return "/contract/addOptionsToContract";
         }
+        showAvailableOptions(contractId, model, session);
+        return "/contract/addOptionsToContract";
     }
 
     @PostMapping("/cart/deleteOption/{optionId}/{contractId}")
@@ -82,7 +81,7 @@ public class CartController {
     public String connectTariff(@PathVariable long tariffId, @PathVariable long contractId, HttpSession session) {
         Cart cart = getCartFromSession(session);
         service.changeTariff(cart, tariffId, contractId);
-        return "redirect:/cart";
+        return "redirect:/contract/connectOptions/{contractId}";
     }
 
     @PostMapping("/cart/deleteItem/{contractId}")
@@ -101,9 +100,10 @@ public class CartController {
         return cart;
     }
 
-    private void showAvailableOptions(long contractId, Model model) {
+    private void showAvailableOptions(long contractId, Model model, HttpSession session) {
+        Cart cart = getCartFromSession(session);
         Contract contract = contractService.getContractById(contractId);
-        model.addAttribute("availableOptions", optionService.getAllNotAddedToContractOptions(contract));
+        model.addAttribute("availableOptions", service.getNotAddedCartItemContractOptions(cart, contractId));
         model.addAttribute("contract", contract);
     }
 }

@@ -10,7 +10,7 @@
 </head>
 <body>
 <h3>Available options</h3>
-<%@include file="../parts/alertMessage.jsp"%>
+<%@include file="../parts/successMessage.jsp"%>
 <form:form>
     <table class="table table-hover">
         <tr>

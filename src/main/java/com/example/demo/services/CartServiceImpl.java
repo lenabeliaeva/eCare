@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Log4j
@@ -90,7 +91,7 @@ public class CartServiceImpl implements CartService {
     /**
      * When option is deleted price and connection cost in cart item should be recalculated
      *
-     * @param cart from session.
+     * @param cart       from session.
      * @param optionId   to get Option to add to the cart
      * @param contractId to get cart item for the contract
      */
@@ -125,9 +126,33 @@ public class CartServiceImpl implements CartService {
         cart.getCartItems().clear();
     }
 
+    @Override
+    public List<Option> getNotAddedCartItemContractOptions(Cart cart, long contractId) {
+        CartItem cartItem = cart.getItemByContract(contractId);
+        Set<Option> cartItemOptions;
+        if (cartItem != null) {
+            cartItemOptions = new HashSet<>(cartItem.getOptions());
+            cartItemOptions.addAll(cartItem.getTariff().getOptions());
+        } else {
+            Contract contract = contractDao.getById(contractId);
+            cartItemOptions = new HashSet<>(contract.getOption());
+            Tariff contractTariff = contract.getTariff();
+            if (contractTariff != null) {
+                cartItemOptions.addAll(contractTariff.getOptions());
+            }
+        }
+        List<Option> notAddedCartItemOptions = optionDao.getAll();
+        for (Option option :
+                cartItemOptions) {
+            notAddedCartItemOptions.removeIf(o -> o.getId() == option.getId());
+        }
+        return notAddedCartItemOptions;
+    }
+
     /**
      * CartItem price is calculated from prices of a tariff and options which it contains.
      * It has to be recalculated every time CartItem is changed.
+     *
      * @param cartItem
      * @return new price
      */
@@ -148,6 +173,7 @@ public class CartServiceImpl implements CartService {
      * CartItem connection cost is calculated from connection costs of tariff options and options which are
      * contained there.
      * It has to be recalculated every time CartItem is changed.
+     *
      * @param cartItem
      * @return new connection cost
      */

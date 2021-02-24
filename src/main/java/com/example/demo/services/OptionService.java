@@ -20,8 +20,6 @@ public interface OptionService {
 
     Set<Option> getContractOptions(Contract contract);
 
-    List<Option> getAllNotAddedToContractOptions(Contract contract);
-
     Option getById(long optionId);
 
     void edit(Option option);
