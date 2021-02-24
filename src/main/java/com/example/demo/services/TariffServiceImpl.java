@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.dao.TariffDao;
 import com.example.demo.dto.TariffDto;
+import com.example.demo.exceptions.CantBeDeletedException;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
 import lombok.extern.log4j.Log4j;
@@ -53,13 +54,14 @@ public class TariffServiceImpl implements TariffService {
      */
     @Override
     @Transactional
-    public void delete(Tariff tariff) {
+    public void delete(Tariff tariff) throws CantBeDeletedException {
         if (tariff.getContracts() == null || tariff.getContracts().isEmpty()) {
             tariffDao.delete(tariff);
             sendMessage("Tariff " + tariff.getName() + "is deleted");
             log.info("Tariff " + tariff.getName() + " is deleted");
         } else {
             log.info("Tariff " + tariff.getName() + " can't be deleted as it is contained in contract");
+            throw new CantBeDeletedException(tariff.getName() + " can't be deleted as it is contained in contract");
         }
     }
 

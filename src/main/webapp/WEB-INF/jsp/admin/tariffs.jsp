@@ -10,6 +10,7 @@
 </head>
 <body>
 <h2>Tariffs</h2>
+<%@include file="../parts/alertMessage.jsp"%>
 <form:form method="post">
     <table class="table table-hover">
         <tr>

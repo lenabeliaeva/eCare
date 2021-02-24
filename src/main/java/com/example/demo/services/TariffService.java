@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.dto.TariffDto;
+import com.example.demo.exceptions.CantBeDeletedException;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
 
@@ -11,7 +12,7 @@ public interface TariffService {
 
     List<TariffDto> getAll();
 
-    void delete(Tariff tariff);
+    void delete(Tariff tariff) throws CantBeDeletedException;
 
     Tariff getById(long id);
 

@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dto.TariffDto;
+import com.example.demo.exceptions.CantBeDeletedException;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
 import com.example.demo.services.OptionService;
@@ -61,9 +62,15 @@ public class TariffController {
     }
 
     @PostMapping(value = "/admin/tariffs/delete/{tariffId}")
-    public String deleteTariff(@PathVariable long tariffId) {
-        tariffService.delete(tariffService.getById(tariffId));
-        return "redirect:/admin/tariffs";
+    public String deleteTariff(@PathVariable long tariffId, Model model) {
+        try {
+            tariffService.delete(tariffService.getById(tariffId));
+            return "redirect:/admin/tariffs";
+        } catch (CantBeDeletedException e) {
+            model.addAttribute("msg", e.getMessage());
+            model.addAttribute("tariffs", tariffService.getAll());
+            return "admin/tariffs";
+        }
     }
 
     @GetMapping(value = "/admin/tariffs/edit/{tariffId}")
