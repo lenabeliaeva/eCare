@@ -106,6 +106,7 @@ public class ContractServiceImpl implements ContractService {
     public void unblockByAdmin(long contractId) {
         Contract contract = dao.getById(contractId);
         contract.setBlockedByAdmin(false);
+        contract.setBlockedByClient(false);
         dao.update(contract);
         log.info("Contract " + contract.getNumber() + " is unblocked by admin");
     }
