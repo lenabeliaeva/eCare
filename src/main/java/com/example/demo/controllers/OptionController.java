@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dto.OptionDto;
+import com.example.demo.exceptions.CantBeDeletedException;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
 import com.example.demo.services.OptionService;
@@ -26,7 +27,8 @@ public class OptionController {
     OptionService optionService;
 
     @GetMapping("/options")
-    public @ResponseBody List<OptionDto> getAllOptions() {
+    public @ResponseBody
+    List<OptionDto> getAllOptions() {
         return optionService.getAll();
     }
 
@@ -38,6 +40,7 @@ public class OptionController {
 
     /**
      * This method is used to show options for the tariff.
+     *
      * @param tariffId
      * @param model
      * @return
@@ -79,9 +82,15 @@ public class OptionController {
     }
 
     @PostMapping("/admin/deleteOption/{optionId}")
-    public String deleteOption(@PathVariable long optionId) {
-        optionService.delete(optionId);
-        return "redirect:/admin/options";
+    public String deleteOption(@PathVariable long optionId, Model model) {
+        try {
+            optionService.delete(optionId);
+            return "redirect:/admin/options";
+        } catch (CantBeDeletedException e) {
+            model.addAttribute("msg", e.getMessage());
+            model.addAttribute("options", optionService.getAll());
+            return "admin/options";
+        }
     }
 
     @GetMapping("/admin/options/incompatible/{optionId}")

@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.dao.OptionDao;
 import com.example.demo.dto.OptionDto;
+import com.example.demo.exceptions.CantBeDeletedException;
 import com.example.demo.models.Contract;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
@@ -79,7 +80,7 @@ public class OptionServiceImpl implements OptionService {
      */
     @Override
     @Transactional
-    public void delete(long optionId) {
+    public void delete(long optionId) throws CantBeDeletedException {
         Option option = dao.getById(optionId);
         if (option.getTariff().isEmpty() && option.getDependentOptions().isEmpty()
                 && option.getIncompatibleOptions().isEmpty()) {
@@ -87,6 +88,9 @@ public class OptionServiceImpl implements OptionService {
             log.info(option.getName() + " is deleted");
         } else {
             log.info(option.getName() + " can't be deleted as it is hold in a tariff or depends on other options");
+            throw new
+                    CantBeDeletedException(
+                            option.getName() + " can't be deleted as it is hold in a tariff or depends on other options");
         }
     }
 

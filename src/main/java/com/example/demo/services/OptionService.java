@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.dto.OptionDto;
+import com.example.demo.exceptions.CantBeDeletedException;
 import com.example.demo.models.Contract;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
@@ -23,7 +24,7 @@ public interface OptionService {
 
     void edit(Option option);
 
-    void delete(long optionId);
+    void delete(long optionId) throws CantBeDeletedException;
 
     void addIncompatibleOption(long firstOptionId, long secondOptionId);
 
