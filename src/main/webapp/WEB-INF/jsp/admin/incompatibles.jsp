@@ -17,6 +17,7 @@
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
 <body>
+<%@include file="../parts/alertMessage.jsp"%>
 <c:if test="${incompatible.size() >0}">
     <h3>Incompatible options</h3>
     <form:form>

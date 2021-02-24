@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.dao.OptionDao;
 import com.example.demo.dto.OptionDto;
 import com.example.demo.exceptions.CantBeDeletedException;
+import com.example.demo.exceptions.OptionsDependentException;
 import com.example.demo.models.Contract;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
@@ -144,7 +145,7 @@ public class OptionServiceImpl implements OptionService {
      */
     @Override
     @Transactional
-    public void addIncompatibleOption(long firstOptionId, long secondOptionId) {
+    public void addIncompatibleOption(long firstOptionId, long secondOptionId) throws OptionsDependentException {
         Option first = dao.getById(firstOptionId);
         Option second = dao.getById(secondOptionId);
         if (first.getDependentOptions().stream().noneMatch(o -> o.getId() == second.getId()) &&
@@ -156,6 +157,8 @@ public class OptionServiceImpl implements OptionService {
             log.info("Options " + first.getName() + " and " + second.getName() + " are made incompatible");
         } else {
             log.info(first.getName() + " and " + second.getName() + " are dependent and can't be incompatible");
+            throw new OptionsDependentException(
+                    first.getName() + " and " + second.getName() + " are dependent and can't be incompatible");
         }
     }
 
@@ -202,7 +205,7 @@ public class OptionServiceImpl implements OptionService {
      */
     @Override
     @Transactional
-    public void addDependentOption(long firstOptionId, long secondOptionId) {
+    public void addDependentOption(long firstOptionId, long secondOptionId) throws OptionsDependentException {
         Option first = dao.getById(firstOptionId);
         Option second = dao.getById(secondOptionId);
         if (first.getIncompatibleOptions().stream().noneMatch(o -> o.getId() == second.getId())) {
@@ -211,6 +214,8 @@ public class OptionServiceImpl implements OptionService {
             log.info("Option " + first.getName() + " now depends on " + second.getName());
         } else {
             log.info(first.getName() + " is incompatible with " + second.getName() + " and can't become dependent");
+            throw new OptionsDependentException(
+                    first.getName() + " is incompatible with " + second.getName() + " and can't become dependent");
         }
     }
 

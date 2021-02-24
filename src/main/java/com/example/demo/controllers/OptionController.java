@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.dto.OptionDto;
 import com.example.demo.exceptions.CantBeDeletedException;
+import com.example.demo.exceptions.OptionsDependentException;
 import com.example.demo.models.Option;
 import com.example.demo.models.Tariff;
 import com.example.demo.services.OptionService;
@@ -95,16 +96,20 @@ public class OptionController {
 
     @GetMapping("/admin/options/incompatible/{optionId}")
     public String showIncompatibleOptions(@PathVariable long optionId, Model model) {
-        model.addAttribute("first", optionService.getById(optionId));
-        model.addAttribute("incompatible", optionService.getIncompatibleOptions(optionId));
-        model.addAttribute("compatible", optionService.getCompatible(optionId));
+        showIncompatibles(model, optionId);
         return "admin/incompatibles";
     }
 
     @PostMapping("/admin/options/incompatible/{firstId}/{secondId}")
-    public String addIncompatibleOption(@PathVariable long firstId, @PathVariable long secondId) {
-        optionService.addIncompatibleOption(firstId, secondId);
-        return "redirect:/admin/options/incompatible/{firstId}";
+    public String addIncompatibleOption(@PathVariable long firstId, @PathVariable long secondId, Model model) {
+        try {
+            optionService.addIncompatibleOption(firstId, secondId);
+            return "redirect:/admin/options/incompatible/{firstId}";
+        } catch (OptionsDependentException e) {
+            model.addAttribute("msg", e.getMessage());
+            showIncompatibles(model, firstId);
+            return "admin/incompatibles";
+        }
     }
 
     @PostMapping("/admin/options/deleteIncompatible/{firstId}/{secondId}")
@@ -115,21 +120,37 @@ public class OptionController {
 
     @GetMapping("/admin/options/dependent/{optionId}")
     public String showDependentOptions(@PathVariable long optionId, Model model) {
-        model.addAttribute("first", optionService.getById(optionId));
-        model.addAttribute("dependent", optionService.getDependentOptions(optionId));
-        model.addAttribute("independent", optionService.getIndependentOptions(optionId));
+        showDependents(model, optionId);
         return "admin/dependentOptions";
     }
 
     @PostMapping("/admin/options/dependent/{firstId}/{secondId}")
-    public String addDependentOption(@PathVariable long firstId, @PathVariable long secondId) {
-        optionService.addDependentOption(firstId, secondId);
-        return "redirect:/admin/options/dependent/{firstId}";
+    public String addDependentOption(@PathVariable long firstId, @PathVariable long secondId, Model model) {
+        try {
+            optionService.addDependentOption(firstId, secondId);
+            return "redirect:/admin/options/dependent/{firstId}";
+        } catch (OptionsDependentException e) {
+            model.addAttribute("msg", e.getMessage());
+            showDependents(model, firstId);
+            return "admin/dependentOptions";
+        }
     }
 
     @PostMapping("/admin/options/deleteDependent/{firstId}/{secondId}")
     public String deleteDependentOption(@PathVariable long firstId, @PathVariable long secondId) {
         optionService.deleteDependentOption(firstId, secondId);
         return "redirect:/admin/options/dependent/{firstId}";
+    }
+
+    private void showIncompatibles(Model model, long optionId) {
+        model.addAttribute("first", optionService.getById(optionId));
+        model.addAttribute("incompatible", optionService.getIncompatibleOptions(optionId));
+        model.addAttribute("compatible", optionService.getCompatible(optionId));
+    }
+
+    private void showDependents(Model model, long optionId) {
+        model.addAttribute("first", optionService.getById(optionId));
+        model.addAttribute("dependent", optionService.getDependentOptions(optionId));
+        model.addAttribute("independent", optionService.getIndependentOptions(optionId));
     }
 }
