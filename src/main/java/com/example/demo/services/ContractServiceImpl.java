@@ -127,6 +127,13 @@ public class ContractServiceImpl implements ContractService {
         log.info("Contract " + contract.getNumber() + " is unblocked by client");
     }
 
+    @Override
+    public void terminateContract(long contractId) {
+        Contract contract = dao.getById(contractId);
+        dao.delete(contract);
+        log.info(contract.getNumber() + " is deleted");
+    }
+
     /**
      * There is a constant value BASE_NUMBER and this method generates four last digits for the phone number.
      * As random suffix can contain less than four digits result string is complemented with zeros.

@@ -45,6 +45,14 @@
                             </button>
                         </c:if>
                     </td>
+                    <td>
+                        <button class="btn btn-outline-danger"
+                                onclick="return confirm('Are you sure you want to terminat the contract?')"
+                                formaction="/admin/clientProfile/${client.id}/delete/${contract.id}"
+                                type="submit">
+                            Terminate contract
+                        </button>
+                    </td>
                 </tr>
             </c:forEach>
         </table>
@@ -55,6 +63,9 @@
 </c:if>
 <form action="/admin/signContract/${client.id}">
     <button type="submit" class="btn btn-outline-primary">Sign new contract</button>
+</form>
+<form action="/admin/clients">
+    <button type="submit" class="btn btn-outline-primary">Back to client list</button>
 </form>
 </body>
 </html>

@@ -22,4 +22,6 @@ public interface ContractService {
     void blockByAdmin(long contractId);
 
     void unblockByAdmin(long contractId);
+
+    void terminateContract(long contractId);
 }
