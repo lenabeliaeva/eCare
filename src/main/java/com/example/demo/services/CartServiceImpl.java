@@ -107,6 +107,10 @@ public class CartServiceImpl implements CartService {
         cart.deleteItem(contractId);
     }
 
+    /**
+     * This method is used to save to contracts all new options and tariffs which are hold in the cart.
+     * @param cart
+     */
     @Override
     public void submitAndAddToContract(Cart cart) {
         Contract contract;
@@ -123,6 +127,14 @@ public class CartServiceImpl implements CartService {
         cart.getCartItems().clear();
     }
 
+    /**
+     * This method is used to show options which can be added to a contract in the cart.
+     * To get not added to contract options we have to remove from all options
+     * options which belongs to the cart item.
+     * @param cart
+     * @param contractId
+     * @return list of not added to cart item options.
+     */
     @Override
     public List<Option> getNotAddedCartItemContractOptions(Cart cart, long contractId) {
         CartItem cartItem = cart.getItemByContract(contractId);
@@ -135,6 +147,14 @@ public class CartServiceImpl implements CartService {
         return notAddedCartItemOptions;
     }
 
+    /**
+     * If cart item doesn't exist it means the contract is not in the cart yet.
+     * In that case we return options which are saved in the contract.
+     * If cart item exists we return options which are already added to the cart.
+     * @param contractId to get contract
+     * @param cartItem to get options
+     * @return set of cart item options
+     */
     private Set<Option> getCartItemOptions(long contractId, CartItem cartItem) {
         Set<Option> cartItemOptions;
         if (cartItem != null) {

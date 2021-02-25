@@ -35,6 +35,7 @@ public class ClientServiceImpl implements ClientService {
     /**
      * Before saving new client it is necessary to check its email and passport as they should be unique.
      * If they are unique password is encoded, role is added and new client is saved.
+     * As client has PasswordMatches validation we have to set password to password confirm.
      *
      * @param client
      * @throws UserAlreadyExistsException
@@ -83,6 +84,11 @@ public class ClientServiceImpl implements ClientService {
         return dao.getAll();
     }
 
+    /**
+     * When client's data are edited roles are lost.
+     * That's why we have to fetch them from db and save with edited client.
+     * @param client
+     */
     @Override
     @Transactional
     public void editClientProfile(Client client) {

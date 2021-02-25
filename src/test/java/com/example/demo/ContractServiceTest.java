@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.example.demo.dao.ContractDao;
 import com.example.demo.dao.OptionDao;
+import com.example.demo.exceptions.CantBeDeletedException;
 import com.example.demo.models.Client;
 import com.example.demo.models.Contract;
 import com.example.demo.models.Option;

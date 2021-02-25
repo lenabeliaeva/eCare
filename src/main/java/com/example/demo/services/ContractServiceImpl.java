@@ -4,6 +4,7 @@ import com.example.demo.dao.ClientDao;
 import com.example.demo.dao.ContractDao;
 import com.example.demo.dao.OptionDao;
 import com.example.demo.dao.TariffDao;
+import com.example.demo.exceptions.CantBeDeletedException;
 import com.example.demo.models.Client;
 import com.example.demo.models.Contract;
 import com.example.demo.models.Option;
@@ -32,6 +33,14 @@ public class ContractServiceImpl implements ContractService {
     @Autowired
     OptionDao optionDao;
 
+    /**
+     * To save contract we have to set client, tariff, price and connection.
+     * When we create contract we set tariff price.
+     * Connection cost is calculated of connection costs of tariff options.
+     * @param contract which has to be saved
+     * @param clientId to get client
+     * @param tariffId to get tariff
+     */
     @Override
     public void saveContract(Contract contract, long clientId, long tariffId) {
         Client client = clientDao.findById(clientId);
@@ -49,11 +58,6 @@ public class ContractServiceImpl implements ContractService {
         return dao.getById(id);
     }
 
-    /**
-     * As tariff could be changed contracts price and connection cost have to be recalculated.
-     * @param clientId to get all contracts of a client
-     * @return list of renewed contracts of the client
-     */
     @Override
     public List<Contract> getClientsContracts(long clientId) {
         return dao.getByClientId(clientId);
