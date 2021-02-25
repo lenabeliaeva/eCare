@@ -4,7 +4,6 @@ import com.example.demo.dao.ClientDao;
 import com.example.demo.dao.ContractDao;
 import com.example.demo.dao.OptionDao;
 import com.example.demo.dao.TariffDao;
-import com.example.demo.exceptions.CantBeDeletedException;
 import com.example.demo.models.Client;
 import com.example.demo.models.Contract;
 import com.example.demo.models.Option;
