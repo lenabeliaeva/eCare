@@ -7,6 +7,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<c:if test="${msg != null}">
-    <div class="alert alert-danger">${msg}</div>
+<c:if test="${alertMsg != null}">
+    <div class="alert alert-danger">${alertMsg}</div>
 </c:if>

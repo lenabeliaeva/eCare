@@ -66,16 +66,14 @@ public class CartServiceImpl implements CartService {
     public void addOption(Cart cart, long optionId, long contractId) throws OptionsIncompatibleException,
             OptionsDependentException {
         Option option = optionDao.getById(optionId);
-        Contract contract = contractDao.getById(contractId);
-        Set<Option> allCartItemOptions = new HashSet<>(contract.getOption());
-        allCartItemOptions.addAll(contract.getTariff().getOptions());
+        CartItem cartItem = cart.getItemByContract(contractId);
+        Set<Option> allCartItemOptions = getCartItemOptions(contractId, cartItem);
         if (!option.isCompatibleWith(allCartItemOptions)) {
-            throw new OptionsIncompatibleException("Option is incompatible with the added options");
+            throw new OptionsIncompatibleException(option.getName() + " is incompatible with the added options");
         }
         if (!option.isDependentFrom(allCartItemOptions)) {
-            throw new OptionsDependentException("Option is dependent from other options");
+            throw new OptionsDependentException(option.getName() + " is dependent from other options");
         }
-        CartItem cartItem = cart.getItemByContract(contractId);
         if (cartItem == null) {
             cartItem = createCartItem(contractId);
             cart.addItem(cartItem);
@@ -85,7 +83,6 @@ public class CartServiceImpl implements CartService {
         cartItem.setPrice(updateCartItemPrice(cartItem));
         cartItem.setConnectionCost(updateCartItemConnectionCost(cartItem));
         log.info("Option " + option.getName() + " is added to the cart");
-
     }
 
     /**
@@ -129,6 +126,16 @@ public class CartServiceImpl implements CartService {
     @Override
     public List<Option> getNotAddedCartItemContractOptions(Cart cart, long contractId) {
         CartItem cartItem = cart.getItemByContract(contractId);
+        Set<Option> cartItemOptions = getCartItemOptions(contractId, cartItem);
+        List<Option> notAddedCartItemOptions = optionDao.getAll();
+        for (Option option :
+                cartItemOptions) {
+            notAddedCartItemOptions.removeIf(o -> o.getId() == option.getId());
+        }
+        return notAddedCartItemOptions;
+    }
+
+    private Set<Option> getCartItemOptions(long contractId, CartItem cartItem) {
         Set<Option> cartItemOptions;
         if (cartItem != null) {
             cartItemOptions = new HashSet<>(cartItem.getOptions());
@@ -141,12 +148,7 @@ public class CartServiceImpl implements CartService {
                 cartItemOptions.addAll(contractTariff.getOptions());
             }
         }
-        List<Option> notAddedCartItemOptions = optionDao.getAll();
-        for (Option option :
-                cartItemOptions) {
-            notAddedCartItemOptions.removeIf(o -> o.getId() == option.getId());
-        }
-        return notAddedCartItemOptions;
+        return cartItemOptions;
     }
 
     /**

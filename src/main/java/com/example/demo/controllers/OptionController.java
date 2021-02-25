@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import static com.example.demo.utils.ConstantStrings.*;
 import com.example.demo.dto.OptionDto;
 import com.example.demo.exceptions.CantBeDeletedException;
 import com.example.demo.exceptions.OptionsDependentException;
@@ -89,7 +90,7 @@ public class OptionController {
             optionService.delete(optionId);
             return "redirect:/admin/options";
         } catch (CantBeDeletedException e) {
-            model.addAttribute("msg", e.getMessage());
+            model.addAttribute(ALERT, e.getMessage());
             model.addAttribute("options", optionService.getAll());
             return "admin/options";
         }
@@ -107,7 +108,7 @@ public class OptionController {
             optionService.addIncompatibleOption(firstId, secondId);
             return "redirect:/admin/options/incompatible/{firstId}";
         } catch (OptionsDependentException e) {
-            model.addAttribute("msg", e.getMessage());
+            model.addAttribute("alertMsg", e.getMessage());
             showIncompatibles(model, firstId);
             return "admin/incompatibles";
         }
@@ -131,7 +132,7 @@ public class OptionController {
             optionService.addDependentOption(firstId, secondId);
             return "redirect:/admin/options/dependent/{firstId}";
         } catch (OptionsIncompatibleException e) {
-            model.addAttribute("msg", e.getMessage());
+            model.addAttribute(ALERT, e.getMessage());
             showDependents(model, firstId);
             return "admin/dependentOptions";
         }

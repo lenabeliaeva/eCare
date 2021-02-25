@@ -11,6 +11,7 @@
 <body>
 <h3>Available options</h3>
 <%@include file="../parts/successMessage.jsp"%>
+<%@include file="../parts/alertMessage.jsp"%>
 <form:form>
     <table class="table table-hover">
         <tr>

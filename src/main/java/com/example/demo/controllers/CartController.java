@@ -1,12 +1,12 @@
 package com.example.demo.controllers;
 
+import static com.example.demo.utils.ConstantStrings.*;
 import com.example.demo.exceptions.OptionsDependentException;
 import com.example.demo.exceptions.OptionsIncompatibleException;
 import com.example.demo.models.Cart;
 import com.example.demo.models.Contract;
 import com.example.demo.services.CartService;
 import com.example.demo.services.ContractService;
-import com.example.demo.services.OptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,16 +19,11 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class CartController {
 
-    private static final String CART = "cart";
-
     @Autowired
     CartService service;
 
     @Autowired
     ContractService contractService;
-
-    @Autowired
-    OptionService optionService;
 
     @GetMapping("/cart")
     public String showCart(Model model, HttpSession session) {
@@ -62,9 +57,9 @@ public class CartController {
         Cart cart = getCartFromSession(session);
         try {
             service.addOption(cart, optionId, contractId);
-            model.addAttribute("msg", "Option is successfully added to the cart");
+            model.addAttribute(SUCCESS, "Option is successfully added to the cart");
         } catch (OptionsIncompatibleException | OptionsDependentException e) {
-            model.addAttribute("msg", e.getMessage());
+            model.addAttribute(ALERT, e.getMessage());
         }
         showAvailableOptions(contractId, model, session);
         return "/contract/addOptionsToContract";
@@ -72,7 +67,7 @@ public class CartController {
 
     @PostMapping("/cart/deleteOption/{optionId}/{contractId}")
     public String deleteOption(@PathVariable long optionId, @PathVariable long contractId, HttpSession session) {
-        Cart cart = (Cart) session.getAttribute("cart");
+        Cart cart = (Cart) session.getAttribute(CART);
         service.deleteOption(cart, optionId, contractId);
         return "redirect:/cart";
     }
@@ -86,7 +81,7 @@ public class CartController {
 
     @PostMapping("/cart/deleteItem/{contractId}")
     public String deleteItem(@PathVariable long contractId, HttpSession session) {
-        Cart cart = (Cart) session.getAttribute("cart");
+        Cart cart = (Cart) session.getAttribute(CART);
         service.deleteCartItem(cart, contractId);
         return "redirect:/cart";
     }
@@ -95,7 +90,7 @@ public class CartController {
         Cart cart = (Cart) session.getAttribute(CART);
         if (cart == null) {
             cart = new Cart();
-            session.setAttribute("cart", cart);
+            session.setAttribute(CART, cart);
         }
         return cart;
     }
