@@ -4,26 +4,18 @@ import com.example.demo.models.Tariff;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
 public class TariffDaoImpl implements TariffDao {
 
-    private static final EntityManagerFactory emfObj;
-
-    static {
-        emfObj = Persistence.createEntityManagerFactory("eCare");
-    }
-
-    private final EntityManager entityManager = emfObj.createEntityManager();
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public Tariff add(Tariff tariff) {
-        entityManager.getTransaction().begin();
         entityManager.persist(tariff);
-        entityManager.getTransaction().commit();
         return tariff;
     }
 
@@ -34,9 +26,7 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public void delete(Tariff tariff) {
-        entityManager.getTransaction().begin();
         entityManager.remove(tariff);
-        entityManager.getTransaction().commit();
     }
 
     @Override
@@ -46,8 +36,6 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public void update(Tariff tariff) {
-        entityManager.getTransaction().begin();
         entityManager.merge(tariff);
-        entityManager.getTransaction().commit();
     }
 }

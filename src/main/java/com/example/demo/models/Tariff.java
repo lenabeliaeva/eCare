@@ -41,6 +41,6 @@ public class Tariff {
         options.removeIf(option -> option.getId() == o.getId());
     }
 
-    @OneToMany(mappedBy = "tariff")
+    @OneToMany(mappedBy = "tariff", fetch = FetchType.EAGER)
     private Set<Contract> contracts;
 }

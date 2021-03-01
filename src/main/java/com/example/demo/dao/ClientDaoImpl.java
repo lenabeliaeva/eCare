@@ -10,13 +10,8 @@ import java.util.List;
 @Repository
 public class ClientDaoImpl implements ClientDao {
 
-    private static final EntityManagerFactory emf;
-
-    static {
-        emf = Persistence.createEntityManagerFactory("eCare");
-    }
-
-    private final EntityManager em = emf.createEntityManager();
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public void register(Client client) {

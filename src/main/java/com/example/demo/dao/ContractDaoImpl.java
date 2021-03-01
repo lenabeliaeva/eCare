@@ -9,13 +9,8 @@ import java.util.List;
 @Repository
 public class ContractDaoImpl implements ContractDao {
 
-    private static final EntityManagerFactory emf;
-
-    static {
-        emf = Persistence.createEntityManagerFactory("eCare");
-    }
-
-    private final EntityManager em = emf.createEntityManager();
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public Contract getById(long id) {
@@ -32,24 +27,18 @@ public class ContractDaoImpl implements ContractDao {
 
     @Override
     public Contract save(Contract contract) {
-        em.getTransaction().begin();
         em.persist(contract);
-        em.getTransaction().commit();
         return contract;
     }
 
     @Override
     public void delete(Contract contract) {
-        em.getTransaction().begin();
         em.remove(contract);
-        em.getTransaction().commit();
     }
 
     @Override
     public void update(Contract contract) {
-        em.getTransaction().begin();
         em.merge(contract);
-        em.getTransaction().commit();
     }
 
     @Override
