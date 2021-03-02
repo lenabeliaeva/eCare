@@ -3,12 +3,12 @@ package com.example.demo;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.example.demo.dao.OptionDao;
+import com.example.demo.dao.api.OptionDao;
 import com.example.demo.exceptions.OptionsDependentException;
-import com.example.demo.models.Contract;
-import com.example.demo.models.Option;
-import com.example.demo.models.Tariff;
-import com.example.demo.services.OptionServiceImpl;
+import com.example.demo.models.entities.Contract;
+import com.example.demo.models.entities.Option;
+import com.example.demo.models.entities.Tariff;
+import com.example.demo.services.impl.OptionServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

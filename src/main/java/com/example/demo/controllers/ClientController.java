@@ -1,8 +1,10 @@
 package com.example.demo.controllers;
 
 import com.example.demo.exceptions.UserAlreadyExistsException;
-import com.example.demo.models.Client;
-import com.example.demo.services.*;
+import com.example.demo.models.entities.Client;
+import com.example.demo.services.api.ClientService;
+import com.example.demo.services.api.ContractService;
+import com.example.demo.services.api.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

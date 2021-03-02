@@ -1,5 +1,8 @@
 package com.example.demo.models;
 
+import com.example.demo.models.entities.Contract;
+import com.example.demo.models.entities.Option;
+import com.example.demo.models.entities.Tariff;
 import lombok.Getter;
 import lombok.Setter;
 

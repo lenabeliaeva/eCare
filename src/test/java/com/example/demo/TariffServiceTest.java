@@ -5,10 +5,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.example.demo.dao.TariffDao;
-import com.example.demo.dto.TariffDto;
-import com.example.demo.models.Tariff;
-import com.example.demo.services.TariffServiceImpl;
+import com.example.demo.dao.api.TariffDao;
+import com.example.demo.models.entities.Tariff;
+import com.example.demo.services.impl.TariffServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

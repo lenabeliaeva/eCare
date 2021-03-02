@@ -1,10 +1,10 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.Contract;
-import com.example.demo.services.ClientService;
-import com.example.demo.services.ContractService;
-import com.example.demo.services.OptionService;
-import com.example.demo.services.TariffService;
+import com.example.demo.models.entities.Contract;
+import com.example.demo.services.api.ClientService;
+import com.example.demo.services.api.ContractService;
+import com.example.demo.services.api.OptionService;
+import com.example.demo.services.api.TariffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

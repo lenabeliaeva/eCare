@@ -1,6 +1,6 @@
 package com.example.demo.validators;
 
-import com.example.demo.models.Client;
+import com.example.demo.models.entities.Client;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

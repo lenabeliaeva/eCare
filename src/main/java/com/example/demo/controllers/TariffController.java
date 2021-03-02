@@ -2,10 +2,10 @@ package com.example.demo.controllers;
 
 import com.example.demo.dto.TariffDto;
 import com.example.demo.exceptions.CantBeDeletedException;
-import com.example.demo.models.Option;
-import com.example.demo.models.Tariff;
-import com.example.demo.services.OptionService;
-import com.example.demo.services.TariffService;
+import com.example.demo.models.entities.Option;
+import com.example.demo.models.entities.Tariff;
+import com.example.demo.services.api.OptionService;
+import com.example.demo.services.api.TariffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
